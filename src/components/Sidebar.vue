@@ -23,24 +23,26 @@
       </a>
       <ul class="space-y-2 mt-10 mx-4">
         <li>
-          <a href="#" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
+          <router-link to="/cards" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
             <img src="@/assets/card.svg" alt="card icon" />
             <span class="ml-3">Tarjetas</span>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
-            <img src="@/assets/expenses.svg" alt="expenses icon" />
-            <span class="flex-1 ml-3 whitespace-nowrap">Gastos</span>
+          <router-link to="/expenses/members" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
+            <img v-if="activeRoute == 'expenses'" src="@/assets/expenses-selected.svg" alt="expenses icon" />
+            <img v-else src="@/assets/expenses-unselected.svg" alt="expenses icon" />
+            <span :class="activeRoute === 'expenses' ? 'text-[#DE848B]' : 'text-[#8D8B96]'" class="flex-1 ml-3 whitespace-nowrap">Gastos</span>
             <span class="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-white bg-[#62948F] rounded-full">Pro</span>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a href="#" class="flex items-center p-2 px-4 text-base font-normal text-gray-900 rounded-lg">
-            <img src="@/assets/members.svg" alt="members icon" />
-            <span class="flex-1 ml-3 whitespace-nowrap text-[#DE848B]">Miembros</span>
+          <router-link to="/members/members" class="flex items-center p-2 px-4 text-base font-normal text-gray-900 rounded-lg">
+            <img v-if="activeRoute == 'members'" src="@/assets/members-selected.svg" alt="members icon" />
+            <img v-else src="@/assets/members-unselected.svg" alt="members icon" />
+            <span :class="activeRoute === 'members' ? 'text-[#DE848B]' : 'text-[#8D8B96]'" class="flex-1 ml-3 whitespace-nowrap">Miembros</span>
             <span class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">8</span>
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -50,5 +52,15 @@
 <script>
 export default {
   name: 'Sidebar',
+  data() {
+    return {
+      activeRoute: this.$route.path.split('/')[1] || '/',
+    }
+  },
+  watch: {
+    $route() {
+      this.activeRoute = this.$route.path.split('/')[1] || '/'
+    },
+  },
 }
 </script>

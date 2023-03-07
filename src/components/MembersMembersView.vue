@@ -1,14 +1,14 @@
 <template>
   <div v-for="members in chunkedAllMembers" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
     <div v-for="member in members" class="h-max bg-white rounded-lg flex p-5 px-10">
-      <CardMember :member="member"></CardMember>
+      <CardMembersMember :member="member"></CardMembersMember>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import CardMember from './CardMember.vue'
+import CardMembersMember from './CardMembersMember.vue'
 
 const getAllMembers = async () => {
   const response = await axios.get('https://jsonplaceholder.typicode.com/users')
@@ -32,7 +32,7 @@ export default {
     },
   },
   components: {
-    CardMember,
+    CardMembersMember,
   },
   methods: {
     chunk() {

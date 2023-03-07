@@ -1,32 +1,31 @@
 <template>
-  <div className="flex flex-col">
-    <div className="flex items-center">
-      <div className="flex rounded-full w-10 h-10 bg-violet-700 text-white text-xl items-center justify-center">
-        <p>{{ member.name[0] }}{{ member.name.split(' ')[1][0] }}</p>
-      </div>
-      <div className="flex flex-col">
-        <div className="flex items-center">
-          <p class="text-[#1C2E3D] font-medium text-lg pl-4">{{ member.name.substring(0, 14) }}</p>
-          <img class="pl-2 w-6 h-6" src="@/assets/email.svg" />
+  <div className="flex flex-col w-full">
+    <div className="items-center w-full grid grid-cols-2">
+      <div className="flex items-center">
+        <div className="flex rounded-full w-8 h-8 bg-violet-700 text-white text-xs items-center justify-center">
+          <p>{{ member.name[0] }}{{ member.name.split(' ')[1][0] }}</p>
         </div>
-        <p class="text-[#8D8B96] font-medium text-lg pl-4">{{ member.company.bs.split(' ').slice(-1)[0] }}</p>
+        <div className="flex flex-col">
+          <div className="flex items-center">
+            <p class="text-[#1C2E3D] font-medium text-lg pl-4">{{ member.name.substring(0, 23) }}</p>
+            <img class="pl-2 w-6 h-6" src="@/assets/email.svg" />
+          </div>
+          <p class="text-[#8D8B96] font-medium text-lg pl-4">{{ member.company.bs.split(' ').slice(-1)[0] }}</p>
+        </div>
       </div>
-      <div className="h-full pl-8">
+      <div className="flex w-full justify-between">
         <div className="border-red-200 border rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
           <p>4231</p>
         </div>
-      </div>
-      <div className="h-full pl-3">
+
         <div className="border-[#E0EAE9] border bg-[#E0EAE9] rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
           <p>5342</p>
         </div>
-      </div>
-      <div className="h-full pl-3">
+
         <div className="border-[#F8E6E8] border bg-[#F8E6E8] rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
           <p>ADMINISTRADOR</p>
         </div>
-      </div>
-      <div className="h-full pl-5 text-xl">
+
         <p>80%</p>
       </div>
     </div>

@@ -20,34 +20,6 @@ const getAllTeams = async () => {
       miembros: ['Jim Smith', 'Jane Doe', 'Jack Johnson', 'Jack Johnson', 'Jack Johnson', 'Jack Johnson'],
       area: 'Software',
     },
-    {
-      nombre_del_equipo: 'Soporte de IT',
-      presupuesto_mensual: '7.500',
-      administrador: 'Jane Doe',
-      miembros: ['Fred Jones', 'Tim Miller', 'Sally Smith', 'Jack Johnson', 'Jack Johnson'],
-      area: 'Soporte',
-    },
-    {
-      nombre_del_equipo: 'Marketing',
-      presupuesto_mensual: '15.000',
-      administrador: 'John Doe',
-      miembros: ['Bob Williams', 'Karen Johnson'],
-      area: 'Ventas',
-    },
-    {
-      nombre_del_equipo: 'Ventas Equipo 1',
-      presupuesto_mensual: '20.000',
-      administrador: '',
-      miembros: ['Adam Jones', 'Linda Miller', 'Samantha Smith'],
-      area: 'Ventas',
-    },
-    {
-      nombre_del_equipo: 'Investigación Equipo 1',
-      presupuesto_mensual: '30.000',
-      administrador: 'Jack Johnson',
-      miembros: ['John Smith'],
-      area: 'Investigación y desarrollo',
-    },
   ]
   //return response.data
   return data

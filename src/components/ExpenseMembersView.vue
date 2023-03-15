@@ -22,7 +22,8 @@ const getAllExpenses = async () => {
         con_tarjeta: true,
         ultimos_4_digitos: '1234',
         tipo: 'fisica',
-      }
+      },
+    },
   ]
   return data
 }

@@ -13,7 +13,7 @@
           <p class="text-[#8D8B96] font-medium text-lg pl-4">{{ member.company.bs.split(' ').slice(-1)[0] }}</p>
         </div>
       </div>
-      <div className="flex w-full justify-between">
+      <div className="flex w-full gap-2 justify-end ">
         <div className="border-red-200 border rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
           <p>4231</p>
         </div>
@@ -22,7 +22,7 @@
           <p>5342</p>
         </div>
 
-        <div className="border-[#F8E6E8] border bg-[#F8E6E8] rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
+        <div v-if="Math.random() < 0.5 ? true : false" className="border-[#F8E6E8] border bg-[#F8E6E8] rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
           <p>ADMINISTRADOR</p>
         </div>
 

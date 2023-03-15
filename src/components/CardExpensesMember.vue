@@ -32,11 +32,11 @@
         <div
           :class="
             expense.categoria.estado.toUpperCase() === 'APROBADO'
-              ? 'bg-[#BEDE62] border-[#BEDE62] border  rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center'
+              ? 'bg-[#E6FF9F] border-[#E6FF9F] border  rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center'
               : expense.categoria.estado.toUpperCase() === 'CAMBIOS A REALIZAR'
-              ? 'bg-[#F3DC0E] border-[#F3DC0E] border  rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center'
+              ? 'bg-[#FDF8CF] border-[#FDF8CF] border  rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center'
               : expense.categoria.estado.toUpperCase() === 'RECHAZADO'
-              ? 'bg-[#F30E0E] border-[#F30E0E] border  rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center'
+              ? 'bg-[#FDCFCF] border-[#FDCFCF] border  rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center'
               : expense.categoria.estado.toUpperCase() === 'SIN RECIBO'
               ? 'bg-[#E7E6E9] border-[#E7E6E9] border  rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center'
               : 'bg-[#E7E6E9] border-[#E7E6E9] border  rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center'

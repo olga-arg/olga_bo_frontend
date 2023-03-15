@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "domain": "cp CNAME dist/",
     "build": "vite build",
     "preview": "vite preview"
   },

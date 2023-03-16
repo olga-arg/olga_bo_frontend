@@ -18,9 +18,9 @@
             </div>
           </form>
         </div>
-        <div v-if="showAddMember" className="flex flex-col items-center">
-          <div className="w-96 p-10 bg-[#1C2E3D] rounded-2xl">
-            <div v-if="!showSendInvite">
+        <div className="flex flex-col items-center">
+          <div v-if="showAddMember" className="w-96 p-10 bg-[#1C2E3D] rounded-2xl">
+            <div v-if="showSendInvite">
               <div className="flex justify-between">
                 <p className="text-[#DE848B] text-xl font-medium">Invitar a Olga</p>
                 <p className="text-white">X</p>
@@ -31,10 +31,26 @@
                 <input v-model="email" type="email" name="email" id="email" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Email" required />
               </div>
             </div>
-            <div v-if="!showSendInvite">
-              <button v-on:click="sendInvite" className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white">Enviar Invitación</button>
+            <div></div>
+            <button v-if="showSendInvite" v-on:click="sendInvite" className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white">Enviar Invitación</button>
+            <div v-if="showStatus200" v-on:click="addMember">
+              <button className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white items-center justify-center flex">
+                <svg class="w-6 h-6 mr-2 text-white fill-current" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
+                </svg>
+              </button>
             </div>
-            <div v-if="showSendInvite" className="w-full h-14 rounded-md p-4 text-md font-medium bg-gray-400 text-white flex items-center justify-center">
+            <div v-if="showStatus400" v-on:click="addMember" className="flex flex-col gap-1">
+              <button className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#EA394C] text-white items-center justify-center flex">
+                <svg class="w-6 h-6 mr-2 text-white fill-current" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                </svg>
+              </button>
+              <p className="w-full rounded-md p-1 text-md font-medium bg-[#41313E] border border-[#EA394C] text-[#EA394C] items-center justify-center flex">{{ error }}</p>
+            </div>
+            <div v-if="statusLoading" className="w-full h-14 rounded-md p-4 text-md font-medium bg-gray-400 text-white flex items-center justify-center">
               <div role="status">
                 <svg
                   aria-hidden="true"
@@ -76,29 +92,66 @@
 import Sidebar from './components/Sidebar.vue'
 import MembersMembersView from './components/MembersMembersView.vue'
 import axios from 'axios'
+import { nextTick, ref } from 'vue'
 
 export default {
   name: 'App',
   data() {
     return {
-      showAddMember: false,
-      showSendInvite: false,
+      showAddMember: ref(false),
+      showSendInvite: ref(false),
+      statusLoading: false,
+      showStatus200: false,
+      showStatus400: false,
+      error: '',
     }
   },
   methods: {
     addMember() {
       this.showAddMember = !this.showAddMember
+      this.showSendInvite = this.showAddMember
+      this.statusLoading = false
+      this.showStatus200 = false
+      this.showStatus400 = false
     },
     async sendInvite() {
       if (this.name === undefined || this.surname === undefined || this.email === undefined) {
         return
       }
-      const response = await axios.post('https://api.olga.lat/api/users', {
-        name: 'Ignacio',
-        surname: 'Ramos',
-        email: 'vilavalentin@gmail.com',
-      })
-      this.showSendInvite = !this.showSendInvite
+      this.showSendInvite = false
+      this.statusLoading = true
+      try {
+        const response = await axios.post(
+          '/api/users',
+          {
+            name: this.name,
+            surname: this.surname,
+            email: this.email,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+          }
+        )
+      } catch (error) {
+        this.statusLoading = false
+        this.showStatus400 = true
+        this.showSendInvite = false
+        this.name = ''
+        this.surname = ''
+        this.email = ''
+        console.log(error.response.data)
+        this.error = error.response.data
+        return
+      }
+      this.statusLoading = false
+      this.showStatus200 = true
+      this.showSendInvite = false
+      this.name = ''
+      this.surname = ''
+      this.email = ''
     },
   },
   components: {

@@ -121,20 +121,11 @@ export default {
       this.showSendInvite = false
       this.statusLoading = true
       try {
-        const response = await axios.post(
-          '/api/users',
-          {
-            name: this.name,
-            surname: this.surname,
-            email: this.email,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*',
-            },
-          }
-        )
+        const response = await axios.post('https://api.olga.lat/api/users', {
+          name: this.name,
+          surname: this.surname,
+          email: this.email,
+        })
       } catch (error) {
         this.statusLoading = false
         this.showStatus400 = true

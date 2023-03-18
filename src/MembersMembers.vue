@@ -13,7 +13,13 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
-              <input class="w-full p-2 pl-10 text-sm bg-[#F4F4F4]" placeholder="Buscar empleado" required />
+              <input
+                v-on:keypress.enter.prevent="sendFilterToChild"
+                v-model="employeeFilter"
+                class="w-full p-2 pl-10 text-sm bg-[#F4F4F4]"
+                placeholder="Buscar empleado"
+                required
+              />
               <div className="w-full h-0.5 bg-[#DE848B]"></div>
             </div>
           </form>
@@ -41,14 +47,14 @@
                 </svg>
               </button>
             </div>
-            <div v-if="showStatus400" v-on:click="addMember" className="flex flex-col gap-1">
-              <button className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#EA394C] text-white items-center justify-center flex">
+            <div v-if="showStatus400" v-on:click="addMember" className="flex flex-col">
+              <!-- <button className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#EA394C] text-white items-center justify-center flex">
                 <svg class="w-6 h-6 mr-2 text-white fill-current" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
                   <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                 </svg>
-              </button>
-              <p className="w-full rounded-md p-1 text-md font-medium bg-[#41313E] border border-[#EA394C] text-[#EA394C] items-center justify-center flex">{{ error }}</p>
+              </button> -->
+              <p className="w-full rounded-md p-1 mt-2 text-md font-medium bg-[#41313E] border border-[#EA394C] text-[#EA394C] items-center justify-center flex">{{ error }}</p>
             </div>
             <div v-if="statusLoading" className="w-full h-14 rounded-md p-4 text-md font-medium bg-gray-400 text-white flex items-center justify-center">
               <div role="status">
@@ -75,7 +81,7 @@
         </div>
         <Suspense>
           <template #default>
-            <MembersMembersView :key="forceReload"></MembersMembersView>
+            <MembersMembersView :key="forceReload" :filter="sendFilter"></MembersMembersView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -105,9 +111,21 @@ export default {
       showStatus400: false,
       error: '',
       forceReload: false,
+      employeeFilter: '',
+      sendFilter: '', // Could be better
     }
   },
+  watch: {
+    employeeFilter() {
+      if (this.employeeFilter === '') {
+        this.sendFilter = this.employeeFilter
+      }
+    },
+  },
   methods: {
+    sendFilterToChild() {
+      this.sendFilter = this.employeeFilter
+    },
     addMember() {
       this.showAddMember = !this.showAddMember
       this.showSendInvite = this.showAddMember
@@ -121,6 +139,7 @@ export default {
       }
       this.showSendInvite = false
       this.statusLoading = true
+      this.showStatus400 = false
       try {
         const response = await axios.post('https://api.olga.lat/api/users', {
           name: this.name,
@@ -130,7 +149,7 @@ export default {
       } catch (error) {
         this.statusLoading = false
         this.showStatus400 = true
-        this.showSendInvite = false
+        this.showSendInvite = true
         this.name = ''
         this.surname = ''
         this.email = ''

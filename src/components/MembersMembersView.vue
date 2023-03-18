@@ -36,12 +36,22 @@ export default {
   },
   methods: {
     chunk() {
-      const chunked = []
-      for (let i = 0; i < this.allMembers.users.length; i += 2) {
-        chunked.push(this.allMembers.users.slice(i, i + 2))
+      console.log('hola')
+      const filter = []
+      const response = []
+      for (let i = 0; i < this.allMembers.users.length; i++) {
+        if (this.allMembers.users[i].name.toLowerCase().includes(this.filter.toLowerCase())) {
+          filter.push(this.allMembers.users[i])
+        }
       }
-      return chunked
+      for (let i = 0; i < filter.length; i += 2) {
+        response.push(filter.slice(i, i + 2))
+      }
+      return response
     },
+  },
+  props: {
+    filter: String,
   },
 }
 </script>

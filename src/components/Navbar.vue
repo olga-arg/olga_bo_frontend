@@ -34,7 +34,6 @@ export default {
   watch: {
     $route() {
       this.originalRoute = this.$route.path
-      console.log(this.originalRoute.split('/')[1])
       this.activeRoute = this.$route.path.split('/').slice(-1)[0]
     },
   },

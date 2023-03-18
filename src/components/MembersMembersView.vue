@@ -11,7 +11,7 @@ import axios from 'axios'
 import CardMembersMember from './CardMembersMember.vue'
 
 const getAllMembers = async () => {
-  const response = await axios.get('https://jsonplaceholder.typicode.com/users')
+  const response = await axios.get('https://api.olga.lat/api/users')
   return response.data
 }
 
@@ -37,8 +37,8 @@ export default {
   methods: {
     chunk() {
       const chunked = []
-      for (let i = 0; i < this.allMembers.length; i += 2) {
-        chunked.push(this.allMembers.slice(i, i + 2))
+      for (let i = 0; i < this.allMembers.users.length; i += 2) {
+        chunked.push(this.allMembers.users.slice(i, i + 2))
       }
       return chunked
     },

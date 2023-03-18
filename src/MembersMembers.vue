@@ -75,7 +75,7 @@
         </div>
         <Suspense>
           <template #default>
-            <MembersMembersView></MembersMembersView>
+            <MembersMembersView :key="forceReload"></MembersMembersView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -92,7 +92,7 @@
 import Sidebar from './components/Sidebar.vue'
 import MembersMembersView from './components/MembersMembersView.vue'
 import axios from 'axios'
-import { nextTick, ref } from 'vue'
+import { ref } from 'vue'
 
 export default {
   name: 'App',
@@ -104,6 +104,7 @@ export default {
       showStatus200: false,
       showStatus400: false,
       error: '',
+      forceReload: false,
     }
   },
   methods: {
@@ -137,6 +138,7 @@ export default {
         this.error = error.response.data
         return
       }
+      this.forceReload = !this.forceReload
       this.statusLoading = false
       this.showStatus200 = true
       this.showSendInvite = false

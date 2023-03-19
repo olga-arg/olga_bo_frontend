@@ -36,13 +36,27 @@ export default {
   },
   methods: {
     chunk() {
-      console.log('hola')
-      const filter = []
-      const response = []
-      for (let i = 0; i < this.allMembers.users.length; i++) {
-        if (this.allMembers.users[i].name.toLowerCase().includes(this.filter.toLowerCase())) {
-          filter.push(this.allMembers.users[i])
-        }
+      let response = []
+      let filter = []
+      filter = this.allMembers.users
+      if (this.filters.isAdmin) {
+        filter = filter.filter((member) => {
+          return member.isAdmin
+        })
+      }
+      if (this.filters.isConfirmed) {
+        filter = filter.filter((member) => {
+          return member.status === 0
+        })
+      } else {
+        filter = filter.filter((member) => {
+          return member.status !== 0
+        })
+      }
+      if (this.filters.name) {
+        filter = filter.filter((member) => {
+          return member.name.toLowerCase().includes(this.filters.name.toLowerCase())
+        })
       }
       for (let i = 0; i < filter.length; i += 2) {
         response.push(filter.slice(i, i + 2))
@@ -51,7 +65,7 @@ export default {
     },
   },
   props: {
-    filter: String,
+    filters: Object,
   },
 }
 </script>

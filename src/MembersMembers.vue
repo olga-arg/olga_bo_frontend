@@ -5,6 +5,15 @@
       <div class="px-24">
         <div class="flex items-center justify-between h-20 mb-4">
           <button v-on:click="addMember" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Añadir Miembro</button>
+          <div className="flex gap-4 items-center">
+            <p className="text-gray-500">Filtrar:</p>
+            <button v-if="this.sendFilters.isAdmin" v-on:click="sendAdminFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">Admin</button>
+            <button v-else v-on:click="sendAdminFilter" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Admin</button>
+            <button v-if="this.sendFilters.isConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
+              No Confirmado
+            </button>
+            <button v-else v-on:click="sendConfirmedFilter" className=" border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">No Confirmado</button>
+          </div>
           <form>
             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
             <div class="relative">
@@ -14,8 +23,8 @@
                 </svg>
               </div>
               <input
-                v-on:keypress.enter.prevent="sendFilterToChild"
-                v-model="employeeFilter"
+                v-on:keypress.enter.prevent="sendNameFilter"
+                v-model="employeeNameFilter"
                 class="w-full p-2 pl-10 text-sm bg-[#F4F4F4]"
                 placeholder="Buscar empleado"
                 required
@@ -81,7 +90,7 @@
         </div>
         <Suspense>
           <template #default>
-            <MembersMembersView :key="forceReload" :filter="sendFilter"></MembersMembersView>
+            <MembersMembersView :key="forceReload" :filters="sendFilters"></MembersMembersView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -111,20 +120,35 @@ export default {
       showStatus400: false,
       error: '',
       forceReload: false,
-      employeeFilter: '',
-      sendFilter: '', // Could be better
+      employeeNameFilter: '',
+      filters: {
+        name: this.employeeNameFilter,
+        isAdmin: false,
+        isConfirmed: false,
+      },
+      sendFilters: {
+        name: '',
+        isAdmin: false,
+        isConfirmed: false,
+      }, // Could be done better
     }
   },
   watch: {
-    employeeFilter() {
-      if (this.employeeFilter === '') {
-        this.sendFilter = this.employeeFilter
+    employeeNameFilter() {
+      if (this.employeeNameFilter === '') {
+        this.sendFilters.name = ''
       }
     },
   },
   methods: {
-    sendFilterToChild() {
-      this.sendFilter = this.employeeFilter
+    sendNameFilter() {
+      this.sendFilters.name = this.employeeNameFilter
+    },
+    sendAdminFilter() {
+      this.sendFilters.isAdmin = !this.sendFilters.isAdmin
+    },
+    sendConfirmedFilter() {
+      this.sendFilters.isConfirmed = !this.sendFilters.isConfirmed
     },
     addMember() {
       this.showAddMember = !this.showAddMember

@@ -8,8 +8,12 @@
         <div className="flex flex-col">
           <div className="flex ">
             <p class="text-[#1C2E3D] font-medium text-lg pl-4">{{ member.name }} {{ member.surname }}</p>
-            <button v-on:click="copyEmailToClipboard" class="flex items-center">
-              <img class="pl-2 w-6 h-6" src="@/assets/email.svg" />
+            <button v-if="member.status != 0" v-on:click="copyEmailToClipboard" class="flex items-center">
+              <img class="ml-2 w-4 h-4" src="@/assets/email.svg" />
+              <p v-if="copyToClipboard" class="mb-10 ml-[-12px] absolute text-[#62948F] font-medium text-xs pl-1">Copiado</p>
+            </button>
+            <button v-else v-on:click="copyEmailToClipboard" class="flex items-center">
+              <img class="ml-2 w-4 h-4" src="@/assets/emailNotConfirmed.svg" />
               <p v-if="copyToClipboard" class="mb-10 ml-[-12px] absolute text-[#62948F] font-medium text-xs pl-1">Copiado</p>
             </button>
           </div>

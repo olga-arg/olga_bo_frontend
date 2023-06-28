@@ -1,6 +1,6 @@
 <template>
   <div v-for="expenses in chunkedAllExpenses" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
-    <div v-for="expense in expenses" class="h-max bg-white rounded-lg flex p-5 px-10">
+    <div v-for="expense in expenses" class="bg-white rounded-lg flex p-5 w-full">
       <CardExpensesMember :expense="expense"></CardExpensesMember>
     </div>
   </div>
@@ -11,11 +11,19 @@ import axios from 'axios'
 import CardExpensesMember from '@/components/CardExpensesMember.vue'
 
 const getAllExpenses = async () => {
-  //const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-  //return response.data
   const data = [
     {
       nombre_comercio: 'Supermercado ABC',
+      realizado_por: 'Juan Perez',
+      fecha_hora: '2022-03-01T13:30:00',
+      tipo_pago: {
+        con_tarjeta: true,
+        ultimos_4_digitos: '1234',
+        tipo: 'fisica',
+      },
+    },
+    {
+      nombre_comercio: 'Supermercado',
       realizado_por: 'Juan Perez',
       fecha_hora: '2022-03-01T13:30:00',
       tipo_pago: {

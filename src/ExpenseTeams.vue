@@ -11,16 +11,8 @@
           <div class="flex flex-col gap-1">
             <p className="text-gray-500">Filtrar:</p>
             <div className="flex gap-4 items-center">
-              <button v-if="this.sendFilters.isAdmin" v-on:click="sendAdminFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">Sin Revisar</button>
-              <button v-else v-on:click="sendAdminFilter" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Sin Revisar</button>
-              <button v-if="this.sendFilters.isConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
-                Cambios a Realizar
-              </button>
-              <button v-else v-on:click="sendConfirmedFilter" className=" border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Cambios a Realizar</button>
-              <button v-if="this.sendFilters.isConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
-                Sin Recibo
-              </button>
-              <button v-else v-on:click="sendConfirmedFilter" className=" border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Sin Recibo</button>
+              <button v-if="this.sendFilters.isAdmin" v-on:click="sendAdminFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">Excedidos</button>
+              <button v-else v-on:click="sendAdminFilter" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Excedidos</button>
             </div>
           </div>
           <form>
@@ -45,7 +37,7 @@
 
         <Suspense>
           <template #default>
-            <ExpenseMembersView></ExpenseMembersView>
+            <ExpenseTeamsView></ExpenseTeamsView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -60,7 +52,7 @@
 
 <script>
 import Sidebar from './components/Sidebar.vue'
-import ExpenseMembersView from './components/ExpenseMembersView.vue'
+import ExpenseTeamsView from './components/ExpenseTeamsView.vue'
 
 export default {
   name: 'App',
@@ -80,7 +72,7 @@ export default {
   },
   components: {
     Sidebar,
-    ExpenseMembersView,
+    ExpenseTeamsView,
   },
 }
 </script>

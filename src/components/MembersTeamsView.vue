@@ -11,18 +11,8 @@ import axios from 'axios'
 import CardMembersTeam from './CardMembersTeam.vue'
 
 const getAllTeams = async () => {
-  //const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-  const data = [
-    {
-      nombre_del_equipo: 'Desarrollo de software',
-      presupuesto_mensual: '10.000',
-      administrador: '',
-      miembros: ['Jim Smith', 'Jane Doe', 'Jack Johnson', 'Jack Johnson', 'Jack Johnson', 'Jack Johnson'],
-      area: 'Software',
-    },
-  ]
-  //return response.data
-  return data
+  const response = await axios.get('https://api.olga.lat/api/teams')
+  return response.data
 }
 
 export default {
@@ -47,11 +37,14 @@ export default {
   methods: {
     chunk() {
       const chunked = []
-      for (let i = 0; i < this.allTeams.length; i += 2) {
-        chunked.push(this.allTeams.slice(i, i + 2))
+      for (let i = 0; i < this.allTeams.teams.length; i += 2) {
+        chunked.push(this.allTeams.teams.slice(i, i + 2))
       }
       return chunked
     },
+  },
+  props: {
+    filters: Object,
   },
 }
 </script>

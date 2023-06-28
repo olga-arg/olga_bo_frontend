@@ -7,7 +7,9 @@
         </div>
         <div className="flex flex-col">
           <div className="flex ">
-            <p class="text-[#1C2E3D] font-medium text-lg pl-4">{{ member.name }} {{ member.surname }}</p>
+            <p class="text-[#1C2E3D] font-medium text-lg pl-4">
+              {{ member.name.split(' ').length > 1 ? `${member.name.split(' ')[0]} ${member.name.split(' ')[1][0]}.` : member.name }} {{ member.surname }}
+            </p>
             <button v-if="member.status != 0" v-on:click="copyEmailToClipboard" class="flex items-center">
               <img class="ml-2 w-4 h-4" src="@/assets/email.svg" />
               <p v-if="copyToClipboard" class="mb-10 ml-[-12px] absolute text-[#62948F] font-medium text-xs pl-1">Copiado</p>
@@ -31,7 +33,7 @@
         </div>
 
         <div v-if="member.isAdmin" className="border-[#F8E6E8] border bg-[#F8E6E8] rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
-          <p>ADMINISTRADOR</p>
+          <p>ADMIN</p>
         </div>
 
         <p>{{ (member.monthly_spending * 100) / (member.monthly_limit || 1) }}%</p>

@@ -1,6 +1,6 @@
 <template>
   <div className="bg-[#F4F4F4]">
-    <Sidebar currentRouteName="teams"></Sidebar>
+    <Sidebar></Sidebar>
     <div class="p-4 sm:ml-64">
       <div class="px-24">
         <div class="flex items-center justify-between h-20 mb-4">
@@ -38,7 +38,12 @@
             <div v-if="showSendInvite">
               <div className="flex justify-between">
                 <p className="text-[#DE848B] text-xl font-medium">Invitar a Olga</p>
-                <p className="text-white">X</p>
+                <button v-on:click="addMember" className="text-[#DE848B] text-xl font-medium">
+                  <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                  </svg>
+                </button>
               </div>
               <div className="flex flex-col gap-2 my-10">
                 <input v-model="name" type="name" name="name" id="name" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Nombre" required />
@@ -47,7 +52,7 @@
               </div>
             </div>
             <div></div>
-            <button v-if="showSendInvite" v-on:click="sendInvite" className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white">Enviar Invitación</button>
+            <button v-if="showSendInvite" v-on:click="sendInvite" className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white">Crear Equipo</button>
             <div v-if="showStatus200" v-on:click="addMember">
               <button className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white items-center justify-center flex">
                 <svg class="w-6 h-6 mr-2 text-white fill-current" viewBox="0 0 24 24">
@@ -174,9 +179,6 @@ export default {
         this.statusLoading = false
         this.showStatus400 = true
         this.showSendInvite = true
-        this.name = ''
-        this.surname = ''
-        this.email = ''
         console.log(error.response.data)
         this.error = error.response.data
         return
@@ -196,3 +198,58 @@ export default {
   },
 }
 </script>
+
+<style>
+.container .vue-grid-item.vue-grid-placeholder {
+  background: green;
+}
+.vue-grid-layout {
+  background: #eee;
+}
+.vue-grid-item:not(.vue-grid-placeholder) {
+  background: #ccc;
+  border: 1px solid black;
+}
+.vue-grid-item .resizing {
+  opacity: 0.9;
+}
+.vue-grid-item .static {
+  background: #cce;
+}
+.vue-grid-item .text {
+  font-size: 24px;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+}
+.vue-grid-item .no-drag {
+  height: 100%;
+  width: 100%;
+}
+.vue-grid-item .minMax {
+  font-size: 12px;
+}
+.vue-grid-item .add {
+  cursor: pointer;
+}
+.vue-draggable-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><circle cx='5' cy='5' r='5' fill='#999999'/></svg>") no-repeat;
+  background-position: bottom right;
+  padding: 0 8px 8px 0;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+</style>

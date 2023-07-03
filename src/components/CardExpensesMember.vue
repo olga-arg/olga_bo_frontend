@@ -25,8 +25,11 @@
 
           <div v-if="!expense.tipo_pago.con_tarjeta" className="border-[#1C2E3D] border rounded-md h-4 p-2.5 px-2 text-xs flex items-center justify-center">POCKET</div>
 
-          <div className="border-[#E7E6E9] border h-4 bg-[#E7E6E9] rounded-full p-2.5 text-xs flex items-center justify-center">
+          <div v-if="expense.status == 'SIN REVISAR'" className="border-[#E7E6E9] border h-4 bg-[#E7E6E9] rounded-full p-2.5 text-xs flex items-center justify-center">
             <p>SIN REVISAR</p>
+          </div>
+          <div v-else className="border-green-200 border h-4 bg-green-200 rounded-full p-2.5 text-xs flex items-center justify-center">
+            <p>APROBADO</p>
           </div>
         </div>
       </div>
@@ -38,13 +41,19 @@
               fill="#8D8B96"
             />
           </svg>
-          <p class="text-[#8D8B96] text-lg pl-1">Ignacio N. Ramos</p>
+          <p class="text-[#8D8B96] text-lg pl-1">
+            {{
+              ['Maria Perez', 'Jorge Miro', 'Pedro Farias', 'Julian Bayala', 'Pilar Fortina'][
+                Math.floor(Math.random() * ['Maria Perez', 'Jorge Miro', 'Pedro Farias', 'Julian Bayala', 'Pilar Fortina'].length)
+              ]
+            }}
+          </p>
         </div>
         <div class="flex items-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 4H5C3.9 4 3 4.9 3 6V18C3 19.1 3.9 20 5 20H19C20.1 20 21 19.1 21 18V6C21 4.9 20.1 4 19 4ZM19 18H5V8H19V18ZM19 6H5V6.01L5 6Z" fill="#8D8B96" />
           </svg>
-          <p class="text-[#8D8B96] text-lg pl-1">18 Aug 2022</p>
+          <p class="text-[#8D8B96] text-lg pl-1">28 Jun 2023</p>
         </div>
         <div class="flex items-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

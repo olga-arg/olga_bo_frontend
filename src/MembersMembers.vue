@@ -1,4 +1,5 @@
 <template>
+  <Navbar></Navbar>
   <div className="bg-[#F4F4F4]">
     <Sidebar></Sidebar>
     <div class="p-4 sm:ml-64">
@@ -110,6 +111,7 @@
 
 <script>
 import Sidebar from './components/Sidebar.vue'
+import Navbar from './components/Navbar.vue'
 import MembersMembersView from './components/MembersMembersView.vue'
 import axios from 'axios'
 import { ref } from 'vue'
@@ -194,6 +196,7 @@ export default {
   },
   components: {
     Sidebar,
+    Navbar,
     MembersMembersView,
   },
 }

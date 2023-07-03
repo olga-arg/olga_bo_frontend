@@ -1,4 +1,6 @@
 <template>
+  <Navbar></Navbar>
+
   <div className="bg-[#F4F4F4]">
     <Sidebar currentRouteName="teams"></Sidebar>
     <div class="p-4 sm:ml-64">
@@ -60,6 +62,7 @@
 
 <script>
 import Sidebar from './components/Sidebar.vue'
+import Navbar from './components/Navbar.vue'
 import ExpenseMembersView from './components/ExpenseMembersView.vue'
 
 export default {
@@ -80,6 +83,7 @@ export default {
   },
   components: {
     Sidebar,
+    Navbar,
     ExpenseMembersView,
   },
 }

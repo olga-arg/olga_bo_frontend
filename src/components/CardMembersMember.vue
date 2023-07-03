@@ -36,29 +36,37 @@
           <p>ADMIN</p>
         </div>
 
-        <p>{{ (member.monthly_spending * 100) / (member.monthly_limit || 1) }}%</p>
+        <p v-if="(member.monthly_spending * 100) / (member.monthly_limit || 1) <= 100">{{ Math.ceil((member.monthly_spending * 100) / (member.monthly_limit || 1)) }}%</p>
+        <p v-else class="font-bold text-[#DE848B]">{{ Math.ceil((member.monthly_spending * 100) / (member.monthly_limit || 1)) }}%</p>
       </div>
     </div>
 
-    <div class="w-full h-4 mb-4 bg-[#D9D9D9] rounded-full my-5">
+    <div v-if="(member.monthly_spending * 100) / (member.monthly_limit || 1) <= 100" class="w-full h-4 mb-4 bg-[#D9D9D9] rounded-full my-5">
       <div class="h-4 bg-[#62948F] rounded-full" :style="`width: ${(member.monthly_spending * 100) / (member.monthly_limit || 1)}%`"></div>
+    </div>
+    <div v-else class="w-full h-4 mb-4 bg-[#D9D9D9] rounded-full my-5">
+      <div class="h-4 bg-[#DE848B] rounded-full" :style="`width: 100%`"></div>
     </div>
 
     <div className="flex justify-between">
       <div className="flex gap-6">
         <div className="flex flex-col ">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-[#62948F] rounded-full"></div>
+            <div v-if="(member.monthly_spending * 100) / (member.monthly_limit || 1) <= 100" className="w-3 h-3 bg-[#62948F] rounded-full"></div>
+            <div v-else className="w-3 h-3 bg-[#DE848B] rounded-full"></div>
             <p className="text-[#8A8891]">Utilizado</p>
           </div>
           <p>$ {{ member.monthly_spending }}</p>
         </div>
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-[#D9D9D9] rounded-full"></div>
-            <p className="text-[#8A8891]">Disponible</p>
+            <div v-if="(member.monthly_spending * 100) / (member.monthly_limit || 1) <= 100" className="w-3 h-3 bg-[#D9D9D9] rounded-full"></div>
+            <img v-else class="w-3 h-3 rounded-full" src="@/assets/comprometido.png" />
+            <p v-if="(member.monthly_spending * 100) / (member.monthly_limit || 1) <= 100" className="text-[#8A8891]">Disponible</p>
+            <p v-else className="text-[#8A8891]">Excedido</p>
           </div>
-          <p>$ {{ member.monthly_limit - member.monthly_spending }}</p>
+          <p v-if="(member.monthly_spending * 100) / (member.monthly_limit || 1) <= 100">$ {{ member.monthly_limit - member.monthly_spending }}</p>
+          <p v-else class="text-[#DE848B]">$ {{ member.monthly_limit - member.monthly_spending * -1 }} (excedido)</p>
         </div>
       </div>
       <div className="flex gap-6">

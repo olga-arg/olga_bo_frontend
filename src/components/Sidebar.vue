@@ -24,7 +24,8 @@
       <ul class="space-y-2 mt-10 mx-4">
         <li>
           <router-link to="/cards/members" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
-            <img src="@/assets/card.svg" alt="card icon" />
+            <img v-if="activeRoute == 'cards'" src="@/assets/card-selected.svg" alt="expenses icon" />
+            <img v-else src="@/assets/card-unselected.svg" alt="card icon" />
             <span class="ml-3">Tarjetas</span>
           </router-link>
         </li>

@@ -4,11 +4,11 @@ import MembersTeams from '@/MembersTeams.vue'
 import ExpenseMembers from '@/ExpenseMembers.vue'
 import ExpenseTeams from '@/ExpenseTeams.vue'
 import CardMember from '@/CardMember.vue'
-
+import Login from '@/Login.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', redirect: '/expenses/members' },
+    { path: '/', component: Login },
     { path: '/members/members', component: MembersMembers },
     { path: '/members/teams', component: MembersTeams },
     { path: '/expenses/members', component: ExpenseMembers },

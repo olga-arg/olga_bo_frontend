@@ -1,4 +1,6 @@
 <template>
+  <Navbar></Navbar>
+
   <div className="bg-[#F4F4F4]">
     <Sidebar></Sidebar>
     <div class="p-4 sm:ml-64">
@@ -13,13 +15,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
-              <input
-                v-on:keypress.enter.prevent="sendNameFilter"
-                v-model="employeeNameFilter"
-                class="w-full p-2 pl-10 text-sm bg-[#F4F4F4]"
-                placeholder="Buscar empleado"
-                required
-              />
+              <input v-on:keypress.enter.prevent="sendNameFilter" v-model="employeeNameFilter" class="w-full p-2 pl-10 text-sm bg-[#F4F4F4]" placeholder="Buscar equipo" required />
               <div className="w-full h-0.5 bg-[#DE848B]"></div>
             </div>
           </form>
@@ -108,6 +104,7 @@
 
 <script>
 import Sidebar from './components/Sidebar.vue'
+import Navbar from './components/Navbar.vue'
 import MembersTeamsView from './components/MembersTeamsView.vue'
 import axios from 'axios'
 import { ref } from 'vue'
@@ -190,6 +187,7 @@ export default {
   },
   components: {
     Sidebar,
+    Navbar,
     MembersTeamsView,
   },
 }

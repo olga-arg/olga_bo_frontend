@@ -15,6 +15,8 @@ const getAllExpenses = async () => {
     {
       nombre_comercio: 'Supermercado ABC',
       realizado_por: 'Juan Perez',
+      status: 'APROBADO',
+      monto: 10,
       fecha_hora: '2022-03-01T13:30:00',
       tipo_pago: {
         con_tarjeta: true,
@@ -25,6 +27,8 @@ const getAllExpenses = async () => {
     {
       nombre_comercio: 'Supermercado',
       realizado_por: 'Juan Perez',
+      status: 'SIN REVISAR',
+      monto: 2,
       fecha_hora: '2022-03-01T13:30:00',
       tipo_pago: {
         con_tarjeta: true,

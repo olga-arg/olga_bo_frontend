@@ -1,4 +1,5 @@
 <template>
+  <Navbar></Navbar>
   <div className="bg-[#F4F4F4]">
     <Sidebar currentRouteName="teams"></Sidebar>
     <div class="p-4 sm:ml-64 flex justify-evenly">
@@ -38,6 +39,7 @@
 
 <script>
 import Sidebar from './components/Sidebar.vue'
+import Navbar from './components/Navbar.vue'
 
 export default {
   name: 'App',
@@ -48,6 +50,7 @@ export default {
   },
   components: {
     Sidebar,
+    Navbar,
   },
 }
 </script>

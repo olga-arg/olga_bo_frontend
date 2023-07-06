@@ -5,6 +5,7 @@ import ExpenseMembers from '@/ExpenseMembers.vue'
 import ExpenseTeams from '@/ExpenseTeams.vue'
 import CardMember from '@/CardMember.vue'
 import Login from '@/Login.vue'
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [

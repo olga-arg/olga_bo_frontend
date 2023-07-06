@@ -1,0 +1,125 @@
+{
+  "auth": {
+    "otpwithamplifya51d9385a51d9385": {
+      "customAuth": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385CreateAuthChallenge",
+          "triggerProvider": "Cognito"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385DefineAuthChallenge",
+          "triggerProvider": "Cognito"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
+    }
+  },
+  "function": {
+    "otpwithamplifya51d9385a51d9385CreateAuthChallenge": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "otpwithamplifya51d9385a51d9385DefineAuthChallenge": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_otpwithamplifya51d9385a51d9385CreateAuthChallenge_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385CreateAuthChallenge"
+        }
+      ]
+    },
+    "AMPLIFY_function_otpwithamplifya51d9385a51d9385CreateAuthChallenge_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385CreateAuthChallenge"
+        }
+      ]
+    },
+    "AMPLIFY_function_otpwithamplifya51d9385a51d9385DefineAuthChallenge_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385DefineAuthChallenge"
+        }
+      ]
+    },
+    "AMPLIFY_function_otpwithamplifya51d9385a51d9385DefineAuthChallenge_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385DefineAuthChallenge"
+        }
+      ]
+    },
+    "AMPLIFY_function_otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse"
+        }
+      ]
+    },
+    "AMPLIFY_function_otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse"
+        }
+      ]
+    }
+  }
+}

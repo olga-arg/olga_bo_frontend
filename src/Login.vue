@@ -5,21 +5,10 @@
         <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
           <img class="h-12 mr-2" src="@/assets/logo.svg" alt="logo" />
         </a>
+
         <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1
-              v-if="
-                this.cognitoUser &&
-                this.cognitoUser.signInUserSession &&
-                this.cognitoUser.signInUserSession.idToken &&
-                this.cognitoUser.signInUserSession.idToken.payload &&
-                this.cognitoUser.signInUserSession.idToken.payload.email
-              "
-              class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
-            >
-              Welcome {{ this.cognitoUser.signInUserSession.idToken.payload.email }}
-            </h1>
-            <h1 v-else class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Welcome</h1>
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Welcome</h1>
             <a class="text-xs leading-tight tracking-tight text-gray-900 md:text-sm dark:text-white">Enter your email to get a one-time passcode.</a>
             <form class="space-y-4 md:space-y-6" action="#">
               <div>
@@ -81,10 +70,12 @@
 </template>
 
 <script>
+import VueCookies from 'vue-cookies'
+import router from '@/router'
 import { Amplify, Auth } from 'aws-amplify'
 import '@aws-amplify/ui-vue/styles.css'
 import aws_exports from './aws-exports'
-import { defineAsyncComponent, ref } from 'vue'
+import { ref } from 'vue'
 import OTPPad from '@/components/OTPPad.vue'
 Amplify.configure(aws_exports)
 
@@ -95,6 +86,12 @@ export default {
   name: 'App',
   components: {
     OTPPad,
+  },
+  async mounted() {
+    await this.current()
+    if (VueCookies.get('accessToken') && VueCookies.get('refreshToken') && VueCookies.get('idToken')) {
+      router.push('/expenses/members')
+    }
   },
   methods: {
     async login() {
@@ -118,7 +115,10 @@ export default {
         this.error = ''
         const res = await Auth.sendCustomChallengeAnswer(this.cognitoUser, this.optValue)
         this.optValue = ref('')
-        this.userState = 'authenticated'
+        VueCookies.set('accessToken', res.signInUserSession.accessToken.jwtToken, '1h')
+        VueCookies.set('refreshToken', res.signInUserSession.refreshToken.token, '1h')
+        VueCookies.set('idToken', res.signInUserSession.idToken.jwtToken, '1h')
+        router.push('/expenses/members')
       } catch (e) {
         this.userState = 'unauthenticated'
         this.error = 'OTP Incorrecto'
@@ -129,16 +129,9 @@ export default {
     async current() {
       try {
         const res = await Auth.currentAuthenticatedUser()
-        this.user = res
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    async logout() {
-      try {
-        await Auth.signOut()
-        this.user = ''
-        this.userState = 'unauthenticated'
+        VueCookies.set('accessToken', res.signInUserSession.accessToken.jwtToken, '1h')
+        VueCookies.set('refreshToken', res.signInUserSession.refreshToken.token, '1h')
+        VueCookies.set('idToken', res.signInUserSession.idToken.jwtToken, '1h')
       } catch (e) {
         console.log(e)
       }
@@ -151,7 +144,6 @@ export default {
       code: '',
       userState: 'unauthenticated',
       cognitoUser: '',
-      user: '',
       optValue: ref(''),
       error: '',
     }

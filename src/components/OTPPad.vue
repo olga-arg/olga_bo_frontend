@@ -31,18 +31,14 @@ function handleEnter(e, i) {
 
   if (i > 0 && (keypressed === 'Backspace' || keypressed === 'Delete')) {
     otpArray.value[i] = null
-    setTimeout(() => {
-      children[i - 1].focus()
-    }, 100)
+    children[i - 1].focus()
   } else {
     const matched = keypressed.match(/^[0-9]$/)
     if (!matched) {
       otpArray.value[i] = null
       return
     } else if (i < otpProps.length - 1) {
-      setTimeout(() => {
-        children[i + 1].focus()
-      }, 100)
+      children[i + 1].focus()
     }
     checkOTP()
   }

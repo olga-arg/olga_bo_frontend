@@ -5,17 +5,41 @@ import ExpenseMembers from '@/ExpenseMembers.vue'
 import ExpenseTeams from '@/ExpenseTeams.vue'
 import CardMember from '@/CardMember.vue'
 import Login from '@/Login.vue'
+import Logout from '@/Logout.vue'
+import auth from './middleware/auth'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: Login },
-    { path: '/members/members', component: MembersMembers },
+    { path: '/', redirect: '/login' },
+    { name: 'login', path: '/login', component: Login },
+    { path: '/logout', component: Logout },
+    { path: '/members', redirect: '/members/members' },
+    { path: '/members/members', component: MembersMembers, meta: { middleware: [auth] } },
     { path: '/members/teams', component: MembersTeams },
-    { path: '/expenses/members', component: ExpenseMembers },
+    { path: '/expenses', redirect: '/expenses/members' },
+    { path: '/expenses/members', component: ExpenseMembers, meta: { middleware: [auth] } },
     { path: '/expenses/teams', component: ExpenseTeams },
-    { path: '/cards/members', component: CardMember },
+    { path: '/cards', redirect: '/cards/members' },
+    { path: '/cards/members', component: CardMember, meta: { middleware: [auth] } },
   ],
 })
+router.beforeEach((to, from, next) => {
+  if (to.meta.middleware) {
+    const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware]
+    const context = { to, from, next, router }
+    return middleware[0]({ ...context, next: middlewarePipeline(context, middleware, 1) })
+  }
+  return next()
+})
 
+function middlewarePipeline(context, middleware, index) {
+  const nextMiddleware = middleware[index]
+  if (!nextMiddleware) return context.next
+  return (...parameters) => {
+    context.next(...parameters)
+    const nextPipeline = middlewarePipeline(context, middleware, index + 1)
+    nextMiddleware({ ...context, next: nextPipeline })
+  }
+}
 export default router

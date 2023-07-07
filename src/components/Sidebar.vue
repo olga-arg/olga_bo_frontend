@@ -50,7 +50,7 @@
         <ul class="space-y-2 mt-10 mx-4">
           <li>
             <router-link to="/logout" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
-              <img src="@/assets/card-unselected.svg" alt="card icon" />
+              <img src="@/assets/logout.svg" alt="logout" />
               <span class="ml-3">Log Out</span>
             </router-link>
           </li>

@@ -9,7 +9,7 @@ import Logout from '@/Logout.vue'
 import auth from './middleware/auth'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     { path: '/', redirect: '/login' },
     { name: 'login', path: '/login', component: Login },

@@ -23,7 +23,7 @@
         },
         "otpwithamplifya51d9385a51d9385DefineAuthChallenge": {
           "deploymentBucketName": "amplify-otpwithamplify-dev-163433-deployment",
-          "s3Key": "amplify-builds/otpwithamplifya51d9385a51d9385DefineAuthChallenge-546a4344495173535349-build.zip"
+          "s3Key": "amplify-builds/otpwithamplifya51d9385a51d9385DefineAuthChallenge-394f6243707475356959-build.zip"
         },
         "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse": {
           "deploymentBucketName": "amplify-otpwithamplify-dev-163433-deployment",

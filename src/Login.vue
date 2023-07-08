@@ -100,7 +100,7 @@ export default {
       this.username = ''
       this.error = ''
       try {
-        const res = await Auth.signIn(email, email)
+        const res = await Auth.signIn(email)
         this.cognitoUser = res
         this.userState = 'OTP'
       } catch (e) {

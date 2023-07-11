@@ -1,6 +1,0 @@
-[
-  {
-    "Action": ["ses:SendEmail"],
-    "Resource": ["*"]
-  }
-]

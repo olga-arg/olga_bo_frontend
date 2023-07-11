@@ -1,33 +1,37 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-otpwithamplify-dev-163433-authRole",
-      "UnauthRoleArn": "arn:aws:iam::588257415519:role/amplify-otpwithamplify-dev-163433-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::588257415519:role/amplify-otpwithamplify-dev-163433-authRole",
+      "AuthRoleName": "amplify-olgafrontend-dev-101418-authRole",
+      "UnauthRoleArn": "arn:aws:iam::588257415519:role/amplify-olgafrontend-dev-101418-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::588257415519:role/amplify-olgafrontend-dev-101418-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-otpwithamplify-dev-163433-deployment",
-      "UnauthRoleName": "amplify-otpwithamplify-dev-163433-unauthRole",
-      "StackName": "amplify-otpwithamplify-dev-163433",
-      "StackId": "arn:aws:cloudformation:us-east-1:588257415519:stack/amplify-otpwithamplify-dev-163433/fa1ecd30-1b6a-11ee-8fd9-0e0dcc2c2e55",
-      "AmplifyAppId": "d1bf15cw0wbxto",
-      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-otpwithamplify-dev-163433-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+      "DeploymentBucketName": "amplify-olgafrontend-dev-101418-deployment",
+      "UnauthRoleName": "amplify-olgafrontend-dev-101418-unauthRole",
+      "StackName": "amplify-olgafrontend-dev-101418",
+      "StackId": "arn:aws:cloudformation:us-east-1:588257415519:stack/amplify-olgafrontend-dev-101418/b0477fd0-1a6c-11ee-a1b9-0ae54cc0c6f7",
+      "AmplifyAppId": "d1a65bkkffy3tr",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-olgafrontend-dev-101418-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
-        "otpwithamplifya51d9385a51d9385": {}
+        "olgafrontenda6507f27a6507f27": {}
       },
       "function": {
-        "otpwithamplifya51d9385a51d9385CreateAuthChallenge": {
-          "deploymentBucketName": "amplify-otpwithamplify-dev-163433-deployment",
-          "s3Key": "amplify-builds/otpwithamplifya51d9385a51d9385CreateAuthChallenge-6c57774b735270424734-build.zip"
+        "olgafrontenda6507f27a6507f27CreateAuthChallenge": {
+          "deploymentBucketName": "amplify-olgafrontend-dev-101418-deployment",
+          "s3Key": "amplify-builds/olgafrontenda6507f27a6507f27CreateAuthChallenge-714f7162505332577851-build.zip"
         },
-        "otpwithamplifya51d9385a51d9385DefineAuthChallenge": {
-          "deploymentBucketName": "amplify-otpwithamplify-dev-163433-deployment",
-          "s3Key": "amplify-builds/otpwithamplifya51d9385a51d9385DefineAuthChallenge-394f6243707475356959-build.zip"
+        "olgafrontenda6507f27a6507f27DefineAuthChallenge": {
+          "deploymentBucketName": "amplify-olgafrontend-dev-101418-deployment",
+          "s3Key": "amplify-builds/olgafrontenda6507f27a6507f27DefineAuthChallenge-722b4f657848546b3333-build.zip"
         },
-        "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse": {
-          "deploymentBucketName": "amplify-otpwithamplify-dev-163433-deployment",
-          "s3Key": "amplify-builds/otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse-592b2f45784951754253-build.zip"
+        "olgafrontenda6507f27a6507f27PreAuthentication": {
+          "deploymentBucketName": "amplify-olgafrontend-dev-101418-deployment",
+          "s3Key": "amplify-builds/olgafrontenda6507f27a6507f27PreAuthentication-76643967666e4d72716a-build.zip"
+        },
+        "olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-olgafrontend-dev-101418-deployment",
+          "s3Key": "amplify-builds/olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse-424a33376a305a367439-build.zip"
         }
       }
     }

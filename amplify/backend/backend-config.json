@@ -1,7 +1,7 @@
 {
   "auth": {
-    "otpwithamplifya51d9385a51d9385": {
-      "customAuth": true,
+    "olgafrontenda6507f27a6507f27": {
+      "customAuth": false,
       "dependsOn": [
         {
           "attributes": [
@@ -9,7 +9,7 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385CreateAuthChallenge",
+          "resourceName": "olgafrontenda6507f27a6507f27CreateAuthChallenge",
           "triggerProvider": "Cognito"
         },
         {
@@ -18,7 +18,7 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385DefineAuthChallenge",
+          "resourceName": "olgafrontenda6507f27a6507f27DefineAuthChallenge",
           "triggerProvider": "Cognito"
         },
         {
@@ -27,7 +27,16 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse",
+          "resourceName": "olgafrontenda6507f27a6507f27PreAuthentication",
+          "triggerProvider": "Cognito"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse",
           "triggerProvider": "Cognito"
         }
       ],
@@ -56,68 +65,89 @@
     }
   },
   "function": {
-    "otpwithamplifya51d9385a51d9385CreateAuthChallenge": {
+    "olgafrontenda6507f27a6507f27CreateAuthChallenge": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "otpwithamplifya51d9385a51d9385DefineAuthChallenge": {
+    "olgafrontenda6507f27a6507f27DefineAuthChallenge": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse": {
+    "olgafrontenda6507f27a6507f27PreAuthentication": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
   },
   "parameters": {
-    "AMPLIFY_function_otpwithamplifya51d9385a51d9385CreateAuthChallenge_deploymentBucketName": {
+    "AMPLIFY_function_olgafrontenda6507f27a6507f27CreateAuthChallenge_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385CreateAuthChallenge"
+          "resourceName": "olgafrontenda6507f27a6507f27CreateAuthChallenge"
         }
       ]
     },
-    "AMPLIFY_function_otpwithamplifya51d9385a51d9385CreateAuthChallenge_s3Key": {
+    "AMPLIFY_function_olgafrontenda6507f27a6507f27CreateAuthChallenge_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385CreateAuthChallenge"
+          "resourceName": "olgafrontenda6507f27a6507f27CreateAuthChallenge"
         }
       ]
     },
-    "AMPLIFY_function_otpwithamplifya51d9385a51d9385DefineAuthChallenge_deploymentBucketName": {
+    "AMPLIFY_function_olgafrontenda6507f27a6507f27DefineAuthChallenge_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385DefineAuthChallenge"
+          "resourceName": "olgafrontenda6507f27a6507f27DefineAuthChallenge"
         }
       ]
     },
-    "AMPLIFY_function_otpwithamplifya51d9385a51d9385DefineAuthChallenge_s3Key": {
+    "AMPLIFY_function_olgafrontenda6507f27a6507f27DefineAuthChallenge_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385DefineAuthChallenge"
+          "resourceName": "olgafrontenda6507f27a6507f27DefineAuthChallenge"
         }
       ]
     },
-    "AMPLIFY_function_otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse_deploymentBucketName": {
+    "AMPLIFY_function_olgafrontenda6507f27a6507f27PreAuthentication_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse"
+          "resourceName": "olgafrontenda6507f27a6507f27PreAuthentication"
         }
       ]
     },
-    "AMPLIFY_function_otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse_s3Key": {
+    "AMPLIFY_function_olgafrontenda6507f27a6507f27PreAuthentication_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse"
+          "resourceName": "olgafrontenda6507f27a6507f27PreAuthentication"
+        }
+      ]
+    },
+    "AMPLIFY_function_olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse"
+        }
+      ]
+    },
+    "AMPLIFY_function_olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse"
         }
       ]
     }

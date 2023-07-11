@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "otpwithamplifya51d9385a51d9385": {
+    "olgafrontenda6507f27a6507f27": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -11,21 +11,28 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "otpwithamplifya51d9385a51d9385CreateAuthChallenge": {
+    "olgafrontenda6507f27a6507f27CreateAuthChallenge": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "otpwithamplifya51d9385a51d9385DefineAuthChallenge": {
+    "olgafrontenda6507f27a6507f27DefineAuthChallenge": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "otpwithamplifya51d9385a51d9385VerifyAuthChallengeResponse": {
+    "olgafrontenda6507f27a6507f27PreAuthentication": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

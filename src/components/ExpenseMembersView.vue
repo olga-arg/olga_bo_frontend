@@ -11,33 +11,8 @@ import axios from 'axios'
 import CardExpensesMember from '@/components/CardExpensesMember.vue'
 
 const getAllExpenses = async () => {
-  const data = [
-    {
-      nombre_comercio: 'Supermercado ABC',
-      realizado_por: 'Juan Perez',
-      status: 'APROBADO',
-      monto: 10,
-      fecha_hora: '2022-03-01T13:30:00',
-      tipo_pago: {
-        con_tarjeta: true,
-        ultimos_4_digitos: '1234',
-        tipo: 'fisica',
-      },
-    },
-    {
-      nombre_comercio: 'Supermercado',
-      realizado_por: 'Juan Perez',
-      status: 'SIN REVISAR',
-      monto: 2,
-      fecha_hora: '2022-03-01T13:30:00',
-      tipo_pago: {
-        con_tarjeta: true,
-        ultimos_4_digitos: '1234',
-        tipo: 'fisica',
-      },
-    },
-  ]
-  return data
+  const response = await axios.get('https://api.olga.lat/api/payments')
+  return response.data
 }
 
 export default {
@@ -62,8 +37,11 @@ export default {
   methods: {
     chunk() {
       const chunked = []
-      for (let i = 0; i < this.allExpenses.length; i += 2) {
-        chunked.push(this.allExpenses.slice(i, i + 2))
+      if (this.allExpenses.payments) {
+        this.allExpenses.payments = this.allExpenses.payments.reverse()
+        for (let i = 0; i < this.allExpenses.payments.length; i += 2) {
+          chunked.push(this.allExpenses.payments.slice(i, i + 2))
+        }
       }
       return chunked
     },

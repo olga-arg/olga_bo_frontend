@@ -2,7 +2,33 @@
   <div className="flex flex-col w-full">
     <div className="items-center w-full grid grid-cols-2">
       <div className="flex items-center">
-        <div className="flex rounded-full w-8 h-8 bg-violet-700 text-white text-xs items-center justify-center">
+        <div
+          :style="{
+            backgroundColor: [
+              '#F44336', // Rojo
+              '#E91E63', // Rosa
+              '#9C27B0', // Púrpura
+              '#673AB7', // Morado
+              '#3F51B5', // Azul
+              '#2196F3', // Azul claro
+              '#00BCD4', // Cian
+              '#009688', // Verde
+              '#4CAF50', // Verde claro
+              '#FF5722', // Naranja
+              '#FF9800', // Naranja claro
+              '#FFC107', // Ámbar
+              '#FFEB3B', // Amarillo
+              '#CDDC39', // Lima
+              '#8BC34A', // Verde lima
+              '#4CAF50', // Verde
+              '#009688', // Verde azulado
+              '#00BCD4', // Cian claro
+              '#03A9F4', // Azul claro
+              '#2196F3', // Azul
+            ][Math.floor(Math.random() * 10)],
+          }"
+          className="flex rounded-full w-8 h-8 text-white text-xs items-center justify-center"
+        >
           <p>{{ member.name[0].toUpperCase() }}{{ member.surname[0].toUpperCase() }}</p>
         </div>
         <div className="flex flex-col">

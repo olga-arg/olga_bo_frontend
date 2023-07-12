@@ -1,35 +1,52 @@
 <template>
   <div className="flex w-full">
-    <div className="flex rounded-full w-10 h-10 bg-violet-700 text-white text-md items-center justify-center">
-      <p>{{ expense.realizado_por[0] }}{{ expense.realizado_por[1].toUpperCase() }}</p>
+    <div
+      :style="{
+        backgroundColor: [
+          '#F44336', // Rojo
+          '#E91E63', // Rosa
+          '#9C27B0', // Púrpura
+          '#673AB7', // Morado
+          '#3F51B5', // Azul
+          '#2196F3', // Azul claro
+          '#00BCD4', // Cian
+          '#009688', // Verde
+          '#4CAF50', // Verde claro
+          '#FF5722', // Naranja
+          '#FF9800', // Naranja claro
+          '#FFC107', // Ámbar
+          '#FFEB3B', // Amarillo
+          '#CDDC39', // Lima
+          '#8BC34A', // Verde lima
+          '#4CAF50', // Verde
+          '#009688', // Verde azulado
+          '#00BCD4', // Cian claro
+          '#03A9F4', // Azul claro
+          '#2196F3', // Azul
+        ][Math.floor(Math.random() * 10)],
+      }"
+      className="flex rounded-full w-10 h-10 text-white text-md items-center justify-center"
+    >
+      <p>{{ expense.shop_name[0].toUpperCase() + expense.shop_name[1].toUpperCase() }}</p>
     </div>
     <div className="flex flex-col w-full">
       <div className="flex justify-between">
         <div className="flex items-center">
-          <p class="text-[#1C2E3D] font-medium text-lg pl-4">{{ expense.nombre_comercio ? expense.nombre_comercio : 'No Detectado' }}</p>
+          <p class="text-[#1C2E3D] font-medium text-lg pl-4">{{ expense.shop_name ? expense.shop_name[0] + expense.shop_name.slice(1).toLowerCase() : 'No Detectado' }}</p>
         </div>
         <div className="flex justify-end gap-4">
-          <div
-            v-if="expense.tipo_pago.con_tarjeta && expense.tipo_pago.tipo == 'virtual'"
-            className="border-red-200 border rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center"
-          >
+          <div v-if="expense.tipo_pago == 'virtual'" className="border-red-200 border rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
             <p>{{ expense.tipo_pago.ultimos_4_digitos }}</p>
           </div>
 
-          <div
-            v-if="expense.tipo_pago.con_tarjeta && expense.tipo_pago.tipo == 'fisica'"
-            className="border-[#E0EAE9] border bg-[#E0EAE9] rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center"
-          >
-            <p>{{ expense.tipo_pago.ultimos_4_digitos }}</p>
+          <div v-if="expense" className="border-[#E0EAE9] border bg-[#E0EAE9] rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
+            <p>{{ '4060' }}</p>
           </div>
 
-          <div v-if="!expense.tipo_pago.con_tarjeta" className="border-[#1C2E3D] border rounded-md h-4 p-2.5 px-2 text-xs flex items-center justify-center">POCKET</div>
+          <div v-if="expense.tipo_pago" className="border-[#1C2E3D] border rounded-md h-4 p-2.5 px-2 text-xs flex items-center justify-center">POCKET</div>
 
-          <div v-if="expense.status == 'SIN REVISAR'" className="border-[#E7E6E9] border h-4 bg-[#E7E6E9] rounded-full p-2.5 text-xs flex items-center justify-center">
-            <p>SIN REVISAR</p>
-          </div>
-          <div v-else className="border-green-200 border h-4 bg-green-200 rounded-full p-2.5 text-xs flex items-center justify-center">
-            <p>APROBADO</p>
+          <div className="border-[#E7E6E9] border h-4 bg-[#E7E6E9] rounded-full p-2.5 text-xs flex items-center justify-center">
+            <p>PENDIENTE</p>
           </div>
         </div>
       </div>
@@ -41,19 +58,20 @@
               fill="#8D8B96"
             />
           </svg>
-          <p class="text-[#8D8B96] text-lg pl-1">
+          <p v-if="!expense.receipt" class="text-[#8D8B96] text-lg pl-1">
             {{
               ['Maria Perez', 'Jorge Miro', 'Pedro Farias', 'Julian Bayala', 'Pilar Fortina'][
                 Math.floor(Math.random() * ['Maria Perez', 'Jorge Miro', 'Pedro Farias', 'Julian Bayala', 'Pilar Fortina'].length)
               ]
             }}
           </p>
+          <p v-else class="text-[#8D8B96] text-lg pl-1">Valentin Vila</p>
         </div>
         <div class="flex items-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 4H5C3.9 4 3 4.9 3 6V18C3 19.1 3.9 20 5 20H19C20.1 20 21 19.1 21 18V6C21 4.9 20.1 4 19 4ZM19 18H5V8H19V18ZM19 6H5V6.01L5 6Z" fill="#8D8B96" />
           </svg>
-          <p class="text-[#8D8B96] text-lg pl-1">28 Jun 2023</p>
+          <p class="text-[#8D8B96] text-lg pl-1">{{ new Date(expense.created).toDateString('es-AR', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) }}</p>
         </div>
         <div class="flex items-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +93,7 @@
                   fill="#8D8B96"
                 />
               </svg>
-              <p>Combustible</p>
+              <p>{{ expense.category.charAt(0).toUpperCase() + expense.category.slice(1) }}</p>
             </div>
 
             <div className="flex items-center gap-2 border-yellow-400 border-2 px-3 py-1 rounded-full">
@@ -90,8 +108,8 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <img className="w-4 h-4" src="@/assets/comprobante.svg" alt="comprobante" />
-            <p className="text-right">$ {{ expense.monto * 100 || 0 }},00</p>
+            <a :href="expense.receipt" target="_blank"><img className="w-4 h-4" src="@/assets/comprobante.svg" alt="comprobante" /></a>
+            <p className="text-right">$ {{ expense.amount || 0 }},00</p>
           </div>
         </div>
       </div>

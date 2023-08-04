@@ -45,7 +45,10 @@
 
           <div v-if="expense.tipo_pago" className="border-[#1C2E3D] border rounded-md h-4 p-2.5 px-2 text-xs flex items-center justify-center">POCKET</div>
 
-          <div className="border-[#E7E6E9] border h-4 bg-[#E7E6E9] rounded-full p-2.5 text-xs flex items-center justify-center">
+          <div v-if="expense.status == 1" className="border-[#92FD70] border h-4 bg-[#92FD70] rounded-full p-2.5 text-xs flex items-center justify-center">
+            <p>APROBADO</p>
+          </div>
+          <div v-else className="border-[#E7E6E9] border h-4 bg-[#E7E6E9] rounded-full p-2.5 text-xs flex items-center justify-center">
             <p>PENDIENTE</p>
           </div>
         </div>

@@ -7,6 +7,7 @@ import CardMember from '@/CardMember.vue'
 import Login from '@/Login.vue'
 import Logout from '@/Logout.vue'
 import auth from './middleware/auth'
+import Policy from '@/Policy.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -22,6 +23,7 @@ const router = createRouter({
     { path: '/expenses/teams', component: ExpenseTeams },
     { path: '/cards', redirect: '/cards/members' },
     { path: '/cards/members', component: CardMember, meta: { middleware: [auth] } },
+    { path: '/policy', component: Policy },
   ],
 })
 router.beforeEach((to, from, next) => {

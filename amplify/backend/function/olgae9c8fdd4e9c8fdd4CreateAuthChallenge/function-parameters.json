@@ -3,14 +3,14 @@
   "modules": [
     "boilerplate-create-challenge"
   ],
-  "parentResource": "olgafrontenda6507f27a6507f27",
-  "functionName": "olgafrontenda6507f27a6507f27CreateAuthChallenge",
-  "resourceName": "olgafrontenda6507f27a6507f27CreateAuthChallenge",
+  "parentResource": "olgae9c8fdd4e9c8fdd4",
+  "functionName": "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
+  "resourceName": "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
   "parentStack": "auth",
   "triggerEnvs": "[]",
   "triggerDir": "/snapshot/repo/build/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/CreateAuthChallenge",
   "triggerTemplate": "CreateAuthChallenge.json.ejs",
   "triggerEventPath": "CreateAuthChallenge.event.json",
-  "roleName": "olgafrontenda6507f27a6507f27CreateAuthChallenge",
+  "roleName": "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
   "skipEdit": true
 }

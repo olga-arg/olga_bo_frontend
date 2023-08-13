@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "olgafrontenda6507f27a6507f27": {
+    "olgae9c8fdd4e9c8fdd4": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -11,32 +11,31 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "olgafrontenda6507f27a6507f27CreateAuthChallenge": {
+    "olgae9c8fdd4e9c8fdd4CreateAuthChallenge": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "olgafrontenda6507f27a6507f27DefineAuthChallenge": {
+    "olgae9c8fdd4e9c8fdd4DefineAuthChallenge": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "olgafrontenda6507f27a6507f27PreAuthentication": {
+    "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
-    },
-    "olgafrontenda6507f27a6507f27VerifyAuthChallengeResponse": {
-      "Arn": "string",
-      "LambdaExecutionRole": "string",
-      "LambdaExecutionRoleArn": "string",
-      "Name": "string",
+    }
+  },
+  "storage": {
+    "s35d6de930": {
+      "BucketName": "string",
       "Region": "string"
     }
   }

@@ -2,7 +2,7 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.1.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
-    "RECAPTCHASECRET": {
+    "CHALLENGEANSWER": {
       "Type": "String",
       "Default": ""
     },
@@ -67,12 +67,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgafrontenda6507f27aAuthChallengeResponse52b590fa5341",
+            "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgafrontenda6507f27aAuthChallengeResponse52b590fa5341",
+                  "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
                   "-",
                   {
                     "Ref": "env"
@@ -93,8 +93,8 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "RECAPTCHASECRET": {
-              "Ref": "RECAPTCHASECRET"
+            "CHALLENGEANSWER": {
+              "Ref": "CHALLENGEANSWER"
             }
           }
         },
@@ -122,12 +122,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgafrontenda6507f27aAuthChallengeResponse52b590fa5341",
+            "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgafrontenda6507f27aAuthChallengeResponse52b590fa5341",
+                  "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
                   "-",
                   {
                     "Ref": "env"
@@ -197,6 +197,33 @@
           ]
         }
       }
+    },
+    "CustomLambdaExecutionPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "custom-lambda-execution-policy",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ses:SendEmail",
+                "ses:SendRawEmail"
+              ],
+              "Resource": [
+                "*"
+              ]
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ]
+      },
+      "DependsOn": "LambdaExecutionRole"
     }
   },
   "Outputs": {

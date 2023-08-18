@@ -111,7 +111,7 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <a :href="expense.receipt" target="_blank"><img className="w-4 h-4" src="@/assets/comprobante.svg" alt="comprobante" /></a>
+            <a @click="openImage(expense.receipt_image_key)"><img className="w-4 h-4" src="@/assets/comprobante.svg" alt="comprobante" /></a>
             <p className="text-right">$ {{ expense.amount || 0 }},00</p>
           </div>
         </div>
@@ -122,6 +122,16 @@
 
 <script setup>
 import exp from 'constants'
-
+import { Storage } from 'aws-amplify'
 defineProps({ expense: Object })
+const openImage = async (key) => {
+  try {
+    key = key.replace('public/', '')
+    const signedURL = await Storage.get(key, { expires: 300 }) // 300 segundos de expiración
+    window.open(signedURL, '_blank') // Abre la imagen en una nueva ventana o pestaña
+  } catch (error) {
+    console.error('Error al obtener la URL firmada: ', error)
+    // Handle the error appropriately
+  }
+}
 </script>

@@ -1,6 +1,15 @@
 <template>
   <div ref="container" class="flex gap-4 items-center">
-    <input v-for="n in length" :key="n" @keyup="(e) => handleEnter(e, n - 1)" v-model="otpArray[n - 1]" type="text" maxlength="1" class="border rounded-md w-10 p-2 text-center" />
+    <input
+      v-for="n in length"
+      :key="n"
+      @keyup="(e) => handleEnter(e, n - 1)"
+      @paste="handlePaste"
+      v-model="otpArray[n - 1]"
+      type="text"
+      maxlength="1"
+      class="caret-transparent border rounded-md w-10 p-2 text-center"
+    />
   </div>
 </template>
 
@@ -32,16 +41,34 @@ function handleEnter(e, i) {
   if (i > 0 && (keypressed === 'Backspace' || keypressed === 'Delete')) {
     otpArray.value[i] = null
     children[i - 1].focus()
+  } else if (keypressed === 'ArrowLeft') {
+    children[i - 1].focus()
+  } else if (keypressed === 'ArrowRight') {
+    children[i + 1].focus()
+  } else if (keypressed.match(/^[0-9]$/) && i == otpProps.length - 1) {
+    otpArray.value[i] = keypressed
+    checkOTP()
   } else {
     const matched = keypressed.match(/^[0-9]$/)
     if (!matched) {
-      otpArray.value[i] = null
       return
     } else if (i < otpProps.length - 1) {
       children[i + 1].focus()
+      otpArray.value[i] = keypressed
     }
     checkOTP()
   }
+}
+
+function handlePaste(e) {
+  const pastedText = e.clipboardData.getData('text/plain').replace(/\D/g, '')
+
+  for (let i = 0; i < otpProps.length && i < pastedText.length; i++) {
+    otpArray.value[i] = pastedText[i]
+  }
+
+  // Trigger checkOTP after pasting
+  checkOTP()
 }
 
 function checkOTP() {
@@ -57,7 +84,6 @@ function checkOTP() {
       children[i].classList.remove('border-red-500')
     }
   }
-
   if (flag) {
     emit('entered', otpArray.value.join(''))
   }

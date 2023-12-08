@@ -10,7 +10,7 @@
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Welcome</h1>
             <a class="text-xs leading-tight tracking-tight text-gray-900 md:text-sm dark:text-white">Enter your email to get a one-time passcode.</a>
-            <form class="space-y-4 md:space-y-6" action="#">
+            <form class="space-y-4 md:space-y-6 flex-col" action="#">
               <div>
                 <div v-if="this.loading" class="flex justify-center items-center h-14 rounded-md p-4 text-md font-medium text-white">
                   <div role="status">
@@ -30,7 +30,7 @@
                   placeholder="name@company.com"
                   required=""
                 />
-                <OTPPad v-else-if="userState === 'OTP'" :length="6" @entered="(v) => (optValue = v)" />
+                <OTPPad class="flex justify-between" v-else-if="userState === 'OTP'" :length="6" @entered="(v) => (optValue = v)" />
                 <a v-if="this.error" class="text-red-400">{{ this.error }}</a>
               </div>
               <button

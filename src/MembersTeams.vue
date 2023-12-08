@@ -3,7 +3,8 @@
 
   <div className="bg-[#F4F4F4]">
     <Sidebar></Sidebar>
-    <div class="p-4 sm:ml-64">
+
+    <div class="p-4 sm:ml-64 z-0">
       <div class="px-24">
         <div class="flex items-center justify-between h-20 mb-4">
           <button v-on:click="addMember" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Añadir Equipo</button>
@@ -173,7 +174,6 @@ export default {
         this.statusLoading = false
         this.showStatus400 = true
         this.showSendInvite = true
-        console.log(error.response.data)
         this.error = error.response.data
         return
       }

@@ -181,7 +181,6 @@ export default {
         this.statusLoading = false
         this.showStatus400 = true
         this.showSendInvite = true
-        console.log(error.response.data)
         this.error = error.response.data
         return
       }

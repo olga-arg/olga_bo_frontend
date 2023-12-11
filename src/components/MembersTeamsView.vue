@@ -10,7 +10,7 @@
 <script>
 import axios from 'axios'
 import CardMembersTeam from './CardMembersTeam.vue'
-import Share from './share.vue'
+import Share from './Share.vue'
 
 const getTeams = async () => {
   const response = await axios.get('https://api.olga.lat/api/teams')

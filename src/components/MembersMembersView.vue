@@ -1,7 +1,8 @@
 <template>
+  <EditMember @close="callback" v-if="editMember" :user="userSelected"></EditMember>
   <div v-for="members in chunkedAllMembers" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
     <div v-for="member in members" class="h-max bg-white rounded-lg flex p-5 px-10">
-      <CardMembersMember :member="member"></CardMembersMember>
+      <CardMembersMember v-on:click="callback(member)" :member="member"></CardMembersMember>
     </div>
   </div>
 </template>
@@ -9,6 +10,7 @@
 <script>
 import axios from 'axios'
 import CardMembersMember from './CardMembersMember.vue'
+import EditMember from './EditMember.vue'
 
 const getAllMembers = async () => {
   const response = await axios.get('https://api.olga.lat/api/users')
@@ -23,6 +25,8 @@ export default {
   },
   data() {
     return {
+      userSelected: null,
+      editMember: false,
       allMembers: [],
     }
   },
@@ -33,8 +37,13 @@ export default {
   },
   components: {
     CardMembersMember,
+    EditMember,
   },
   methods: {
+    callback(member) {
+      this.userSelected = member
+      this.editMember = !this.editMember
+    },
     chunk() {
       let response = []
       let filter = []

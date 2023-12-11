@@ -69,10 +69,40 @@
                   </label>
                 </div>
               </div>
-              <div v-else className="flex flex-col gap-2 my-5">
+              <div v-else className="flex flex-col gap-3 mt-5 mb-3">
                 <input v-model="name" type="name" name="name" id="name" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Nombre" required />
                 <input v-model="surname" type="surname" name="surname" id="surname" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Apellido" required />
                 <input v-model="email" type="email" name="email" id="email" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Email" required />
+                <Menu as="div" class="relative inline-block text-left">
+                  <div>
+                    <MenuButton
+                      class="inline-flex w-full justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    >
+                      {{ employeeCreationRole }}
+                      <ChevronDownIcon class="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+                    </MenuButton>
+                  </div>
+
+                  <transition
+                    enter-active-class="transition ease-out duration-100"
+                    enter-from-class="transform opacity-0 scale-95"
+                    enter-to-class="transform opacity-100 scale-100"
+                    leave-active-class="transition ease-in duration-75"
+                    leave-from-class="transform opacity-100 scale-100"
+                    leave-to-class="transform opacity-0 scale-95"
+                  >
+                    <MenuItems class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div class="py-1">
+                        <MenuItem v-slot="{ active }" v-on:click="roleNewMember('Empleado')">
+                          <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Empleado</a>
+                        </MenuItem>
+                        <MenuItem v-slot="{ active }" v-on:click="roleNewMember('Revisor')">
+                          <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Revisor</a>
+                        </MenuItem>
+                      </div>
+                    </MenuItems>
+                  </transition>
+                </Menu>
               </div>
             </div>
             <button v-if="showSendInvite" v-on:click="sendInvite" className="w-full h-14 rounded-md text-md font-medium bg-[#62948F] text-white">Crear Miembro</button>
@@ -136,6 +166,7 @@
 </template>
 
 <script>
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import Sidebar from './components/Sidebar.vue'
 import Navbar from './components/Navbar.vue'
 import MembersMembersView from './components/MembersMembersView.vue'
@@ -155,6 +186,7 @@ export default {
       forceReload: false,
       bulkUserCreation: false,
       employeeNameFilter: '',
+      employeeCreationRole: 'Empleado',
       filters: {
         name: this.employeeNameFilter,
         isAdmin: false,
@@ -175,6 +207,9 @@ export default {
     },
   },
   methods: {
+    roleNewMember(roleSelected) {
+      this.employeeCreationRole = roleSelected
+    },
     onFileChange(e) {
       const xslx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       const xsl = 'application/vnd.ms-excel'
@@ -241,6 +276,10 @@ export default {
     Sidebar,
     Navbar,
     MembersMembersView,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
   },
 }
 </script>

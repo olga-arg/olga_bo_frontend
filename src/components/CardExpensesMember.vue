@@ -1,6 +1,7 @@
 <template>
   <div className="flex w-full">
     <div
+      v-if="!this.selectPayments"
       :style="{
         backgroundColor: [
           '#F44336', // Rojo
@@ -29,6 +30,8 @@
     >
       <p>{{ expense.shop_name[0].toUpperCase() + expense.shop_name[1].toUpperCase() }}</p>
     </div>
+    <div v-else-if="this.selectPayments && !expense.isSelected" class="flex rounded-full w-5 h-5 ring-1 mt-4 cursor-pointer"></div>
+    <div v-if="this.selectPayments && expense.isSelected" class="flex rounded-full w-5 h-5 ring-1 mt-4 cursor-pointer bg-blue-300"></div>
     <div className="flex flex-col w-full">
       <div className="flex justify-between">
         <div className="flex items-center">
@@ -107,11 +110,13 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
 import { Storage } from 'aws-amplify'
 
 export default {
   props: {
+    selectPayments: {
+      type: Boolean,
+    },
     expense: {
       type: Object,
       required: true,

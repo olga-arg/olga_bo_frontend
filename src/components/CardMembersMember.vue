@@ -25,7 +25,7 @@
               '#00BCD4', // Cian claro
               '#03A9F4', // Azul claro
               '#2196F3', // Azul
-            ][Math.floor(Math.random() * 10)],
+            ][member.id.replace(/[^0-9]/g, '') % 19],
           }"
           className="flex rounded-full w-8 h-8 text-white text-xs items-center justify-center"
         >

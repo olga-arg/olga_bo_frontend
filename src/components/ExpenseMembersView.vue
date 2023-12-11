@@ -1,7 +1,12 @@
 <template>
   <div v-for="expenses in chunkedAllExpenses" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
     <div v-for="expense in expenses" class="bg-white rounded-lg flex p-5 w-full">
-      <CardExpensesMember :expense="expense"></CardExpensesMember>
+      <CardExpensesMember
+        :selectPayments="this.selectPayments"
+        :isSelected="selectedExpenses.includes(expense)"
+        :expense="expense"
+        v-on:click="addToSelection(expense)"
+      ></CardExpensesMember>
     </div>
   </div>
 </template>
@@ -24,6 +29,7 @@ export default {
   data() {
     return {
       allExpenses: [],
+      selectedExpenses: [],
     }
   },
   computed: {
@@ -45,6 +51,18 @@ export default {
       }
       return chunked
     },
+    addToSelection(expense) {
+      if (this.selectPayments && !this.selectedExpenses.includes(expense)) {
+        expense.isSelected = true
+        this.selectedExpenses.push(expense)
+      } else if (this.selectPayments && this.selectedExpenses.includes(expense)) {
+        expense.isSelected = false
+        this.selectedExpenses.splice(this.selectedExpenses.indexOf(expense), 1)
+      }
+    },
+  },
+  props: {
+    selectPayments: Boolean,
   },
 }
 </script>

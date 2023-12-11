@@ -38,7 +38,6 @@
           <div v-if="expense.tipo_pago == 'virtual'" className="border-red-200 border rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
             <p>{{ expense.tipo_pago.ultimos_4_digitos }}</p>
           </div>
-
           <div v-if="expense" className="border-[#E0EAE9] border bg-[#E0EAE9] rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
             <p>{{ '4060' }}</p>
           </div>
@@ -62,11 +61,7 @@
             />
           </svg>
           <p v-if="!expense.receipt" class="text-[#8D8B96] text-lg pl-1">
-            {{
-              ['Maria Perez', 'Jorge Miro', 'Pedro Farias', 'Julian Bayala', 'Pilar Fortina'][
-                Math.floor(Math.random() * ['Maria Perez', 'Jorge Miro', 'Pedro Farias', 'Julian Bayala', 'Pilar Fortina'].length)
-              ]
-            }}
+            {{ expense.User.full_name }}
           </p>
           <p v-else class="text-[#8D8B96] text-lg pl-1">Valentin Vila</p>
         </div>
@@ -83,7 +78,7 @@
               fill="#8D8B96"
             />
           </svg>
-          <p class="text-[#8D8B96] text-lg pl-1">1 hour ago</p>
+          <p class="text-[#8D8B96] text-lg pl-1">{{ timeAgo }}</p>
         </div>
       </div>
       <div className="flex  mt-10">
@@ -100,7 +95,9 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <a @click="openImage(expense.receipt_image_key)"><img className="w-4 h-4" src="@/assets/comprobante.svg" alt="comprobante" /></a>
+            <a @click="openImage(expense.receipt_image_key)" class="cursor-pointer">
+              <img className="w-4 h-4" src="@/assets/comprobante.svg" alt="comprobante" />
+            </a>
             <p className="text-right">$ {{ expense.amount || 0 }},00</p>
           </div>
         </div>
@@ -109,18 +106,57 @@
   </div>
 </template>
 
-<script setup>
-import exp from 'constants'
+<script>
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Storage } from 'aws-amplify'
-defineProps({ expense: Object })
-const openImage = async (key) => {
-  try {
-    key = key.replace('public/', '')
-    const signedURL = await Storage.get(key, { expires: 300 }) // 300 segundos de expiración
-    window.open(signedURL, '_blank') // Abre la imagen en una nueva ventana o pestaña
-  } catch (error) {
-    console.error('Error al obtener la URL firmada: ', error)
-    // Handle the error appropriately
-  }
+
+export default {
+  props: {
+    expense: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      timeAgo: '',
+      intervalId: null,
+    }
+  },
+  methods: {
+    calculateTimeAgo() {
+      const now = new Date()
+      const expenseDate = new Date(this.expense.created)
+      const diff = now - expenseDate
+
+      const minutes = Math.floor(diff / 60000)
+      if (minutes < 60) {
+        this.timeAgo = minutes + ' min ago'
+      } else if (minutes < 1440) {
+        const hours = Math.floor(minutes / 60)
+        this.timeAgo = hours + ' hour' + (hours !== 1 ? 's' : '') + ' ago'
+      } else {
+        const days = Math.floor(minutes / 1440)
+        this.timeAgo = days + ' day' + (days !== 1 ? 's' : '') + ' ago'
+      }
+    },
+    async openImage(key) {
+      try {
+        key = key.replace('public/', '')
+        const signedURL = await Storage.get(key, { expires: 300 }) // 300 segundos de expiración
+        window.open(signedURL, '_blank') // Abre la imagen en una nueva ventana o pestaña
+      } catch (error) {
+        console.error('Error al obtener la URL firmada: ', error)
+        // Handle the error appropriately
+      }
+    },
+  },
+  mounted() {
+    this.calculateTimeAgo() // Calcula inmediatamente al montar
+    this.intervalId = setInterval(this.calculateTimeAgo, 60000) // Actualiza cada minuto
+  },
+  beforeDestroy() {
+    clearInterval(this.intervalId) // Limpia el intervalo cuando el componente se desmonta
+  },
 }
 </script>

@@ -35,7 +35,7 @@
           </form>
         </div>
         <div className="flex flex-col items-center">
-          <div v-if="showAddMember" className="w-96 p-10 bg-[#1C2E3D] rounded-2xl">
+          <div v-if="showAddMember" className="w-96 pt-10 px-10 pb-5 bg-[#1C2E3D] rounded-2xl">
             <div v-if="showSendInvite">
               <div className="flex justify-between">
                 <p className="text-[#DE848B] text-xl font-medium">Invitar a Olga</p>
@@ -46,14 +46,40 @@
                   </svg>
                 </button>
               </div>
-              <div className="flex flex-col gap-2 my-10">
+              <div v-if="bulkUserCreation" className="flex flex-col gap-2 my-5">
+                <div class="flex items-center justify-center w-full h-max-10">
+                  <label
+                    for="dropzone-file"
+                    class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                  >
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                        />
+                      </svg>
+                      <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">CSV, XSL, XSLX</p>
+                    </div>
+                    <input id="dropzone-file" type="file" class="hidden" @change="onFileChange" />
+                  </label>
+                </div>
+              </div>
+              <div v-else className="flex flex-col gap-2 my-5">
                 <input v-model="name" type="name" name="name" id="name" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Nombre" required />
                 <input v-model="surname" type="surname" name="surname" id="surname" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Apellido" required />
                 <input v-model="email" type="email" name="email" id="email" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Email" required />
               </div>
             </div>
-            <div></div>
-            <button v-if="showSendInvite" v-on:click="sendInvite" className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white">Crear Equipo</button>
+            <button v-if="showSendInvite" v-on:click="sendInvite" className="w-full h-14 rounded-md text-md font-medium bg-[#62948F] text-white">Crear Miembro</button>
+            <div class="flex justify-center">
+              <button class="text-blue-400 text-sm mt-2" v-on:click="bulkUserCreationToggle">Crear multiples usuarios</button>
+            </div>
+
             <div v-if="showStatus200" v-on:click="addMember">
               <button className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white items-center justify-center flex">
                 <svg class="w-6 h-6 mr-2 text-white fill-current" viewBox="0 0 24 24">
@@ -127,6 +153,7 @@ export default {
       showStatus400: false,
       error: '',
       forceReload: false,
+      bulkUserCreation: false,
       employeeNameFilter: '',
       filters: {
         name: this.employeeNameFilter,
@@ -148,6 +175,19 @@ export default {
     },
   },
   methods: {
+    onFileChange(e) {
+      const xslx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      const xsl = 'application/vnd.ms-excel'
+      const csv = 'text/csv'
+      if (e.target.files[0].type === xslx || e.target.files[0].type === xsl || e.target.files[0].type === csv) {
+        console.log('es un archivo valido')
+      } else {
+        console.log('no es un archivo valido')
+      }
+    },
+    bulkUserCreationToggle() {
+      this.bulkUserCreation = !this.bulkUserCreation
+    },
     sendNameFilter() {
       this.sendFilters.name = this.employeeNameFilter
     },
@@ -191,6 +231,10 @@ export default {
       this.name = ''
       this.surname = ''
       this.email = ''
+
+      await new Promise((r) => setTimeout(r, 1500))
+      // to close the modal
+      this.addMember()
     },
   },
   components: {

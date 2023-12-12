@@ -1,4 +1,5 @@
 <template>
+  <EditExpense @close="callback" v-if="editExpense" :expense="expenseSelected"></EditExpense>
   <div v-for="expenses in chunkedAllExpenses" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
     <div v-for="expense in expenses" class="bg-white rounded-lg flex p-5 w-full">
       <CardExpensesMember
@@ -14,6 +15,7 @@
 <script>
 import axios from 'axios'
 import CardExpensesMember from '@/components/CardExpensesMember.vue'
+import EditExpense from './EditExpense.vue'
 
 const getAllExpenses = async () => {
   const response = await axios.get('https://api.olga.lat/api/payments')
@@ -30,6 +32,8 @@ export default {
     return {
       allExpenses: [],
       selectedExpenses: [],
+      expenseSelected: null,
+      editExpense: false,
     }
   },
   computed: {
@@ -39,8 +43,13 @@ export default {
   },
   components: {
     CardExpensesMember,
+    EditExpense,
   },
   methods: {
+    callback(expense) {
+      this.expenseSelected = expense
+      this.editExpense = !this.editExpense
+    },
     chunk() {
       const chunked = []
       if (this.allExpenses.payments) {
@@ -52,6 +61,7 @@ export default {
       return chunked
     },
     addToSelection(expense) {
+      this.callback(expense)
       if (this.selectPayments && !this.selectedExpenses.includes(expense)) {
         expense.isSelected = true
         this.selectedExpenses.push(expense)

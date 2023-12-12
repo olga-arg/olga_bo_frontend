@@ -162,7 +162,9 @@ export default {
 
     exportPayments() {
       let payments_info = this.$refs.expenseMembersView.selectedExpenses
-
+      if (payments_info.length === 0) {
+        return
+      }
       // Convertir a CSV
       const csvData = this.convertToCSV(payments_info)
       console.log(csvData)
@@ -173,6 +175,10 @@ export default {
       link.download = 'Gastos.csv'
       link.click()
       URL.revokeObjectURL(link.href)
+      this.$refs.expenseMembersView.selectedExpenses.forEach((expense) => {
+        expense.isSelected = false
+      })
+      this.$refs.expenseMembersView.selectedExpenses = []
     },
   },
   components: {

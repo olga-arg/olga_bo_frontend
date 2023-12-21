@@ -1,7 +1,7 @@
 <template>
   <EditExpense @close="callback" v-if="editExpense" :expense="expenseSelected"></EditExpense>
   <div v-for="expenses in chunkedAllExpenses" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
-    <div v-for="expense in expenses" class="bg-white rounded-lg flex p-5 w-full">
+    <div v-for="expense in expenses" :key="expense.created" class="bg-white rounded-lg flex p-5 w-full">
       <CardExpensesMember
         :selectPayments="this.selectPayments"
         :isSelected="selectedExpenses.includes(expense)"
@@ -48,17 +48,43 @@ export default {
   methods: {
     callback(expense) {
       this.expenseSelected = expense
-      this.editExpense = !this.editExpense
+      // only change the editExpense if not in selectPayments mode
+      if (!this.selectPayments) this.editExpense = !this.editExpense
     },
     chunk() {
-      const chunked = []
-      if (this.allExpenses.payments) {
-        this.allExpenses.payments = this.allExpenses.payments.reverse()
-        for (let i = 0; i < this.allExpenses.payments.length; i += 2) {
-          chunked.push(this.allExpenses.payments.slice(i, i + 2))
-        }
+      let response = []
+      // Hacer una copia del arreglo original para evitar modificarlo directamente
+      let filter = [...this.allExpenses.payments]
+
+      // Ordenar los elementos según la fecha de creación
+      filter.sort((a, b) => new Date(b.created) - new Date(a.created))
+
+      // Aplicar los demás filtros
+      if (this.filters.category && this.filters.category != 'Categoria') {
+        filter = filter.filter((expense) => expense.category == this.filters.category)
       }
-      return chunked
+      if (this.filters.rangeDates) {
+        filter = filter.filter((expense) => {
+          return new Date(expense.created) >= new Date(this.filters.rangeDates[0]) && new Date(expense.created) <= new Date(this.filters.rangeDates[1])
+        })
+      }
+      if (this.filters.pending) {
+        filter = filter.filter((expense) => expense.status === 0)
+      }
+
+      if (this.filters.userEmails && this.filters.userEmails.length > 0) {
+        // We are filtering via users, not if the expense corresponds to that team (We must change this)
+        filter = filter.filter((expense) => {
+          return this.filters.userEmails.includes(expense.User.email)
+        })
+      }
+
+      // Agrupar los elementos en pares
+      for (let i = 0; i < filter.length; i += 2) {
+        response.push(filter.slice(i, i + 2))
+      }
+
+      return response
     },
     addToSelection(expense) {
       this.callback(expense)
@@ -73,6 +99,7 @@ export default {
   },
   props: {
     selectPayments: Boolean,
+    filters: Object,
   },
 }
 </script>

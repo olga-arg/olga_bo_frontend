@@ -67,6 +67,17 @@ export default {
           return member.name.toLowerCase().includes(this.filters.name.toLowerCase())
         })
       }
+      if (this.filters.team) {
+        // One user can have multiple teams or null
+        filter = filter.filter((member) => {
+          if (!member.teams) {
+            return false
+          }
+          return member.teams.some((team) => {
+            return team.name.toLowerCase().includes(this.filters.team.toLowerCase())
+          })
+        })
+      }
       for (let i = 0; i < filter.length; i += 2) {
         response.push(filter.slice(i, i + 2))
       }

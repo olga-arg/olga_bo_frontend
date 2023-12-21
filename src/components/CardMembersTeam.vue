@@ -25,11 +25,11 @@
               '#00BCD4', // Cian claro
               '#03A9F4', // Azul claro
               '#2196F3', // Azul
-            ][Math.floor(Math.random() * 10)],
+            ][Math.floor(team.id.replace(/[^0-9]/g, '') % 10)],
           }"
           className="flex rounded-full w-8 h-8 text-white text-xs items-center justify-center"
         >
-          <p>{{ team.name[0] }}{{ team.name[1].toUpperCase() }}</p>
+          <p>{{ team.name[0].toUpperCase() }}{{ team.name[1].toUpperCase() }}</p>
         </div>
         <div className="flex flex-col">
           <div className="flex items-center">
@@ -78,12 +78,12 @@
               '#00BCD4', // Cian claro
               '#03A9F4', // Azul claro
               '#2196F3', // Azul
-            ][Math.floor(Math.random() * 10)],
+            ][Math.floor(user.email.charCodeAt(2) % 10)],
           }"
           v-for="user in team.users.slice(0, 3)"
           class="flex h-8 w-8 rounded-full justify-center items-center text-white"
         >
-          <p>{{ user.name[0] }}{{ user.surname[0] }}</p>
+          <p>{{ user.name[0].toUpperCase() }}{{ user.surname[0].toUpperCase() }}</p>
         </div>
         <div v-if="team.users.length > 3" class="flex h-8 w-8 rounded-full bg-[#8A8891] justify-center items-center text-white">
           <p>+{{ team.users.length - 3 }}</p>

@@ -8,6 +8,31 @@
           <button v-on:click="addMember" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Añadir Miembro</button>
           <div className="flex gap-4 items-center">
             <p className="text-gray-500">Filtrar:</p>
+
+            <Menu as="div" class="relative inline-block">
+              <div>
+                <MenuButton class="inline-flex w-full text-base py-1 bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">
+                  {{ teamSelected }}
+                </MenuButton>
+              </div>
+
+              <transition
+                enter-active-class="transition ease-out duration-100"
+                enter-from-class="transform opacity-0 scale-95"
+                enter-to-class="transform opacity-100 scale-100"
+                leave-active-class="transition ease-in duration-75"
+                leave-from-class="transform opacity-100 scale-100"
+                leave-to-class="transform opacity-0 scale-95"
+              >
+                <MenuItems class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div class="py-1">
+                    <MenuItem v-for="team in teams" v-slot="{ active }" v-on:click="selectTeam(team)">
+                      <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ team }}</a>
+                    </MenuItem>
+                  </div>
+                </MenuItems>
+              </transition>
+            </Menu>
             <button v-if="this.sendFilters.isAdmin" v-on:click="sendAdminFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">Admin</button>
             <button v-else v-on:click="sendAdminFilter" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Admin</button>
             <button v-if="this.sendFilters.isConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
@@ -177,6 +202,8 @@ export default {
   name: 'App',
   data() {
     return {
+      teamSelected: 'Equipo',
+      teams: [],
       showAddMember: ref(false),
       showSendInvite: ref(false),
       statusLoading: false,
@@ -196,6 +223,7 @@ export default {
         name: '',
         isAdmin: false,
         isConfirmed: false,
+        team: '',
       }, // Could be done better
     }
   },
@@ -207,6 +235,14 @@ export default {
     },
   },
   methods: {
+    selectTeam(team) {
+      if (team === 'Equipo') {
+        this.sendFilters.team = ''
+        this.teamSelected = 'Equipo'
+        return
+      }
+      this.sendFilters.team = team
+    },
     roleNewMember(roleSelected) {
       this.employeeCreationRole = roleSelected
     },
@@ -271,6 +307,14 @@ export default {
       // to close the modal
       this.addMember()
     },
+  },
+  async mounted() {
+    this.teams = await axios.get('https://api.olga.lat/api/teams').then((response) => {
+      // this.teams must be an array of strings with the name of the teams
+      return response.data.teams.map((team) => {
+        return team.name
+      })
+    })
   },
   components: {
     Sidebar,

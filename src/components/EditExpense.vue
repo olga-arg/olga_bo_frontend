@@ -35,26 +35,42 @@
                   data-form-type=""
                   required
                 />
-                <input
-                  v-on:keypress.enter.prevent="sendNameFilter"
-                  v-model="expenseDate"
-                  class="block w-44 h-4 appearance-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
-                  placeholder="Fecha"
-                  aria-label="Search components"
-                  role="combobox"
-                  type="date"
-                  aria-expanded="false"
-                  aria-autocomplete="list"
-                  style="caret-color: rgb(107, 114, 128)"
-                  tabindex="0"
-                  data-form-type=""
-                  required
-                />
-                <div class="flex gap-3">
+                <vue-date-picker v-model="expenseDate" auto-apply :format="format" />
+
+                <div class="flex">
+                  <Menu as="div" class="relative inline-block text-left">
+                    <div>
+                      <MenuButton
+                        class="flex-shrink-0 z-10 inline-flex items-center h-4 py-4 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-e-0 border-gray-300 dark:border-gray-700 dark:text-white rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300"
+                      >
+                        {{ currency }}
+                      </MenuButton>
+                    </div>
+
+                    <transition
+                      enter-active-class="transition ease-out duration-100"
+                      enter-from-class="transform opacity-0 scale-95"
+                      enter-to-class="transform opacity-100 scale-100"
+                      leave-active-class="transition ease-in duration-75"
+                      leave-from-class="transform opacity-100 scale-100"
+                      leave-to-class="transform opacity-0 scale-95"
+                    >
+                      <MenuItems class="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div class="py-1">
+                          <MenuItem v-slot="{ active }" v-on:click="selectCurrency('ARS $')">
+                            <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">ARS $</a>
+                          </MenuItem>
+                          <MenuItem v-slot="{ active }" v-on:click="selectCurrency('USD $')">
+                            <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">USD $</a>
+                          </MenuItem>
+                        </div>
+                      </MenuItems>
+                    </transition>
+                  </Menu>
                   <input
                     v-on:keypress.enter.prevent="sendNameFilter"
                     v-model="total"
-                    class="block w-44 h-4 appearance-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
+                    class="block w-44 h-4 py-4 pl-4 pr-12 z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                     placeholder="Total"
                     aria-label="Search components"
                     role="combobox"
@@ -66,37 +82,34 @@
                     data-form-type=""
                     required
                   />
-                  <input
-                    v-on:keypress.enter.prevent="sendNameFilter"
-                    v-model="currency"
-                    class="block w-32 h-4 appearance-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
-                    placeholder="ARS AR$"
-                    aria-label="Search components"
-                    role="combobox"
-                    type="text"
-                    aria-expanded="false"
-                    aria-autocomplete="list"
-                    style="caret-color: rgb(107, 114, 128)"
-                    tabindex="0"
-                    data-form-type=""
-                    required
-                  />
                 </div>
-                <input
-                  v-on:keypress.enter.prevent="sendNameFilter"
-                  v-model="category"
-                  class="block w-full h-14 appearance-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
-                  placeholder="Categoria"
-                  aria-label="Search components"
-                  role="combobox"
-                  type="text"
-                  aria-expanded="false"
-                  aria-autocomplete="list"
-                  style="caret-color: rgb(107, 114, 128)"
-                  tabindex="0"
-                  data-form-type=""
-                  required
-                />
+                <Menu as="div" class="relative inline-block text-left">
+                  <div>
+                    <MenuButton
+                      class="inline-flex w-full h-14 py-4 pl-4 pr-12 text-base rounded-md bg-white font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    >
+                      {{ category }}
+                    </MenuButton>
+                  </div>
+
+                  <transition
+                    enter-active-class="transition ease-out duration-100"
+                    enter-from-class="transform opacity-0 scale-95"
+                    enter-to-class="transform opacity-100 scale-100"
+                    leave-active-class="transition ease-in duration-75"
+                    leave-from-class="transform opacity-100 scale-100"
+                    leave-to-class="transform opacity-0 scale-95"
+                  >
+                    <MenuItems class="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div class="py-1">
+                        <MenuItem v-for="categorie in categories" v-slot="{ active }" v-on:click="selectCategory(categorie)">
+                          <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ categorie }}</a>
+                        </MenuItem>
+                      </div>
+                    </MenuItems>
+                  </transition>
+                </Menu>
+
                 <div class="flex justify-center gap-10 pt-4">
                   <button
                     v-on:click="$emit('close')"
@@ -134,8 +147,9 @@
 </template>
 
 <script>
-import { Storage } from 'aws-amplify'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import AsyncImage from './AsyncImage.vue'
+
 export default {
   name: 'Share',
   data() {
@@ -144,9 +158,10 @@ export default {
       loading: true,
       shopName: '',
       total: '',
-      currency: 'ARS AR$',
+      currency: 'ARS $',
       category: '',
       expenseDate: '',
+      categories: ['Comida', 'Transporte', 'Ropa', 'Otros'],
     }
   },
   mounted() {
@@ -155,7 +170,22 @@ export default {
     this.category = this.expense.category
     this.expenseDate = this.expense.created.split('T')[0]
   },
-  methods: {},
+  methods: {
+    format(date) {
+      const day = date.getDate()
+      const month = date.getMonth()
+      const year = date.getFullYear()
+
+      const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+      return `${day} ${monthNames[month]} ${year}`
+    },
+    selectCategory(e) {
+      this.category = e
+    },
+    selectCurrency(e) {
+      this.currency = e
+    },
+  },
   watch: {
     $route() {
       this.originalRoute = this.$route.path
@@ -164,6 +194,10 @@ export default {
   },
   components: {
     AsyncImage,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
   },
   props: {
     expense: Object,

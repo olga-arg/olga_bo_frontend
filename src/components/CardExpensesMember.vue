@@ -24,7 +24,7 @@
           '#00BCD4', // Cian claro
           '#03A9F4', // Azul claro
           '#2196F3', // Azul
-        ][Math.floor(Math.random() * 10)],
+        ][Math.floor(expense.User.email.charCodeAt(2) % 10)],
       }"
       className="flex rounded-full w-10 h-10 text-white text-md items-center justify-center"
     >
@@ -87,7 +87,7 @@
       <div className="flex  mt-10">
         <div className="flex justify-between w-full pl-4">
           <div class="flex gap-8">
-            <div className="flex items-center gap-2 border-blue-400 border-2 px-3 py-1 rounded-full">
+            <div :style="{ borderColor: categoryColors[expense.category] }" className="flex items-center gap-2 border-2 px-3 py-1 rounded-full">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM13 11H11V7H13V11ZM13 17H11V13H13V17Z"
@@ -126,6 +126,29 @@ export default {
     return {
       timeAgo: '',
       intervalId: null,
+      categoryColors: {
+        'Comidas y Bebidas': '#FF6384',
+        Transporte: '#36A2EB',
+        Electrónica: '#FFCE56',
+        Entretenimiento: '#4BC0C0',
+        Hogar: '#9966FF',
+        Indumentaria: '#FF9F40',
+        'Salud y cuidado personal': '#C9CBCF',
+        Educación: '#7E7F9A',
+        Mascotas: '#D3D3D3',
+        Supermercado: '#FFC0CB',
+        Viajes: '#20B2AA',
+        'Servicios profesionales': '#20B2AA',
+        Impuestos: '#B22222',
+        'Cuentas y Servicios': '#FFD700',
+        'Comisiones y Cargos': '#8A2BE2',
+        Donaciones: '#32CD32',
+        Inversiones: '#4682B4',
+        'Préstamos y financiación': '#DA70D6',
+        Suscripciones: '#40E0D0',
+        Shopping: '#FF4500',
+        Otros: '#808080',
+      },
     }
   },
   methods: {

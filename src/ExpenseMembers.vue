@@ -44,16 +44,47 @@
           </div>
           <div class="flex flex-col gap-1">
             <div className="flex gap-4 items-center">
-              <button v-if="this.sendFilters.isAdmin" v-on:click="sendAdminFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">Sin Revisar</button>
-              <button v-else v-on:click="sendAdminFilter" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Sin Revisar</button>
-              <button v-if="this.sendFilters.isConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
-                Cambios a Realizar
+              <button
+                v-on:click="pendingFilter"
+                className="w-36 border-[#DBDADF] border py-1 rounded-md  text-[#8D8B96]"
+                :style="{ backgroundColor: this.filters.pending ? '#DE848B' : '#ffffff', color: this.filters.pending ? '#ffffff' : '#8D8B96' }"
+              >
+                Pendientes
               </button>
-              <button v-else v-on:click="sendConfirmedFilter" className=" border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Cambios a Realizar</button>
-              <button v-if="this.sendFilters.isConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
-                Sin Recibo
-              </button>
-              <button v-else v-on:click="sendConfirmedFilter" className=" border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Sin Recibo</button>
+              <div class="w-72">
+                <vue-date-picker v-model="date" auto-apply range :format="format" :preset-dates="presetDates">
+                  <template #clear-icon="{ clear }">
+                    <!-- Svg for X close icon -->
+                    <svg v-on:click="clearDates" @click="clear" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </template>
+                </vue-date-picker>
+              </div>
+              <Menu as="div" class="relative inline-block">
+                <div>
+                  <MenuButton class="inline-flex w-full px-4 py-2 text-base rounded-md bg-white text-gray-900 hover:bg-gray-50">
+                    {{ category }}
+                  </MenuButton>
+                </div>
+
+                <transition
+                  enter-active-class="transition ease-out duration-100"
+                  enter-from-class="transform opacity-0 scale-95"
+                  enter-to-class="transform opacity-100 scale-100"
+                  leave-active-class="transition ease-in duration-75"
+                  leave-from-class="transform opacity-100 scale-100"
+                  leave-to-class="transform opacity-0 scale-95"
+                >
+                  <MenuItems class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div class="py-1">
+                      <MenuItem v-for="categorie in categories" v-slot="{ active }" v-on:click="selectCategory(categorie)">
+                        <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ categorie }}</a>
+                      </MenuItem>
+                    </div>
+                  </MenuItems>
+                </transition>
+              </Menu>
             </div>
           </div>
           <form>
@@ -64,20 +95,14 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
-              <input
-                v-on:keypress.enter.prevent="sendNameFilter"
-                v-model="employeeNameFilter"
-                class="w-full p-2 pl-10 text-sm bg-[#F4F4F4]"
-                placeholder="Buscar empleado"
-                required
-              />
+              <input v-on:keypress.enter.prevent="sendNameFilter" v-model="employeeNameFilter" class="w-full p-2 pl-10 text-sm bg-[#F4F4F4]" placeholder="Buscar gasto" required />
               <div className="w-full h-0.5 bg-[#DE848B]"></div>
             </div>
           </form>
         </div>
         <Suspense>
           <template #default>
-            <ExpenseMembersView :selectPayments="this.selectPayments" ref="expenseMembersView"></ExpenseMembersView>
+            <ExpenseMembersView :filters="filters" :selectPayments="this.selectPayments" ref="expenseMembersView"></ExpenseMembersView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -95,25 +120,111 @@ import Sidebar from './components/Sidebar.vue'
 import Navbar from './components/Navbar.vue'
 import ExpenseMembersView from './components/ExpenseMembersView.vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths } from 'date-fns'
 
 export default {
   name: 'App',
   data() {
     return {
+      category: 'Categoria',
+      monthName: '',
+      lastMonthName: '',
+      date: '',
       selectPayments: false,
       filters: {
-        name: this.employeeNameFilter,
-        isAdmin: false,
-        isConfirmed: false,
+        pending: false,
+        rangeDates: null,
+        category: '',
+        userEmails: [],
       },
-      sendFilters: {
-        name: '',
-        isAdmin: false,
-        isConfirmed: false,
-      }, // Could be done better
+      categories: [
+        'Categoria',
+        'Comidas y Bebidas',
+        'Transporte',
+        'Electrónica',
+        'Entretenimiento',
+        'Hogar',
+        'Indumentaria',
+        'Salud y cuidado personal',
+        'Educación',
+        'Mascotas',
+        'Supermercado',
+        'Viajes',
+        'Servicios profesionales',
+        'Impuestos',
+        'Cuentas y Servicios',
+        'Comisiones y Cargos',
+        'Donaciones',
+        'Inversiones',
+        'Préstamos y financiación',
+        'Suscripciones',
+        'Shopping',
+        'Otros',
+      ],
     }
   },
+  computed: {
+    presetDates() {
+      return [
+        { label: 'Hoy', value: [new Date(), new Date()] },
+        {
+          label: 'Today (Slot)',
+          value: [new Date(), new Date()],
+          slot: 'preset-date-range-button',
+        },
+        { label: `${this.monthName}`, value: [startOfMonth(new Date()), endOfMonth(new Date())] },
+        {
+          label: `${this.lastMonthName}`,
+          value: [startOfMonth(subMonths(new Date(), 1)), endOfMonth(subMonths(new Date(), 1))],
+        },
+        { label: `Año ${Date(new Date().getFullYear()).split(' ')[3]}`, value: [startOfYear(new Date()), endOfYear(new Date())] },
+      ]
+    },
+  },
   methods: {
+    loadExpensesBasedOnQueryParams() {
+      const userEmails = this.$route.query.userEmails
+
+      if (userEmails) {
+        // Si userIds existe, conviértelo en un arreglo y úsalo para filtrar
+        const userEmailsArray = userEmails.split(',')
+        this.filterExpensesByUserEmails(userEmailsArray)
+      }
+    },
+    filterExpensesByUserEmails(userEmails) {
+      this.filters.userEmails = userEmails
+    },
+    pendingFilter() {
+      this.filters.pending = !this.filters.pending
+    },
+    clearDates() {
+      this.filters.rangeDates = null
+    },
+    getMonthName() {
+      const date = new Date()
+      const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Augosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+      return monthNames[date.getMonth()]
+    },
+    getLastMonthName() {
+      const date = new Date()
+      const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Augosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+      return monthNames[date.getMonth() - 1]
+    },
+    format([dateFrom, dateTo]) {
+      const dayFrom = dateFrom.getDate()
+      const monthFrom = dateFrom.getMonth()
+      const yearFrom = dateFrom.getFullYear()
+
+      const dayTo = dateTo.getDate()
+      const monthTo = dateTo.getMonth()
+      const yearTo = dateTo.getFullYear()
+
+      const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+
+      this.filters.rangeDates = [dateFrom, dateTo]
+
+      return `${dayFrom} ${monthNames[monthFrom]} ${yearFrom} - ${dayTo} ${monthNames[monthTo]} ${yearTo}`
+    },
     selectPaymentsToggle() {
       this.selectPayments = !this.selectPayments
     },
@@ -180,6 +291,15 @@ export default {
       })
       this.$refs.expenseMembersView.selectedExpenses = []
     },
+    selectCategory(e) {
+      this.category = e
+      this.filters.category = e
+    },
+  },
+  mounted: function () {
+    this.loadExpensesBasedOnQueryParams()
+    this.monthName = this.getMonthName()
+    this.lastMonthName = this.getLastMonthName()
   },
   components: {
     Sidebar,

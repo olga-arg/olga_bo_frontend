@@ -23,13 +23,13 @@
       </a>
       <div class="flex flex-col justify-between h-full">
         <ul class="space-y-2 mt-10 mx-4">
-          <li>
+          <!-- <li>
             <router-link to="/cards/members" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
               <img v-if="activeRoute == 'cards'" src="@/assets/card-selected.svg" alt="expenses icon" />
               <img v-else src="@/assets/card-unselected.svg" alt="card icon" />
               <span class="ml-3">Tarjetas</span>
             </router-link>
-          </li>
+          </li> -->
           <li>
             <router-link to="/expenses/members" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
               <img v-if="activeRoute == 'expenses'" src="@/assets/expenses-selected.svg" alt="expenses icon" />

@@ -100,7 +100,9 @@
                     leave-from-class="transform opacity-100 scale-100"
                     leave-to-class="transform opacity-0 scale-95"
                   >
-                    <MenuItems class="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <MenuItems
+                      class="absolute max-h-40 overflow-y-auto left-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    >
                       <div class="py-1">
                         <MenuItem v-for="categorie in categories" v-slot="{ active }" v-on:click="selectCategory(categorie)">
                           <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ categorie }}</a>
@@ -133,9 +135,7 @@
                 </template>
                 <template #fallback>
                   <!-- Indicador de carga mientras se carga la imagen -->
-                  <div class="flex justify-center items-center h-32 w-32">
-                    <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-                  </div>
+                  <div class="flex justify-center items-center h-32 w-32"></div>
                 </template>
               </Suspense>
             </div>
@@ -161,7 +161,30 @@ export default {
       currency: 'ARS $',
       category: '',
       expenseDate: '',
-      categories: ['Comida', 'Transporte', 'Ropa', 'Otros'],
+      categories: [
+        'Categoria',
+        'Comidas y Bebidas',
+        'Comisiones y Cargos',
+        'Cuentas y Servicios',
+        'Donaciones',
+        'Educación',
+        'Electrónica',
+        'Entretenimiento',
+        'Hogar',
+        'Impuestos',
+        'Indumentaria',
+        'Inversiones',
+        'Mascotas',
+        'Otros',
+        'Préstamos y financiación',
+        'Salud y cuidado personal',
+        'Servicios profesionales',
+        'Shopping',
+        'Supermercado',
+        'Suscripciones',
+        'Transporte',
+        'Viajes',
+      ],
     }
   },
   mounted() {
@@ -171,6 +194,9 @@ export default {
     this.expenseDate = this.expense.created.split('T')[0]
   },
   methods: {
+    markAsChanged(field) {
+      this.changedFields[field] = true
+    },
     format(date) {
       const day = date.getDate()
       const month = date.getMonth()

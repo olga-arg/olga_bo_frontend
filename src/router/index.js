@@ -20,8 +20,8 @@ const router = createRouter({
     { path: '/expenses', redirect: '/expenses/members' },
     { path: '/expenses/members', component: ExpenseMembers, meta: { middleware: [auth] } },
     { path: '/expenses/teams', component: ExpenseTeams },
-    { path: '/cards', redirect: '/cards/members' },
-    { path: '/cards/members', component: CardMember, meta: { middleware: [auth] } },
+    // { path: '/cards', redirect: '/cards/members' },
+    // { path: '/cards/members', component: CardMember, meta: { middleware: [auth] } },
   ],
 })
 router.beforeEach((to, from, next) => {

@@ -147,7 +147,7 @@ export default {
       // filter users names that match the name filter
       this.usersNotInTeam = this.usersNotInTeam.filter((user) => {
         let fullname = user.name + ' ' + user.surname
-        return fullname.toLowerCase().includes(this.sendFilters.name.toLowerCase())
+        return fullname.toLowerCase().includes(this.sendFilters.name.toLowerCase()) || user.email.toLowerCase().includes(this.sendFilters.name.toLowerCase())
       })
     },
     async addToTeam(team, user) {

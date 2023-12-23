@@ -50,13 +50,13 @@
         </div>
       </div>
       <div className="flex w-full gap-2 justify-end flex-wrap">
-        <div className="border-red-200 border rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
+        <!-- <div className="border-red-200 border rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
           <p>4231</p>
         </div>
 
         <div className="border-[#E0EAE9] border bg-[#E0EAE9] rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
           <p>5342</p>
-        </div>
+        </div> -->
 
         <div v-if="member.isAdmin" className="border-[#F8E6E8] border bg-[#F8E6E8] rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
           <p>ADMIN</p>

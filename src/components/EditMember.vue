@@ -32,7 +32,7 @@
             <div class="flex items-center justify-between pt-5">
               <div class="">Rol</div>
               <button
-                v-if="user.isAdmin"
+                v-if="new_is_admin"
                 v-on:click="changeRol"
                 class="ring-pink-300 inline-flex w-24 justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset hover:bg-gray-50"
               >
@@ -56,6 +56,7 @@
               </button>
               <button
                 type="button"
+                v-on:click="updateUser(user)"
                 class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
               >
                 Guardar
@@ -77,14 +78,12 @@ export default {
     return {
       new_monthly_limit: this.formatNumberWithDots(this.user.monthly_limit.toString()),
       new_purchase_limit: this.formatNumberWithDots(this.user.purchase_limit.toString()),
+      new_is_admin: this.user.isAdmin,
       originalRoute: this.$route.path,
       activeRoute: this.$route.path.split('/').slice(-1)[0],
       usersNotInTeam: this.users,
       monthly_limit_difference: '',
       purchase_limit_difference: '',
-      filters: {
-        name: this.employeeNameFilter,
-      },
       sendFilters: {
         name: '',
       }, // Could be done better
@@ -92,22 +91,28 @@ export default {
   },
   methods: {
     changeRol() {
-      this.user.isAdmin = !this.user.isAdmin
+      this.new_is_admin = !this.new_is_admin
     },
-    async toReviewer(team, user) {
-      let url = 'https://api.olga.lat/api/teams/' + team.id
+    async updateUser(user) {
+      let url = 'https://api.olga.lat/api/users/' + user.id
+      // validate if the values are different from the original ones to make the request
+      if (
+        this.new_monthly_limit == this.formatNumberWithDots(user.monthly_limit.toString()) &&
+        this.new_purchase_limit == this.formatNumberWithDots(user.purchase_limit.toString()) &&
+        this.new_is_admin == user.isAdmin
+      ) {
+        this.$emit('close')
+        return
+      }
       const response = await axios.patch(url, {
-        reviewer_id: user.id,
+        purchase_limit: Number(this.new_purchase_limit.replace(/[^\d]/g, '')),
+        monthly_limit: Number(this.new_monthly_limit.replace(/[^\d]/g, '')),
+        is_admin: this.new_is_admin,
       })
-      this.team.reviewer = user
-    },
-    sendNameFilter() {
-      this.sendFilters.name = this.employeeNameFilter
-      // filter users names that match the name filter
-      this.usersNotInTeam = this.usersNotInTeam.filter((user) => {
-        let fullname = user.name + ' ' + user.surname
-        return fullname.toLowerCase().includes(this.sendFilters.name.toLowerCase())
-      })
+      this.user.purchase_limit = Number(this.new_purchase_limit.replace(/[^\d]/g, ''))
+      this.user.monthly_limit = Number(this.new_monthly_limit.replace(/[^\d]/g, ''))
+      this.user.isAdmin = this.new_is_admin
+      this.$emit('close')
     },
     async addToTeam(team, user) {
       let url = 'https://api.olga.lat/api/teams/' + team.id
@@ -120,18 +125,6 @@ export default {
       })
       // and add the user to the list of users inside the team
       team.users.push(user)
-    },
-    async removeFromTeam(team, user) {
-      let url = 'https://api.olga.lat/api/teams/' + team.id
-      const response = await axios.patch(url, {
-        remove_users: [user.id],
-      })
-      // delete the user from the list of usersNotInTeam
-      this.usersNotInTeam = this.usersNotInTeam.filter((userNotInTeam) => {
-        return userNotInTeam.id !== user.id
-      })
-      // and add the user to the list of users inside the team
-      team.users.splice(team.users.indexOf(user), 1)
     },
     formatLimit() {
       let raw_new_monthly_limit = this.new_monthly_limit.replace(/[^\d]/g, '')
@@ -161,17 +154,6 @@ export default {
     },
   },
   watch: {
-    employeeNameFilter() {
-      if (this.employeeNameFilter === '') {
-        this.sendFilters.name = ''
-        // get the users back into usersNotInTeam
-        this.usersNotInTeam = this.users.filter((user) => {
-          return !this.team.users.some((userInsideTeam) => {
-            return user.id === userInsideTeam.id
-          })
-        })
-      }
-    },
     $route() {
       this.originalRoute = this.$route.path
       this.activeRoute = this.$route.path.split('/').slice(-1)[0]

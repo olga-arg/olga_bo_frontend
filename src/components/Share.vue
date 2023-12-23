@@ -12,6 +12,7 @@
             <div class="flex">
               <input
                 v-on:keypress.enter.prevent="sendNameFilter"
+                v-on:click="toggleUsers"
                 v-model="employeeNameFilter"
                 class="block w-full appearance-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
                 placeholder="Añadir miembro"
@@ -34,7 +35,7 @@
               aria-labelledby="menu-button"
               tabindex="-1"
             >
-              <div class="py-1" role="none">
+              <div v-if="showUsers" class="py-1" role="none">
                 <div v-for="user in usersNotInTeam.slice(0, 5)" class="flex justify-between items-center py-2 hover:bg-slate-50" v-on:click="addToTeam(team, user)">
                   <div class="flex items-center">
                     <div class="h-8 w-8 bg-red-300 rounded-full mx-4"></div>
@@ -114,6 +115,7 @@ export default {
         sendFilters: {
           name: '',
         },
+        showUsers: false,
       }
     }
     return {
@@ -126,9 +128,13 @@ export default {
       sendFilters: {
         name: '',
       }, // Could be done better
+      showUsers: false,
     }
   },
   methods: {
+    toggleUsers() {
+      this.showUsers = true
+    },
     async toReviewer(team, user) {
       let url = 'https://api.olga.lat/api/teams/' + team.id
       const response = await axios.patch(url, {

@@ -21,27 +21,31 @@
             <div class="flex gap-5">
               <div class="flex flex-col gap-3">
                 <input
-                  v-on:keypress.enter.prevent="sendNameFilter"
                   v-model="shopName"
-                  class="block w-full h-14 appearance-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 focus:outline-none sm:text-sm sm:leading-6"
+                  class="block w-full h-14 border focus:outline-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 sm:text-sm sm:leading-6"
+                  :class="{ 'border-yellow-300 border-2': shopName !== changedFields.shopName }"
                   placeholder="Negocio"
                   aria-label="Search components"
                   role="combobox"
-                  type="text"
                   aria-expanded="false"
                   aria-autocomplete="list"
-                  style="caret-color: rgb(107, 114, 128)"
                   tabindex="0"
                   data-form-type=""
                   required
                 />
-                <vue-date-picker v-model="expenseDate" auto-apply :format="format" />
+                <vue-date-picker
+                  v-model="expenseDate"
+                  auto-apply
+                  :format="formatCalendar"
+                  :class="{ 'border-yellow-300 border-2 rounded-md': expenseDate !== changedFields.expenseDate }"
+                />
 
                 <div class="flex">
                   <Menu as="div" class="relative inline-block text-left">
                     <div>
                       <MenuButton
-                        class="flex-shrink-0 z-10 inline-flex items-center h-4 py-4 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-e-0 border-gray-300 dark:border-gray-700 dark:text-white rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300"
+                        class="flex-shrink-0 z-10 inline-flex items-center h-4 py-4 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-e-0 dark:border-gray-700 dark:text-white rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300"
+                        :class="{ 'border-yellow-300 border-2': currency !== changedFields.currency }"
                       >
                         {{ currency }}
                       </MenuButton>
@@ -68,18 +72,11 @@
                     </transition>
                   </Menu>
                   <input
-                    v-on:keypress.enter.prevent="sendNameFilter"
+                    @input="validateNumberInput"
                     v-model="total"
-                    class="block w-44 h-4 py-4 pl-4 pr-12 z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                    placeholder="Total"
-                    aria-label="Search components"
-                    role="combobox"
-                    type="number"
-                    aria-expanded="false"
-                    aria-autocomplete="list"
-                    style="caret-color: rgb(107, 114, 128)"
-                    tabindex="0"
-                    data-form-type=""
+                    class="focus:outline-none block w-44 h-4 py-4 pl-4 pr-12 z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 border dark:placeholder-gray-400 dark:text-white"
+                    :class="{ 'border-yellow-300 border-2 rounded-md': total != changedFields.total }"
+                    placeholder="Monto"
                     required
                   />
                 </div>
@@ -87,6 +84,7 @@
                   <div>
                     <MenuButton
                       class="inline-flex w-full h-14 py-4 pl-4 pr-12 text-base rounded-md bg-white font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                      :class="{ 'border-yellow-300 border-2 rounded-md': category != changedFields.category }"
                     >
                       {{ category }}
                     </MenuButton>
@@ -121,6 +119,7 @@
                     Cancelar
                   </button>
                   <button
+                    v-on:click="updateExpense"
                     type="button"
                     class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
                   >
@@ -149,11 +148,19 @@
 <script>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import AsyncImage from './AsyncImage.vue'
+import moment from 'moment'
 
 export default {
   name: 'Share',
   data() {
     return {
+      changedFields: {
+        shopName: '',
+        total: '',
+        category: '',
+        expenseDate: '',
+        currency: '',
+      },
       imageUrl: '',
       loading: true,
       shopName: '',
@@ -162,7 +169,6 @@ export default {
       category: '',
       expenseDate: '',
       categories: [
-        'Categoria',
         'Comidas y Bebidas',
         'Comisiones y Cargos',
         'Cuentas y Servicios',
@@ -189,15 +195,48 @@ export default {
   },
   mounted() {
     this.shopName = this.expense.shop_name
+    this.changedFields.shopName = this.expense.shop_name
     this.total = this.expense.amount
+    this.changedFields.total = this.expense.amount
     this.category = this.expense.category
-    this.expenseDate = this.expense.created.split('T')[0]
+    this.changedFields.category = this.expense.category
+    this.expenseDate = moment(this.expense.created).format('MM-DD-YYYY')
+    this.changedFields.expenseDate = moment(this.expense.created).format('MM-DD-YYYY')
+    this.changedFields.currency = this.currency
   },
   methods: {
+    updateExpense() {
+      // make a request if the fields are different from the changedFields
+      if (
+        this.shopName == this.changedFields.shopName &&
+        this.total == this.changedFields.total &&
+        this.category == this.changedFields.category &&
+        this.expenseDate == this.changedFields.expenseDate &&
+        this.currency == this.changedFields.currency
+      ) {
+        this.$emit('close')
+        return
+      }
+      const data = {
+        shop_name: this.shopName,
+        amount: this.total,
+        category: this.category,
+        created: this.expenseDate,
+        currency: this.currency,
+      }
+      // update the expense that we receive via props with the new values
+      this.$emit('updateExpense', { ...this.expense, ...data })
+      this.$emit('close')
+    },
+    validateNumberInput(e) {
+      this.total = this.total.replace(/[^0-9]/g, '')
+    },
     markAsChanged(field) {
       this.changedFields[field] = true
     },
-    format(date) {
+    formatCalendar(date) {
+      this.expenseDate = moment(this.expenseDate).format('MM-DD-YYYY')
+
       const day = date.getDate()
       const month = date.getMonth()
       const year = date.getFullYear()

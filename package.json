@@ -24,6 +24,7 @@
     "flowbite": "^1.6.3",
     "fortawesome": "^0.0.1-security",
     "http-proxy-middleware": "^2.0.6",
+    "moment": "^2.29.4",
     "vue": "^3.2.47",
     "vue-cookies": "^1.8.3",
     "vue-grid-layout": "^3.0.0-beta1",

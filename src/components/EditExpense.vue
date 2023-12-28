@@ -252,7 +252,8 @@ export default {
       }
       let response = await axios.patch(`https://api.olga.lat/api/payments/${this.id}`, data)
       // update the expense that we receive via props with the new values
-      this.$emit('updateExpense', { ...this.expense, ...data })
+      if (response.status == 200) Object.assign(this.expense, data)
+      this.$emit('updateExpense', this.expense)
       this.$emit('close')
     },
     validateNumberInput(e) {

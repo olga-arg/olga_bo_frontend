@@ -110,6 +110,21 @@
                   </transition>
                 </Menu>
 
+                <button
+                  v-if="this.status == 1"
+                  v-on:click="changeStatus"
+                  class="ring-pink-300 inline-flex justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset hover:bg-gray-50"
+                >
+                  APROBADO
+                </button>
+                <button
+                  v-else
+                  v-on:click="changeStatus"
+                  class="inline-flex justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 hover:bg-gray-50"
+                >
+                  PENDIENTE
+                </button>
+
                 <div class="flex justify-center gap-10 pt-4">
                   <button
                     v-on:click="$emit('close')"
@@ -149,6 +164,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import AsyncImage from './AsyncImage.vue'
 import moment from 'moment'
+import axios from 'axios'
 
 export default {
   name: 'Share',
@@ -168,6 +184,8 @@ export default {
       currency: 'ARS $',
       category: '',
       expenseDate: '',
+      status: 0,
+      id: '',
       categories: [
         'Comidas y Bebidas',
         'Comisiones y Cargos',
@@ -203,27 +221,36 @@ export default {
     this.expenseDate = moment(this.expense.created).format('MM-DD-YYYY')
     this.changedFields.expenseDate = moment(this.expense.created).format('MM-DD-YYYY')
     this.changedFields.currency = this.currency
+    this.status = this.expense.status
+    this.id = this.expense.id
   },
   methods: {
-    updateExpense() {
+    changeStatus() {
+      if (this.status == 1) this.status = 0
+      else this.status = 1
+    },
+    async updateExpense() {
       // make a request if the fields are different from the changedFields
       if (
         this.shopName == this.changedFields.shopName &&
         this.total == this.changedFields.total &&
         this.category == this.changedFields.category &&
         this.expenseDate == this.changedFields.expenseDate &&
-        this.currency == this.changedFields.currency
+        this.currency == this.changedFields.currency &&
+        this.status == this.expense.status
       ) {
         this.$emit('close')
         return
       }
       const data = {
         shop_name: this.shopName,
-        amount: this.total,
+        amount: Number(this.total),
         category: this.category,
         created: this.expenseDate,
         currency: this.currency,
+        status: this.status,
       }
+      let response = await axios.patch(`https://api.olga.lat/api/payments/${this.id}`, data)
       // update the expense that we receive via props with the new values
       this.$emit('updateExpense', { ...this.expense, ...data })
       this.$emit('close')

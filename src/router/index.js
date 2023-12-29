@@ -4,6 +4,7 @@ import MembersTeams from '@/MembersTeams.vue'
 import ExpenseMembers from '@/ExpenseMembers.vue'
 import ExpenseTeams from '@/ExpenseTeams.vue'
 import CardMember from '@/CardMember.vue'
+import Dashboard from '@/Dashboard.vue'
 import Login from '@/Login.vue'
 import Logout from '@/Logout.vue'
 import auth from './middleware/auth'
@@ -20,6 +21,7 @@ const router = createRouter({
     { path: '/expenses', redirect: '/expenses/members' },
     { path: '/expenses/members', component: ExpenseMembers, meta: { middleware: [auth] } },
     { path: '/expenses/teams', component: ExpenseTeams },
+    { path: '/dashboard', component: Dashboard },
     // { path: '/cards', redirect: '/cards/members' },
     // { path: '/cards/members', component: CardMember, meta: { middleware: [auth] } },
   ],

@@ -23,8 +23,6 @@ onMounted(async () => {
     const key = props.receiptImageKey.replace('public/', '')
     const signedURL = await Storage.get(key, { expires: 300 }) // 300 segundos de expiración
     imageUrl.value = signedURL
-    await new Promise((r) => setTimeout(r, 2000))
-
     loading.value = false
   } catch (error) {
     console.error('Error al obtener la URL firmada: ', error)

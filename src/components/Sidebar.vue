@@ -31,6 +31,12 @@
             </router-link>
           </li> -->
           <li>
+            <router-link to="/dashboard" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
+              <font-awesome-icon :class="activeRoute === 'dashboard' ? 'text-[#DE848B]' : 'text-[#8D8B96]'" :icon="['fas', 'chart-pie']" />
+              <span :class="activeRoute === 'dashboard' ? 'text-[#DE848B]' : 'text-[#8D8B96]'" class="flex-1 ml-3 whitespace-nowrap">Dashboard</span>
+            </router-link>
+          </li>
+          <li>
             <router-link to="/expenses/members" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
               <img v-if="activeRoute == 'expenses'" src="@/assets/expenses-selected.svg" alt="expenses icon" />
               <img v-else src="@/assets/expenses-unselected.svg" alt="expenses icon" />

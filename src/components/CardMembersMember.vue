@@ -29,24 +29,16 @@
           }"
           className="flex rounded-full w-8 h-8 text-white text-xs items-center justify-center"
         >
-          <p>{{ member.name[0].toUpperCase() }}{{ member.surname[0].toUpperCase() }}</p>
+          <p class="text-sm">{{ member.name[0].toUpperCase() }}{{ member.surname[0].toUpperCase() }}</p>
         </div>
         <div className="flex flex-col">
           <div className="flex ">
             <p class="text-[#1C2E3D] font-medium text-lg pl-4">
               {{ member.name.split(' ').length > 1 ? `${member.name.split(' ')[0]} ${member.name.split(' ')[1][0]}.` : member.name }} {{ member.surname }}
             </p>
-            <button v-if="member.status != 0" v-on:click="copyEmailToClipboard" class="flex items-center">
-              <img class="ml-2 w-4 h-4" src="@/assets/email.svg" />
-              <p v-if="copyToClipboard" class="mb-10 ml-[-12px] absolute text-[#62948F] font-medium text-xs pl-1">Copiado</p>
-            </button>
-            <button v-else v-on:click="copyEmailToClipboard" class="flex items-center">
-              <img class="ml-2 w-4 h-4" src="@/assets/emailNotConfirmed.svg" />
-              <p v-if="copyToClipboard" class="mb-10 ml-[-12px] absolute text-[#62948F] font-medium text-xs pl-1">Copiado</p>
-            </button>
           </div>
           <p v-if="member.teams" class="text-[#8D8B96] font-medium text-lg pl-4">{{ member.teams[0].team_name }}</p>
-          <p v-else class="text-[#8D8B96] font-medium text-lg pl-4 text-sm">Sin Equipo</p>
+          <p v-else class="text-[#8D8B96] font-medium pl-4 text-sm">Sin Equipo</p>
         </div>
       </div>
       <div className="flex w-full gap-2 justify-end flex-wrap">
@@ -114,14 +106,6 @@ export default {
       copyToClipboard: false,
     }
   },
-  methods: {
-    copyEmailToClipboard() {
-      navigator.clipboard.writeText(this.member.email)
-      this.copyToClipboard = true
-      setTimeout(() => {
-        this.copyToClipboard = false
-      }, 1000)
-    },
-  },
+  methods: {},
 }
 </script>

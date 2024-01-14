@@ -38,13 +38,6 @@
           <p class="text-[#1C2E3D] font-medium text-lg pl-4">{{ expense.shop_name ? expense.shop_name[0] + expense.shop_name.slice(1).toLowerCase() : 'No Detectado' }}</p>
         </div>
         <div className="flex justify-end gap-4">
-          <div v-if="expense.tipo_pago == 'virtual'" className="border-red-200 border rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
-            <p>{{ expense.tipo_pago.ultimos_4_digitos }}</p>
-          </div>
-          <div v-if="expense" className="border-[#E0EAE9] border bg-[#E0EAE9] rounded-sm w-8 h-4 p-2.5 px-5 text-xs flex items-center justify-center">
-            <p>{{ '4060' }}</p>
-          </div>
-
           <div v-if="expense.tipo_pago" className="border-[#1C2E3D] border rounded-md h-4 p-2.5 px-2 text-xs flex items-center justify-center">POCKET</div>
 
           <div v-if="expense.status == 1" className="border-[#92FD70] border h-4 bg-[#92FD70] rounded-full p-2.5 text-xs flex items-center justify-center">
@@ -98,9 +91,6 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <a @click="openImage(expense.receipt_image_key)" class="cursor-pointer">
-              <img className="w-4 h-4" src="@/assets/comprobante.svg" alt="comprobante" />
-            </a>
             <p className="text-right">$ {{ expense.amount || 0 }},00</p>
           </div>
         </div>
@@ -166,16 +156,6 @@ export default {
       } else {
         const days = Math.floor(minutes / 1440)
         this.timeAgo = days + ' day' + (days !== 1 ? 's' : '') + ' ago'
-      }
-    },
-    async openImage(key) {
-      try {
-        key = key.replace('public/', '')
-        const signedURL = await Storage.get(key, { expires: 300 }) // 300 segundos de expiración
-        window.open(signedURL, '_blank') // Abre la imagen en una nueva ventana o pestaña
-      } catch (error) {
-        console.error('Error al obtener la URL firmada: ', error)
-        // Handle the error appropriately
       }
     },
   },

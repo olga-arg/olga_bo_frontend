@@ -11,10 +11,6 @@
                 <div class="text-sm text-gray-400">{{ expense.User.email }}</div>
               </div>
               <div class="flex gap-5 items-center">
-                <div class="flex gap-1 items-center text-gray-400">
-                  <font-awesome-icon icon="credit-card" class="" />
-                  <div className="text-sm  ">Card</div>
-                </div>
                 <button class="text-gray-600 font-bold" v-on:click="$emit('close')">X</button>
               </div>
             </div>

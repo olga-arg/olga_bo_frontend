@@ -2,10 +2,6 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.1.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
-    "RECAPTCHASECRET": {
-      "Type": "String",
-      "Default": ""
-    },
     "modules": {
       "Type": "String",
       "Default": "",
@@ -67,12 +63,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse",
+            "olgaAuthDefineAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse",
+                  "olgaAuthDefineAuthChallenge",
                   "-",
                   {
                     "Ref": "env"
@@ -92,9 +88,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "RECAPTCHASECRET": {
-              "Ref": "RECAPTCHASECRET"
             }
           }
         },
@@ -122,12 +115,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse",
+            "olgaAuthDefineAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse",
+                  "olgaAuthDefineAuthChallenge",
                   "-",
                   {
                     "Ref": "env"

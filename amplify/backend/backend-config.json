@@ -1,6 +1,12 @@
 {
+  "analytics": {
+    "olgaAnalytics": {
+      "providerPlugin": "awscloudformation",
+      "service": "Pinpoint"
+    }
+  },
   "auth": {
-    "olgae9c8fdd4e9c8fdd4": {
+    "olgaAuth": {
       "customAuth": true,
       "dependsOn": [
         {
@@ -9,7 +15,7 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
+          "resourceName": "olgaAuthCreateAuthChallenge",
           "triggerProvider": "Cognito"
         },
         {
@@ -18,7 +24,7 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4DefineAuthChallenge",
+          "resourceName": "olgaAuthDefineAuthChallenge",
           "triggerProvider": "Cognito"
         },
         {
@@ -27,7 +33,7 @@
             "Name"
           ],
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse",
+          "resourceName": "olgaAuthVerifyAuthChallengeResponse",
           "triggerProvider": "Cognito"
         }
       ],
@@ -56,74 +62,82 @@
     }
   },
   "function": {
-    "olgae9c8fdd4e9c8fdd4CreateAuthChallenge": {
+    "olgaAuthCreateAuthChallenge": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "olgae9c8fdd4e9c8fdd4DefineAuthChallenge": {
+    "olgaAuthDefineAuthChallenge": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse": {
+    "olgaAuthVerifyAuthChallengeResponse": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
   },
+  "notifications": {
+    "olgaAnalytics": {
+      "channels": [
+        "FCM"
+      ],
+      "service": "Pinpoint"
+    }
+  },
   "parameters": {
-    "AMPLIFY_function_olgae9c8fdd4e9c8fdd4CreateAuthChallenge_deploymentBucketName": {
+    "AMPLIFY_function_olgaAuthCreateAuthChallenge_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4CreateAuthChallenge"
+          "resourceName": "olgaAuthCreateAuthChallenge"
         }
       ]
     },
-    "AMPLIFY_function_olgae9c8fdd4e9c8fdd4CreateAuthChallenge_s3Key": {
+    "AMPLIFY_function_olgaAuthCreateAuthChallenge_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4CreateAuthChallenge"
+          "resourceName": "olgaAuthCreateAuthChallenge"
         }
       ]
     },
-    "AMPLIFY_function_olgae9c8fdd4e9c8fdd4DefineAuthChallenge_deploymentBucketName": {
+    "AMPLIFY_function_olgaAuthDefineAuthChallenge_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4DefineAuthChallenge"
+          "resourceName": "olgaAuthDefineAuthChallenge"
         }
       ]
     },
-    "AMPLIFY_function_olgae9c8fdd4e9c8fdd4DefineAuthChallenge_s3Key": {
+    "AMPLIFY_function_olgaAuthDefineAuthChallenge_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4DefineAuthChallenge"
+          "resourceName": "olgaAuthDefineAuthChallenge"
         }
       ]
     },
-    "AMPLIFY_function_olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse_deploymentBucketName": {
+    "AMPLIFY_function_olgaAuthVerifyAuthChallengeResponse_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse"
+          "resourceName": "olgaAuthVerifyAuthChallengeResponse"
         }
       ]
     },
-    "AMPLIFY_function_olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse_s3Key": {
+    "AMPLIFY_function_olgaAuthVerifyAuthChallengeResponse_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse"
+          "resourceName": "olgaAuthVerifyAuthChallengeResponse"
         }
       ]
     }
   },
   "storage": {
-    "s35d6de930": {
+    "olgaStorage": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

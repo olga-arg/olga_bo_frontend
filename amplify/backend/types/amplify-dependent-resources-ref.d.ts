@@ -1,6 +1,13 @@
 export type AmplifyDependentResourcesAttributes = {
+  "analytics": {
+    "olgaAnalytics": {
+      "Id": "string",
+      "Region": "string",
+      "appName": "string"
+    }
+  },
   "auth": {
-    "olgae9c8fdd4e9c8fdd4": {
+    "olgaAuth": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -11,21 +18,21 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "olgae9c8fdd4e9c8fdd4CreateAuthChallenge": {
+    "olgaAuthCreateAuthChallenge": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "olgae9c8fdd4e9c8fdd4DefineAuthChallenge": {
+    "olgaAuthDefineAuthChallenge": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "olgae9c8fdd4e9c8fdd4VerifyAuthChallengeResponse": {
+    "olgaAuthVerifyAuthChallengeResponse": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
@@ -34,7 +41,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "s35d6de930": {
+    "olgaStorage": {
       "BucketName": "string",
       "Region": "string"
     }

@@ -67,12 +67,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
+            "olgaAuthCreateAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
+                  "olgaAuthCreateAuthChallenge",
                   "-",
                   {
                     "Ref": "env"
@@ -122,12 +122,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
+            "olgaAuthCreateAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgae9c8fdd4e9c8fdd4CreateAuthChallenge",
+                  "olgaAuthCreateAuthChallenge",
                   "-",
                   {
                     "Ref": "env"

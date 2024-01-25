@@ -3,14 +3,14 @@
   "modules": [
     "boilerplate-verify"
   ],
-  "parentResource": "olgaAuth",
-  "functionName": "olgaAuthVerifyAuthChallengeResponse",
-  "resourceName": "olgaAuthVerifyAuthChallengeResponse",
+  "parentResource": "olgaAuthResource",
+  "functionName": "olgaAuthResourceVerifyAuthChallengeResponse",
+  "resourceName": "olgaAuthResourceVerifyAuthChallengeResponse",
   "parentStack": "auth",
   "triggerEnvs": "[]",
   "triggerDir": "/snapshot/repo/build/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/VerifyAuthChallengeResponse",
   "triggerTemplate": "VerifyAuthChallengeResponse.json.ejs",
   "triggerEventPath": "VerifyAuthChallengeResponse.event.json",
-  "roleName": "olgaAuthVerifyAuthChallengeResponse",
+  "roleName": "olgaAuthResourceVerifyAuthChallengeResponse",
   "skipEdit": true
 }

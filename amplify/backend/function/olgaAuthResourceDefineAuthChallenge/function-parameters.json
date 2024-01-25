@@ -3,14 +3,14 @@
   "modules": [
     "boilerplate-define-challenge"
   ],
-  "parentResource": "olgaAuth",
-  "functionName": "olgaAuthDefineAuthChallenge",
-  "resourceName": "olgaAuthDefineAuthChallenge",
+  "parentResource": "olgaAuthResource",
+  "functionName": "olgaAuthResourceDefineAuthChallenge",
+  "resourceName": "olgaAuthResourceDefineAuthChallenge",
   "parentStack": "auth",
   "triggerEnvs": "[]",
   "triggerDir": "/snapshot/repo/build/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/DefineAuthChallenge",
   "triggerTemplate": "DefineAuthChallenge.json.ejs",
   "triggerEventPath": "DefineAuthChallenge.event.json",
-  "roleName": "olgaAuthDefineAuthChallenge",
+  "roleName": "olgaAuthResourceDefineAuthChallenge",
   "skipEdit": true
 }

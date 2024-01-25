@@ -1,13 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
-  "analytics": {
-    "olgaAnalytics": {
-      "Id": "string",
-      "Region": "string",
-      "appName": "string"
-    }
-  },
   "auth": {
-    "olgaAuth": {
+    "olgaAuthResource": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -18,21 +11,21 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "olgaAuthCreateAuthChallenge": {
+    "olgaAuthResourceCreateAuthChallenge": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "olgaAuthDefineAuthChallenge": {
+    "olgaAuthResourceDefineAuthChallenge": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
     },
-    "olgaAuthVerifyAuthChallengeResponse": {
+    "olgaAuthResourceVerifyAuthChallengeResponse": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

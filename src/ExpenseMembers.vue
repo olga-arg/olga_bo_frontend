@@ -31,7 +31,6 @@
                 </MenuItems>
               </transition>
             </Menu>
-
             <div v-else v-on:click="selectPaymentsToggle" class="cursor-pointer">
               <button
                 v-on:click="exportPayments"
@@ -208,6 +207,7 @@ export default {
     getLastMonthName() {
       const date = new Date()
       const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Augosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+      if (date.getMonth() === 0) return monthNames[11]
       return monthNames[date.getMonth() - 1]
     },
     format([dateFrom, dateTo]) {
@@ -220,7 +220,6 @@ export default {
       const yearTo = dateTo.getFullYear()
 
       const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-
       this.filters.rangeDates = [dateFrom, dateTo]
 
       return `${dayFrom} ${monthNames[monthFrom]} ${yearFrom} - ${dayTo} ${monthNames[monthTo]} ${yearTo}`

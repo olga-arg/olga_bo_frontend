@@ -3,17 +3,18 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
-    "aws_cognito_identity_pool_id": "us-east-1:15472c16-455f-4bb8-9b12-baaaba460f02",
+    "aws_cognito_identity_pool_id": "us-east-1:c3a967fa-dd7e-4dfe-a839-4d2b9d15c1a6",
     "aws_cognito_region": "us-east-1",
-    "aws_user_pools_id": "us-east-1_C662eFRSU",
-    "aws_user_pools_web_client_id": "4674b8auqkff3i4ievetsslgua",
+    "aws_user_pools_id": "us-east-1_7Npn25c8F",
+    "aws_user_pools_web_client_id": "2n6n3uhscjdoeigvennmni74mt",
     "oauth": {},
     "aws_cognito_username_attributes": [
         "EMAIL"
     ],
     "aws_cognito_social_providers": [],
     "aws_cognito_signup_attributes": [
-        "EMAIL"
+        "EMAIL",
+        "NAME"
     ],
     "aws_cognito_mfa_configuration": "OFF",
     "aws_cognito_mfa_types": [
@@ -28,20 +29,10 @@ const awsmobile = {
     ],
     "aws_user_files_s3_bucket": "prod-olga-backend-payments222643-dev",
     "aws_user_files_s3_bucket_region": "us-east-1",
-    "aws_mobile_analytics_app_id": "40d2711f58974b3796b02fded81701b9",
-    "aws_mobile_analytics_app_region": "us-east-1",
     "Analytics": {
         "AWSPinpoint": {
             "appId": "40d2711f58974b3796b02fded81701b9",
             "region": "us-east-1"
-        }
-    },
-    "Notifications": {
-        "Push": {
-            "AWSPinpoint": {
-                "appId": "40d2711f58974b3796b02fded81701b9",
-                "region": "us-east-1"
-            }
         }
     }
 };

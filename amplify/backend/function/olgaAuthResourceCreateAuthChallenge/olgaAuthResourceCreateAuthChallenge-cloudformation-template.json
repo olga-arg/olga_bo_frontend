@@ -2,6 +2,10 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.1.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
+    "CHALLENGEANSWER": {
+      "Type": "String",
+      "Default": ""
+    },
     "modules": {
       "Type": "String",
       "Default": "",
@@ -63,12 +67,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgaAuthDefineAuthChallenge",
+            "olgaAuthResourceCreateAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgaAuthDefineAuthChallenge",
+                  "olgaAuthResourceCreateAuthChallenge",
                   "-",
                   {
                     "Ref": "env"
@@ -88,6 +92,9 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "CHALLENGEANSWER": {
+              "Ref": "CHALLENGEANSWER"
             }
           }
         },
@@ -115,12 +122,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgaAuthDefineAuthChallenge",
+            "olgaAuthResourceCreateAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgaAuthDefineAuthChallenge",
+                  "olgaAuthResourceCreateAuthChallenge",
                   "-",
                   {
                     "Ref": "env"

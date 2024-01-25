@@ -13,21 +13,35 @@
       "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-olga-dev-222643-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
+      "analytics": {
+        "Pinpoint": {
+          "Id": "40d2711f58974b3796b02fded81701b9",
+          "Name": "olgaAnalytics-dev",
+          "Region": "us-east-1"
+        }
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Id": "40d2711f58974b3796b02fded81701b9",
+          "Name": "olgaAnalytics-dev",
+          "Region": "us-east-1"
+        }
+      },
       "auth": {
-        "olgaAuth": {}
+        "olgaAuthResource": {}
       },
       "function": {
-        "olgaAuthCreateAuthChallenge": {
+        "olgaAuthResourceCreateAuthChallenge": {
           "deploymentBucketName": "amplify-olga-dev-222643-deployment",
-          "s3Key": "amplify-builds/olgaAuthCreateAuthChallenge-66713673547041627748-build.zip"
+          "s3Key": "amplify-builds/olgaAuthResourceCreateAuthChallenge-50546650476875697a47-build.zip"
         },
-        "olgaAuthDefineAuthChallenge": {
+        "olgaAuthResourceDefineAuthChallenge": {
           "deploymentBucketName": "amplify-olga-dev-222643-deployment",
-          "s3Key": "amplify-builds/olgaAuthDefineAuthChallenge-315a6d336d34392f5174-build.zip"
+          "s3Key": "amplify-builds/olgaAuthResourceDefineAuthChallenge-4176763549714c6d3936-build.zip"
         },
-        "olgaAuthVerifyAuthChallengeResponse": {
+        "olgaAuthResourceVerifyAuthChallengeResponse": {
           "deploymentBucketName": "amplify-olga-dev-222643-deployment",
-          "s3Key": "amplify-builds/olgaAuthVerifyAuthChallengeResponse-6a6f49654f6552507a78-build.zip"
+          "s3Key": "amplify-builds/olgaAuthResourceVerifyAuthChallengeResponse-77356745764838426464-build.zip"
         }
       },
       "storage": {

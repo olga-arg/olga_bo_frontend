@@ -29,6 +29,20 @@
                   data-form-type=""
                   required
                 />
+                <!-- <input
+                  v-model="cuit"
+                  class="block w-full h-14 border focus:outline-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 sm:text-sm sm:leading-6"
+                  :class="{ 'border-yellow-300 border-2': cuit !== changedFields.cuit }"
+                  placeholder="Cuit"
+                  aria-label="Search components"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-autocomplete="list"
+                  tabindex="0"
+                  data-form-type=""
+                  required
+                /> -->
+
                 <vue-date-picker
                   v-model="expenseDate"
                   auto-apply
@@ -55,7 +69,7 @@
                       leave-from-class="transform opacity-100 scale-100"
                       leave-to-class="transform opacity-0 scale-95"
                     >
-                      <MenuItems class="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <MenuItems class="left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div class="py-1">
                           <MenuItem v-slot="{ active }" v-on:click="selectCurrency('ARS $')">
                             <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">ARS $</a>
@@ -79,7 +93,7 @@
                 <Menu as="div" class="relative inline-block text-left">
                   <div>
                     <MenuButton
-                      class="inline-flex w-full h-14 py-4 pl-4 pr-12 text-base rounded-md bg-white font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                      class="inline-flex w-full h-14 py-4 pl-4 absolute pr-12 text-base rounded-md bg-white font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                       :class="{ 'border-yellow-300 border-2 rounded-md': category != changedFields.category }"
                     >
                       {{ category }}
@@ -168,6 +182,7 @@ export default {
     return {
       changedFields: {
         shopName: '',
+        // cuit: '',
         total: '',
         category: '',
         expenseDate: '',
@@ -176,6 +191,7 @@ export default {
       imageUrl: '',
       loading: true,
       shopName: '',
+      // cuit: '',
       total: '',
       currency: 'ARS $',
       category: '',
@@ -210,6 +226,8 @@ export default {
   mounted() {
     this.shopName = this.expense.shop_name
     this.changedFields.shopName = this.expense.shop_name
+    // this.cuit = this.expense.cuit
+    // this.changedFields.cuit = this.expense.cuit
     this.total = this.expense.amount
     this.changedFields.total = this.expense.amount
     this.category = this.expense.category
@@ -229,6 +247,7 @@ export default {
       // make a request if the fields are different from the changedFields
       if (
         this.shopName == this.changedFields.shopName &&
+        // this.cuit == this.changedFields.cuit &&
         this.total == this.changedFields.total &&
         this.category == this.changedFields.category &&
         this.expenseDate == this.changedFields.expenseDate &&

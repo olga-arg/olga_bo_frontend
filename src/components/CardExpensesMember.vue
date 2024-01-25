@@ -24,7 +24,7 @@
           '#00BCD4', // Cian claro
           '#03A9F4', // Azul claro
           '#2196F3', // Azul
-        ][Math.floor(expense.User.email.charCodeAt(2) % 10)],
+        ][Math.floor(expense.User.email.charCodeAt(5) % 10)],
       }"
       className="flex rounded-full w-10 h-10 text-white text-md items-center justify-center"
     >
@@ -65,7 +65,7 @@
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 4H5C3.9 4 3 4.9 3 6V18C3 19.1 3.9 20 5 20H19C20.1 20 21 19.1 21 18V6C21 4.9 20.1 4 19 4ZM19 18H5V8H19V18ZM19 6H5V6.01L5 6Z" fill="#8D8B96" />
           </svg>
-          <p class="text-[#8D8B96] text-lg pl-1">{{ new Date(expense.created).toDateString('es-AR', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) }}</p>
+          <p class="text-[#8D8B96] text-lg pl-1">{{ new Date(expense.created).toLocaleDateString('es-AR', {}) }}</p>
         </div>
         <div class="flex items-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +91,9 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <p className="text-right">$ {{ expense.amount || 0 }},00</p>
+            <p className="text-right">
+              {{ expense.amount.toString().includes('.') ? `${expense.amount.toLocaleString()}` : `${expense.amount.toLocaleString()}.00` }}
+            </p>
           </div>
         </div>
       </div>

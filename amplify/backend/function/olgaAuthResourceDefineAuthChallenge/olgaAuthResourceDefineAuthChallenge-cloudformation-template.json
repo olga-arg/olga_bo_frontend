@@ -2,10 +2,6 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.1.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
-    "CHALLENGEANSWER": {
-      "Type": "String",
-      "Default": ""
-    },
     "modules": {
       "Type": "String",
       "Default": "",
@@ -67,12 +63,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgaAuthCreateAuthChallenge",
+            "olgaAuthResourceDefineAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgaAuthCreateAuthChallenge",
+                  "olgaAuthResourceDefineAuthChallenge",
                   "-",
                   {
                     "Ref": "env"
@@ -92,9 +88,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "CHALLENGEANSWER": {
-              "Ref": "CHALLENGEANSWER"
             }
           }
         },
@@ -122,12 +115,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "olgaAuthCreateAuthChallenge",
+            "olgaAuthResourceDefineAuthChallenge",
             {
               "Fn::Join": [
                 "",
                 [
-                  "olgaAuthCreateAuthChallenge",
+                  "olgaAuthResourceDefineAuthChallenge",
                   "-",
                   {
                     "Ref": "env"
@@ -197,33 +190,6 @@
           ]
         }
       }
-    },
-    "CustomLambdaExecutionPolicy": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "custom-lambda-execution-policy",
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "ses:SendEmail",
-                "ses:SendRawEmail"
-              ],
-              "Resource": [
-                "*"
-              ]
-            }
-          ]
-        },
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ]
-      },
-      "DependsOn": "LambdaExecutionRole"
     }
   },
   "Outputs": {

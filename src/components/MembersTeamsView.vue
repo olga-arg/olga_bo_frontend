@@ -8,16 +8,16 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/axios'
 import CardMembersTeam from './CardMembersTeam.vue'
 import Share from './Share.vue'
 
 const getTeams = async () => {
-  const response = await axios.get('https://api.olga.lat/api/teams')
+  const response = await axios.get('/teams')
   return response.data
 }
 const getUsers = async () => {
-  const response = await axios.get('https://api.olga.lat/api/users')
+  const response = await axios.get('/users')
   return response.data
 }
 

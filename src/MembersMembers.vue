@@ -195,7 +195,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import Sidebar from './components/Sidebar.vue'
 import Navbar from './components/Navbar.vue'
 import MembersMembersView from './components/MembersMembersView.vue'
-import axios from 'axios'
+import axios from '@/axios'
 import { ref } from 'vue'
 
 export default {
@@ -283,7 +283,7 @@ export default {
       this.statusLoading = true
       this.showStatus400 = false
       try {
-        const response = await axios.post('https://api.olga.lat/api/users', {
+        const response = await axios.post('/users', {
           name: this.name,
           surname: this.surname,
           email: this.email,
@@ -309,7 +309,7 @@ export default {
     },
   },
   async mounted() {
-    this.teams = await axios.get('https://api.olga.lat/api/teams').then((response) => {
+    this.teams = await axios.get('/teams').then((response) => {
       // this.teams must be an array of strings with the name of the teams
       return response.data.teams.map((team) => {
         return team.name

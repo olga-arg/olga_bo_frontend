@@ -7,11 +7,11 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/axios'
 import CardExpensesTeam from '@/components/CardExpensesTeam.vue'
 import ExpenseMembers from '../ExpenseMembers.vue'
 const getAllExpenses = async () => {
-  const response = await axios.get('https://api.olga.lat/api/teams')
+  const response = await axios.get('/teams')
   return response.data
 }
 

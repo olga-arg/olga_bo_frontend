@@ -13,12 +13,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/axios'
 import CardExpensesMember from '@/components/CardExpensesMember.vue'
 import EditExpense from './EditExpense.vue'
 
 const getAllExpenses = async () => {
-  const response = await axios.get('https://api.olga.lat/api/payments')
+  const response = await axios.get('/payments')
   return response.data
 }
 

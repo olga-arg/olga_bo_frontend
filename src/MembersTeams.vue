@@ -107,7 +107,7 @@
 import Sidebar from './components/Sidebar.vue'
 import Navbar from './components/Navbar.vue'
 import MembersTeamsView from './components/MembersTeamsView.vue'
-import axios from 'axios'
+import axios from '@/axios'
 import { ref } from 'vue'
 
 export default {
@@ -166,7 +166,7 @@ export default {
       this.statusLoading = true
       this.showStatus400 = false
       try {
-        const response = await axios.post('https://api.olga.lat/api/teams', {
+        const response = await axios.post('/teams', {
           name: this.name,
           annual_budget: this.annualBudget,
         })

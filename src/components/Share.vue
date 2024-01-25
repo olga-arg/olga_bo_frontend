@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/axios'
 
 export default {
   name: 'Share',
@@ -136,7 +136,7 @@ export default {
       this.showUsers = true
     },
     async toReviewer(team, user) {
-      let url = 'https://api.olga.lat/api/teams/' + team.id
+      let url = '/teams/' + team.id
       const response = await axios.patch(url, {
         reviewer_id: user.id,
       })
@@ -151,7 +151,7 @@ export default {
       })
     },
     async addToTeam(team, user) {
-      let url = 'https://api.olga.lat/api/teams/' + team.id
+      let url = '/teams/' + team.id
       const response = await axios.patch(url, {
         add_users: [user.id],
       })
@@ -163,7 +163,7 @@ export default {
       team.users.push(user)
     },
     async removeFromTeam(team, user) {
-      let url = 'https://api.olga.lat/api/teams/' + team.id
+      let url = '/teams/' + team.id
       const response = await axios.patch(url, {
         remove_users: [user.id],
       })

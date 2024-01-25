@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/axios'
 
 export default {
   name: 'EditMember',
@@ -94,7 +94,7 @@ export default {
       this.new_is_admin = !this.new_is_admin
     },
     async updateUser(user) {
-      let url = 'https://api.olga.lat/api/users/' + user.id
+      let url = '/users/' + user.id
       // validate if the values are different from the original ones to make the request
       if (
         this.new_monthly_limit == this.formatNumberWithDots(user.monthly_limit.toString()) &&
@@ -115,7 +115,7 @@ export default {
       this.$emit('close')
     },
     async addToTeam(team, user) {
-      let url = 'https://api.olga.lat/api/teams/' + team.id
+      let url = '/teams/' + team.id
       const response = await axios.patch(url, {
         add_users: [user.id],
       })

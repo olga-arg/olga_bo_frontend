@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/axios'
 import CardMembersMember from './CardMembersMember.vue'
 import EditMember from './EditMember.vue'
 
 const getAllMembers = async () => {
-  const response = await axios.get('https://api.olga.lat/api/users')
+  const response = await axios.get('/users')
   return response.data
 }
 

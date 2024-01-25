@@ -174,7 +174,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import AsyncImage from './AsyncImage.vue'
 import moment from 'moment'
-import axios from 'axios'
+import axios from '@/axios'
 
 export default {
   name: 'Share',
@@ -265,7 +265,7 @@ export default {
         currency: this.currency,
         status: this.status,
       }
-      let response = await axios.patch(`https://api.olga.lat/api/payments/${this.id}`, data)
+      let response = await axios.patch(`/payments/${this.id}`, data)
       // update the expense that we receive via props with the new values
       if (response.status == 200) Object.assign(this.expense, data)
       this.$emit('updateExpense', this.expense)

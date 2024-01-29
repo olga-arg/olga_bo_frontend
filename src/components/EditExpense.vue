@@ -261,7 +261,7 @@ export default {
         shop_name: this.shopName,
         amount: Number(this.total),
         category: this.category,
-        created: this.expenseDate,
+        date: this.expenseDate,
         currency: this.currency,
         status: this.status,
       }

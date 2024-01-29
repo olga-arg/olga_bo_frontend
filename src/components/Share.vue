@@ -50,7 +50,7 @@
 
             <!-- Termina -->
             <div class="py-2">Miembros</div>
-            <a v-if="!this.team.users.length" class="flex justify-center text-gray-400 text-sm">Sin miembros</a>
+            <a v-if="!this.team.users" class="flex justify-center text-gray-400 text-sm">Sin miembros</a>
             <div v-for="user in team?.users" class="flex justify-between items-center pt-2">
               <div class="flex items-center">
                 <div class="h-8 w-8 bg-red-300 rounded-full mr-5"></div>
@@ -93,7 +93,7 @@ export default {
   name: 'Share',
   data() {
     let usersInsideTeam = JSON.parse(JSON.stringify(this.team?.users))
-    if (!this.team.users) {
+    if (!this.team?.users) {
       this.team.users = []
     }
     if (usersInsideTeam != null) {
@@ -167,10 +167,9 @@ export default {
       const response = await axios.patch(url, {
         remove_users: [user.id],
       })
-      // delete the user from the list of usersNotInTeam
-      this.usersNotInTeam = this.usersNotInTeam.filter((userNotInTeam) => {
-        return userNotInTeam.id !== user.id
-      })
+      // add the user from the list of usersNotInTeam
+      this.usersNotInTeam.push(user)
+
       // and add the user to the list of users inside the team
       team.users.splice(team.users.indexOf(user), 1)
     },

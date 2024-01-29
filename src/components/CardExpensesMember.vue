@@ -65,7 +65,7 @@
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 4H5C3.9 4 3 4.9 3 6V18C3 19.1 3.9 20 5 20H19C20.1 20 21 19.1 21 18V6C21 4.9 20.1 4 19 4ZM19 18H5V8H19V18ZM19 6H5V6.01L5 6Z" fill="#8D8B96" />
           </svg>
-          <p class="text-[#8D8B96] text-lg pl-1">{{ new Date(expense.created).toLocaleDateString('es-AR', {}) }}</p>
+          <p class="text-[#8D8B96] text-lg pl-1">{{ new Date(expense.date).toLocaleDateString('es-AR', {}) }}</p>
         </div>
         <div class="flex items-center">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

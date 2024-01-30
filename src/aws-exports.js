@@ -27,7 +27,7 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
-    "aws_user_files_s3_bucket": "prod-olga-backend-payments155150-prod",
+    "aws_user_files_s3_bucket": "olga-backend-payments155150-prod",
     "aws_user_files_s3_bucket_region": "us-east-1"
 };
 

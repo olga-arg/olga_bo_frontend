@@ -48,5 +48,41 @@
         "olgaStorage": {}
       }
     }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-olga-prod-155150-authRole",
+      "UnauthRoleArn": "arn:aws:iam::588257415519:role/amplify-olga-prod-155150-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::588257415519:role/amplify-olga-prod-155150-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-olga-prod-155150-deployment",
+      "UnauthRoleName": "amplify-olga-prod-155150-unauthRole",
+      "StackName": "amplify-olga-prod-155150",
+      "StackId": "arn:aws:cloudformation:us-east-1:588257415519:stack/amplify-olga-prod-155150/783ec610-bed7-11ee-91c7-12ff838bb83f",
+      "AmplifyAppId": "d3mq1agoa2zosw",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-olga-prod-155150-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "olgaAuthResource": {}
+      },
+      "function": {
+        "olgaAuthResourceCreateAuthChallenge": {
+          "deploymentBucketName": "amplify-olga-prod-155150-deployment",
+          "s3Key": "amplify-builds/olgaAuthResourceCreateAuthChallenge-50546650476875697a47-build.zip"
+        },
+        "olgaAuthResourceDefineAuthChallenge": {
+          "deploymentBucketName": "amplify-olga-prod-155150-deployment",
+          "s3Key": "amplify-builds/olgaAuthResourceDefineAuthChallenge-4176763549714c6d3936-build.zip"
+        },
+        "olgaAuthResourceVerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-olga-prod-155150-deployment",
+          "s3Key": "amplify-builds/olgaAuthResourceVerifyAuthChallengeResponse-77356745764838426464-build.zip"
+        }
+      },
+      "storage": {
+        "olgaStorage": {}
+      }
+    }
   }
 }

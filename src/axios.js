@@ -2,9 +2,9 @@
 
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
-
+console.log(import.meta.env)
 const instance = axios.create({
-  baseURL: 'https://api.olga.lat/api', // Reemplaza esto con la URL base de tu API
+  baseURL: import.meta.env.VITE_BASE_URL, // Reemplaza esto con la URL base de tu API
 })
 
 // Interceptor para agregar el token de acceso a todas las solicitudes

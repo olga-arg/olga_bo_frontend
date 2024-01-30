@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite --host",
     "domain": "cp CNAME dist/",
-    "build": "vite build",
+    "build_dev": "vite build --mode development",
+    "build_prod": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -2,7 +2,7 @@
 
 import axios from 'axios'
 import VueCookies from 'vue-cookies'
-console.log(import.meta.env)
+
 const instance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL, // Reemplaza esto con la URL base de tu API
 })

@@ -27,6 +27,10 @@ coverage
 *.sln
 *.sw?
 
+# Added to maintain amplify env for different stages (branches)
+amplify/backend/backend-config.json
+src/aws-exports.js
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*

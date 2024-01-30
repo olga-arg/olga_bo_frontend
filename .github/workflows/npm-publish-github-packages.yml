@@ -32,4 +32,4 @@ jobs:
 
       - name: Deploy to AWS S3
         run: |
-          aws s3 sync . s3://olga-bo-frontend-dev --delete
+          aws s3 sync dist/ s3://olga-bo-frontend-dev --delete

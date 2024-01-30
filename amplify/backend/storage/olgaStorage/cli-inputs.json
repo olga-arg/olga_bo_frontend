@@ -1,7 +1,7 @@
 {
   "resourceName": "olgaStorage",
   "policyUUID": "2339d429",
-  "bucketName": "prod-olga-backend-payments",
+  "bucketName": "olga-backend-payments",
   "storageAccess": "auth",
   "guestAccess": [],
   "authAccess": [

@@ -59,6 +59,54 @@
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true
+    "useEnabledMfas": true,
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "olgaAuthResourceCreateAuthChallenge",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      },
+      {
+        "category": "function",
+        "resourceName": "olgaAuthResourceDefineAuthChallenge",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      },
+      {
+        "category": "function",
+        "resourceName": "olgaAuthResourceVerifyAuthChallengeResponse",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
+    "permissions": [],
+    "authTriggerConnections": [
+      "{\"triggerType\":\"CreateAuthChallenge\",\"lambdaFunctionName\":\"olgaAuthResourceCreateAuthChallenge\"}",
+      "{\"triggerType\":\"DefineAuthChallenge\",\"lambdaFunctionName\":\"olgaAuthResourceDefineAuthChallenge\"}",
+      "{\"triggerType\":\"VerifyAuthChallengeResponse\",\"lambdaFunctionName\":\"olgaAuthResourceVerifyAuthChallengeResponse\"}"
+    ]
   }
 }

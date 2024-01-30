@@ -14,6 +14,7 @@ import EditMember from './EditMember.vue'
 
 const getAllMembers = async () => {
   const response = await axios.get('/users')
+  console.log(response.data)
   return response.data
 }
 
@@ -48,6 +49,7 @@ export default {
       let response = []
       let filter = []
       filter = this.allMembers.users
+      console.log(filter)
       if (this.filters.isAdmin) {
         filter = filter.filter((member) => {
           return member.isAdmin

@@ -198,29 +198,6 @@ export default {
       expenseDate: '',
       status: 0,
       id: '',
-      categories: [
-        'Comidas y Bebidas',
-        'Comisiones y Cargos',
-        'Cuentas y Servicios',
-        'Donaciones',
-        'Educación',
-        'Electrónica',
-        'Entretenimiento',
-        'Hogar',
-        'Impuestos',
-        'Indumentaria',
-        'Inversiones',
-        'Mascotas',
-        'Otros',
-        'Préstamos y financiación',
-        'Salud y cuidado personal',
-        'Servicios profesionales',
-        'Shopping',
-        'Supermercado',
-        'Suscripciones',
-        'Transporte',
-        'Viajes',
-      ],
     }
   },
   mounted() {
@@ -309,6 +286,7 @@ export default {
   },
   props: {
     expense: Object,
+    categories: Array,
   },
 }
 </script>

@@ -1,6 +1,5 @@
 <template>
   <Navbar></Navbar>
-
   <div className="bg-[#F4F4F4]">
     <Sidebar currentRouteName="teams"></Sidebar>
     <div class="p-4 sm:ml-64">
@@ -101,7 +100,7 @@
         </div>
         <Suspense>
           <template #default>
-            <ExpenseMembersView :filters="filters" :selectPayments="this.selectPayments" ref="expenseMembersView"></ExpenseMembersView>
+            <ExpenseMembersView :filters="filters" :selectPayments="this.selectPayments" :categories="categoriesMap" ref="expenseMembersView"></ExpenseMembersView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -120,11 +119,14 @@ import Navbar from './components/Navbar.vue'
 import ExpenseMembersView from './components/ExpenseMembersView.vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths } from 'date-fns'
+import axios from '@/axios'
 
 export default {
   name: 'App',
   data() {
     return {
+      categoriesMap: {},
+      categories: [],
       category: 'Categoria',
       monthName: '',
       lastMonthName: '',
@@ -136,30 +138,6 @@ export default {
         category: '',
         userEmails: [],
       },
-      categories: [
-        'Categoria',
-        'Comidas y Bebidas',
-        'Comisiones y Cargos',
-        'Cuentas y Servicios',
-        'Donaciones',
-        'Educación',
-        'Electrónica',
-        'Entretenimiento',
-        'Hogar',
-        'Impuestos',
-        'Indumentaria',
-        'Inversiones',
-        'Mascotas',
-        'Otros',
-        'Préstamos y financiación',
-        'Salud y cuidado personal',
-        'Servicios profesionales',
-        'Shopping',
-        'Supermercado',
-        'Suscripciones',
-        'Transporte',
-        'Viajes',
-      ],
     }
   },
   computed: {
@@ -181,6 +159,11 @@ export default {
     },
   },
   methods: {
+    async getCategories() {
+      const response = await axios.get('/company/categories')
+      this.categoriesMap = response.data
+      this.categories = Object.keys(response.data) || []
+    },
     loadExpensesBasedOnQueryParams() {
       const userEmails = this.$route.query.userEmails
 
@@ -295,7 +278,8 @@ export default {
       this.filters.category = e
     },
   },
-  mounted: function () {
+  async mounted() {
+    await this.getCategories()
     this.loadExpensesBasedOnQueryParams()
     this.monthName = this.getMonthName()
     this.lastMonthName = this.getLastMonthName()

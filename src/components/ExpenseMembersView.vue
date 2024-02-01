@@ -1,5 +1,5 @@
 <template>
-  <EditExpense @close="callback" v-if="editExpense" :expense="expenseSelected"></EditExpense>
+  <EditExpense @close="callback" v-if="editExpense" :expense="expenseSelected" :categories="Object.keys(this.categories)"></EditExpense>
   <div v-for="expenses in chunkedAllExpenses" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
     <div v-for="expense in expenses" :key="expense.created" class="bg-white rounded-lg flex p-5 w-full">
       <CardExpensesMember
@@ -18,11 +18,6 @@ import axios from '@/axios'
 import CardExpensesMember from '@/components/CardExpensesMember.vue'
 import EditExpense from './EditExpense.vue'
 
-const getCategories = async () => {
-  const response = await axios.get('/company/categories')
-  return response.data
-}
-
 const getAllExpenses = async () => {
   const response = await axios.get('/payments')
   return response.data
@@ -32,13 +27,11 @@ export default {
   name: 'MyAsyncComponent',
   async setup() {
     const allExpenses = await getAllExpenses()
-    const categories = await getCategories()
-    return { allExpenses, categories }
+    return { allExpenses }
   },
   data() {
     return {
       allExpenses: [],
-      categories: {},
       selectedExpenses: [],
       expenseSelected: null,
       editExpense: false,
@@ -108,6 +101,7 @@ export default {
   props: {
     selectPayments: Boolean,
     filters: Object,
+    categories: Object,
   },
 }
 </script>

@@ -6,6 +6,7 @@
         :selectPayments="this.selectPayments"
         :isSelected="selectedExpenses.includes(expense)"
         :expense="expense"
+        :category="this.categories[expense.category]"
         v-on:click="addToSelection(expense)"
       ></CardExpensesMember>
     </div>
@@ -17,6 +18,11 @@ import axios from '@/axios'
 import CardExpensesMember from '@/components/CardExpensesMember.vue'
 import EditExpense from './EditExpense.vue'
 
+const getCategories = async () => {
+  const response = await axios.get('/company/categories')
+  return response.data
+}
+
 const getAllExpenses = async () => {
   const response = await axios.get('/payments')
   return response.data
@@ -26,11 +32,13 @@ export default {
   name: 'MyAsyncComponent',
   async setup() {
     const allExpenses = await getAllExpenses()
-    return { allExpenses }
+    const categories = await getCategories()
+    return { allExpenses, categories }
   },
   data() {
     return {
       allExpenses: [],
+      categories: {},
       selectedExpenses: [],
       expenseSelected: null,
       editExpense: false,

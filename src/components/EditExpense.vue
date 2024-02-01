@@ -152,10 +152,9 @@
                   </button>
                 </div>
               </div>
-
               <Suspense>
                 <template #default>
-                  <AsyncImage :receiptImageKey="expense.receipt_image_key" />
+                  <AsyncImage :receiptImageKey="expense.receiptImageKey" />
                 </template>
                 <template #fallback>
                   <!-- Indicador de carga mientras se carga la imagen -->

@@ -1,14 +1,9 @@
 <!-- AsyncImageComponent.vue -->
 <template>
-  <div v-if="error">
-    <p>error.</p>
+  <div v-if="!loading" class="zoom-container relative overflow-hidden h-96 w-60 rounded-lg select-none" @mousemove="handleMouseMove" @mouseleave="resetZoom" @click="toggleZoom">
+    <img class="zoom-image absolute pointer-events-none" :src="imageUrl" />
   </div>
-  <div v-else>
-    <div v-if="!loading" class="zoom-container relative overflow-hidden h-96 w-60 rounded-lg select-none" @mousemove="handleMouseMove" @mouseleave="resetZoom" @click="toggleZoom">
-      <img class="zoom-image absolute pointer-events-none" :src="imageUrl" />
-    </div>
-    <div v-else class="animate-pulse bg-gray-300 h-96 w-60 rounded-lg"></div>
-  </div>
+  <div v-else class="animate-pulse bg-gray-300 h-96 w-60 rounded-lg"></div>
 </template>
 
 <script setup>
@@ -22,23 +17,17 @@ const props = defineProps({
 const imageUrl = ref('')
 const loading = ref(true)
 const zoomed = ref(false)
-let error = ref(false)
 
 onMounted(async () => {
   try {
     if (!props.receiptImageKey || props.receiptImageKey === '' || !props.receiptImageKey.includes('public/')) {
-      console.log('erorr.')
-      error = true
       throw new Error('No se ha proporcionado una clave de imagen')
     }
     const key = props.receiptImageKey.replace('public/', '')
     const signedURL = await Storage.get(key, { expires: 300 }) // 300 segundos de expiración
     imageUrl.value = signedURL
-    await new Promise((r) => setTimeout(r, 2000))
-
     loading.value = false
   } catch (error) {
-    this.error = true
     console.error('Error al obtener la URL firmada: ', error)
     loading.value = false
   }

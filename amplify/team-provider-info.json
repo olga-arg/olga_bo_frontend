@@ -19,7 +19,7 @@
       "function": {
         "olgaAuthResourceCreateAuthChallenge": {
           "deploymentBucketName": "amplify-olga-prod-155150-deployment",
-          "s3Key": "amplify-builds/olgaAuthResourceCreateAuthChallenge-50546650476875697a47-build.zip"
+          "s3Key": "amplify-builds/olgaAuthResourceCreateAuthChallenge-384e3847634b3655306d-build.zip"
         },
         "olgaAuthResourceDefineAuthChallenge": {
           "deploymentBucketName": "amplify-olga-prod-155150-deployment",

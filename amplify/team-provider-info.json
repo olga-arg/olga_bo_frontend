@@ -46,7 +46,7 @@
         },
         "olgaAuthResourcePostAuthentication": {
           "deploymentBucketName": "amplify-olga-dev-222643-deployment",
-          "s3Key": "amplify-builds/olgaAuthResourcePostAuthentication-6d4b307334744a6c364e-build.zip"
+          "s3Key": "amplify-builds/olgaAuthResourcePostAuthentication-524e7553733746715445-build.zip"
         }
       },
       "storage": {

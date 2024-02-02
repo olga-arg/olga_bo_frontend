@@ -38,7 +38,8 @@ exports.handler = async (event, context) => {
     InvocationType: 'RequestResponse', 
     Payload: JSON.stringify({
       company_id: event.request.userAttributes['name'],
-      email: event.request.userAttributes['email']
+      email: event.request.userAttributes['email'],
+      username: event.userName,
     })
   };
 

@@ -130,8 +130,10 @@
                 </Menu>
               </div>
             </div>
-            <button v-if="showSendInvite" v-on:click="sendInvite" className="w-full h-14 rounded-md text-md font-medium bg-[#62948F] text-white">Crear Miembro</button>
-            <div class="flex justify-center">
+            <button v-if="showSendInvite && !bulkUserCreation" v-on:click="sendInvite" className="w-full h-14 rounded-md text-md font-medium bg-[#62948F] text-white">
+              Crear Miembro
+            </button>
+            <div v-if="!statusLoading && !showStatus200" class="flex justify-center">
               <button class="text-blue-400 text-sm mt-2" v-on:click="bulkUserCreationToggle">Crear multiples usuarios</button>
             </div>
 

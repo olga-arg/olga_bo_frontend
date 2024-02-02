@@ -30,6 +30,15 @@
           "category": "function",
           "resourceName": "olgaAuthResourceVerifyAuthChallengeResponse",
           "triggerProvider": "Cognito"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "olgaAuthResourcePostAuthentication",
+          "triggerProvider": "Cognito"
         }
       ],
       "frontendAuthConfig": {
@@ -64,6 +73,11 @@
       "service": "Lambda"
     },
     "olgaAuthResourceDefineAuthChallenge": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "olgaAuthResourcePostAuthentication": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -105,6 +119,22 @@
         {
           "category": "function",
           "resourceName": "olgaAuthResourceDefineAuthChallenge"
+        }
+      ]
+    },
+    "AMPLIFY_function_olgaAuthResourcePostAuthentication_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "olgaAuthResourcePostAuthentication"
+        }
+      ]
+    },
+    "AMPLIFY_function_olgaAuthResourcePostAuthentication_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "olgaAuthResourcePostAuthentication"
         }
       ]
     },

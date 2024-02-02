@@ -1,0 +1,22 @@
+[
+  {
+    "Effect": "Allow",
+    "Action": [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ],
+    "Resource": [
+      "arn:aws:logs:*:*:*"
+    ]
+  },
+  {
+    "Effect": "Allow",
+    "Action": [
+      "lambda:InvokeFunction"
+    ],
+    "Resource": [
+      "arn:aws:lambda:sa-east-1:588257415519:function:olga-backend-dev-go-lambda-post-confirmation"
+    ]
+  }
+]

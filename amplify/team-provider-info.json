@@ -18,7 +18,8 @@
           "Name": "olgaAnalytics-dev",
           "Id": "deda04fb7ed24cc3b12e7a7ad519f07b",
           "Region": "us-east-1"
-        }
+        },
+        "olgaAnalytics": {}
       },
       "notifications": {
         "Pinpoint": {
@@ -42,6 +43,10 @@
         "olgaAuthResourceVerifyAuthChallengeResponse": {
           "deploymentBucketName": "amplify-olga-dev-222643-deployment",
           "s3Key": "amplify-builds/olgaAuthResourceVerifyAuthChallengeResponse-77356745764838426464-build.zip"
+        },
+        "olgaAuthResourcePostAuthentication": {
+          "deploymentBucketName": "amplify-olga-dev-222643-deployment",
+          "s3Key": "amplify-builds/olgaAuthResourcePostAuthentication-6d4b307334744a6c364e-build.zip"
         }
       },
       "storage": {

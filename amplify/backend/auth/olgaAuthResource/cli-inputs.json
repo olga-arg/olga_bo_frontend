@@ -51,6 +51,9 @@
       "DefineAuthChallenge": [
         "boilerplate-define-challenge"
       ],
+      "PostAuthentication": [
+        "custom"
+      ],
       "VerifyAuthChallengeResponse": [
         "boilerplate-verify"
       ]
@@ -100,13 +103,22 @@
           "Arn",
           "Name"
         ]
+      },
+      {
+        "category": "function",
+        "resourceName": "olgaAuthResourcePostAuthentication",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
       }
     ],
     "permissions": [],
-    "authTriggerConnections": [
-      "{\"triggerType\":\"CreateAuthChallenge\",\"lambdaFunctionName\":\"olgaAuthResourceCreateAuthChallenge\"}",
-      "{\"triggerType\":\"DefineAuthChallenge\",\"lambdaFunctionName\":\"olgaAuthResourceDefineAuthChallenge\"}",
-      "{\"triggerType\":\"VerifyAuthChallengeResponse\",\"lambdaFunctionName\":\"olgaAuthResourceVerifyAuthChallengeResponse\"}"
-    ]
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"CreateAuthChallenge\",\n    \"lambdaFunctionName\": \"olgaAuthResourceCreateAuthChallenge\"\n  },\n  {\n    \"triggerType\": \"DefineAuthChallenge\",\n    \"lambdaFunctionName\": \"olgaAuthResourceDefineAuthChallenge\"\n  },\n  {\n    \"triggerType\": \"PostAuthentication\",\n    \"lambdaFunctionName\": \"olgaAuthResourcePostAuthentication\"\n  },\n  {\n    \"triggerType\": \"VerifyAuthChallengeResponse\",\n    \"lambdaFunctionName\": \"olgaAuthResourceVerifyAuthChallengeResponse\"\n  }\n]",
+    "authProviders": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    }
   }
 }

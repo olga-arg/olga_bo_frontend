@@ -32,6 +32,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "olgaAuthResourcePostAuthentication": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "olgaAuthResourceVerifyAuthChallengeResponse": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

@@ -36,7 +36,7 @@
               tabindex="-1"
             >
               <div v-if="showUsers" class="py-1" role="none">
-                <div v-for="user in usersNotInTeam.slice(0, 5)" class="flex justify-between items-center py-2 hover:bg-slate-50" v-on:click="addToTeam(team, user)">
+                <div v-for="user in usersNotInTeam.slice(0, 5)" class="cursor-pointer flex justify-between items-center py-2 hover:bg-slate-50" v-on:click="addToTeam(team, user)">
                   <div class="flex items-center">
                     <div class="h-8 w-8 bg-red-300 rounded-full mx-4"></div>
                     <div class="flex-col">

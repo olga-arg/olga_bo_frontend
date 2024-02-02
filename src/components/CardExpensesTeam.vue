@@ -39,7 +39,5 @@
 </template>
 
 <script setup>
-import exp from 'constants'
-
 defineProps({ expense: Object })
 </script>

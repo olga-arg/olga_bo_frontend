@@ -8,7 +8,7 @@
         <div class="flex justify-between h-20 mb-4">
           <div class="flex flex-col gap-2">
             <p class="font-semibold text-2xl">Balance</p>
-            <p className="text-lg">Gastos Totales $ 1.340.020,00</p>
+            <p className="text-lg">Gastos Totales $ {{ totalBalance() }}</p>
           </div>
           <div class="flex flex-col gap-1">
             <p className="text-gray-500">Filtrar:</p>
@@ -33,7 +33,7 @@
 
         <Suspense>
           <template #default>
-            <ExpenseTeamsView></ExpenseTeamsView>
+            <ExpenseTeamsView :expenses="this.expenses"></ExpenseTeamsView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -50,11 +50,12 @@
 import Sidebar from './components/Sidebar.vue'
 import Navbar from './components/Navbar.vue'
 import ExpenseTeamsView from './components/ExpenseTeamsView.vue'
-
+import axios from '@/axios'
 export default {
   name: 'App',
   data() {
     return {
+      expenses: [],
       filters: {
         name: this.employeeNameFilter,
         isAdmin: false,
@@ -67,6 +68,20 @@ export default {
       }, // Could be done better
     }
   },
+  methods: {
+    async getAllExpenses() {
+      const response = await axios.get('/teams')
+      return response.data.teams
+    },
+    totalBalance() {
+      const balance = this.expenses.reduce((acc, expense) => acc + expense.monthly_spending, 0)
+      return balance
+    },
+  },
+  async mounted() {
+    this.expenses = await this.getAllExpenses()
+  },
+
   components: {
     Sidebar,
     Navbar,

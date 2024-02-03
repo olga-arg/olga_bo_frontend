@@ -69,8 +69,10 @@ export default {
           return new Date(expense.created) >= new Date(this.filters.rangeDates[0]) && new Date(expense.created) <= new Date(this.filters.rangeDates[1])
         })
       }
-      if (this.filters.pending) {
-        filter = filter.filter((expense) => expense.status === 0)
+      if (this.filters.status) {
+        if (this.filters.status === 'Pending') filter = filter.filter((expense) => expense.status === 0)
+        else if (this.filters.status === 'Approved') filter = filter.filter((expense) => expense.status === 1)
+        else if (this.filters.status === 'Exported') filter = filter.filter((expense) => expense.status === 5)
       }
 
       if (this.filters.userEmails && this.filters.userEmails.length > 0) {

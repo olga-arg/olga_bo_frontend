@@ -36,7 +36,7 @@
                 v-on:click="changeRol"
                 class="ring-pink-300 inline-flex w-24 justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset hover:bg-gray-50"
               >
-                Admin
+                Revisor
               </button>
               <button
                 v-else
@@ -62,6 +62,7 @@
                 Guardar
               </button>
             </div>
+            <div v-if="error" class="text-red-500 text-center pt-5">{{ error }}</div>
           </div>
         </div>
       </div>
@@ -87,6 +88,7 @@ export default {
       sendFilters: {
         name: '',
       }, // Could be done better
+      error: '',
     }
   },
   methods: {
@@ -104,28 +106,23 @@ export default {
         this.$emit('close')
         return
       }
-      const response = await axios.patch(url, {
-        purchase_limit: Number(this.new_purchase_limit.replace(/[^\d]/g, '')),
-        monthly_limit: Number(this.new_monthly_limit.replace(/[^\d]/g, '')),
-        is_admin: this.new_is_admin,
-      })
+      try {
+        const response = await axios.patch(url, {
+          purchase_limit: Number(this.new_purchase_limit.replace(/[^\d]/g, '')),
+          monthly_limit: Number(this.new_monthly_limit.replace(/[^\d]/g, '')),
+          is_admin: this.new_is_admin,
+        })
+      } catch (error) {
+        this.error = error.response.data
+        return
+      }
+
       this.user.purchase_limit = Number(this.new_purchase_limit.replace(/[^\d]/g, ''))
       this.user.monthly_limit = Number(this.new_monthly_limit.replace(/[^\d]/g, ''))
       this.user.isAdmin = this.new_is_admin
       this.$emit('close')
     },
-    async addToTeam(team, user) {
-      let url = '/teams/' + team.id
-      const response = await axios.patch(url, {
-        add_users: [user.id],
-      })
-      // delete the user from the list of usersNotInTeam
-      this.usersNotInTeam = this.usersNotInTeam.filter((userNotInTeam) => {
-        return userNotInTeam.id !== user.id
-      })
-      // and add the user to the list of users inside the team
-      team.users.push(user)
-    },
+
     formatLimit() {
       let raw_new_monthly_limit = this.new_monthly_limit.replace(/[^\d]/g, '')
       let numeric_new_monthly_limit = parseInt(raw_new_monthly_limit)

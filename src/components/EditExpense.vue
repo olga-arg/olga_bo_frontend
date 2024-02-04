@@ -135,7 +135,23 @@
                   PENDIENTE
                 </button>
 
-                <div class="flex justify-center gap-10 pt-4">
+                <div v-if="expense.status == 4" class="flex justify-center gap-10 pt-4">
+                  <button
+                    v-on:click="$emit('close')"
+                    type="button"
+                    class="text-red-700 cursor-not-allowed hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    v-on:click="$emit('close')"
+                    type="button"
+                    class="text-green-700 cursor-not-allowed hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
+                  >
+                    Guardar
+                  </button>
+                </div>
+                <div v-else class="flex justify-center gap-10 pt-4">
                   <button
                     v-on:click="$emit('close')"
                     type="button"
@@ -151,6 +167,9 @@
                     Guardar
                   </button>
                 </div>
+                <Alert v-if="expense.status == 4" class="bg-yellow-100">
+                  <AlertDescription> No se puede editar un gasto <br />que ya ha sido exportado.</AlertDescription>
+                </Alert>
               </div>
 
               <Suspense>
@@ -175,7 +194,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import AsyncImage from './AsyncImage.vue'
 import moment from 'moment'
 import axios from '@/axios'
-
+import Alert from '@/components/ui/alert/Alert.vue'
 export default {
   name: 'Share',
   data() {
@@ -283,6 +302,7 @@ export default {
     MenuButton,
     MenuItem,
     MenuItems,
+    Alert,
   },
   props: {
     expense: Object,

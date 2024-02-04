@@ -51,7 +51,7 @@
         </div> -->
 
         <div v-if="member.isAdmin" className="border-[#F8E6E8] border bg-[#F8E6E8] rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
-          <p>ADMIN</p>
+          <p>Revisor</p>
         </div>
 
         <p>{{ Math.ceil((member.monthly_spending * 100) / (member.monthly_limit || 1)) }}%</p>

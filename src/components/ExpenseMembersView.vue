@@ -78,7 +78,7 @@ export default {
       if (this.filters.status) {
         if (this.filters.status === 'Pending') filter = filter.filter((expense) => expense.status === 0)
         else if (this.filters.status === 'Approved') filter = filter.filter((expense) => expense.status === 1)
-        else if (this.filters.status === 'Exported') filter = filter.filter((expense) => expense.status === 5)
+        else if (this.filters.status === 'Exported') filter = filter.filter((expense) => expense.status === 4)
       }
 
       if (this.filters.userEmails && this.filters.userEmails.length > 0) {

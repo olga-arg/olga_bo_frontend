@@ -64,9 +64,15 @@ export default {
       if (this.filters.category && this.filters.category != 'Categoria') {
         filter = filter.filter((expense) => expense.category == this.filters.category)
       }
-      if (this.filters.rangeDates) {
+      if (this.filters.rangeDates.start && this.filters.rangeDates.end) {
         filter = filter.filter((expense) => {
-          return new Date(expense.created) >= new Date(this.filters.rangeDates[0]) && new Date(expense.created) <= new Date(this.filters.rangeDates[1])
+          const formattedDate = new Date(expense.date)
+          // Obtén las fechas sin tener en cuenta las horas
+          const expenseDate = new Date(formattedDate.getFullYear(), formattedDate.getMonth(), formattedDate.getDate())
+          const startDate = new Date(this.filters.rangeDates.start.getFullYear(), this.filters.rangeDates.start.getMonth(), this.filters.rangeDates.start.getDate())
+          const endDate = new Date(this.filters.rangeDates.end.getFullYear(), this.filters.rangeDates.end.getMonth(), this.filters.rangeDates.end.getDate())
+
+          return expenseDate >= startDate && expenseDate <= endDate
         })
       }
       if (this.filters.status) {

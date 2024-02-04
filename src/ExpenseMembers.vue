@@ -5,6 +5,50 @@
     <div class="p-4 sm:ml-64">
       <div class="px-24">
         <div class="flex justify-between h-20 mb-4 items-center">
+          <!-- <div class="w-72">
+            <vue-date-picker v-model="date" auto-apply range :format="format" :preset-dates="presetDates">
+              <template #clear-icon="{ clear }">
+                <svg v-on:click="clearDates" @click="clear" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </template>
+            </vue-date-picker>
+          </div> -->
+          <!--CDN DatePicker (Calendar)-->
+          <!--CDN DatePicker (Calendar)-->
+          <div className="flex gap-4 items-center">
+            <Input placeholder="Buscar gasto" class="w-72" v-on:keypress.enter.prevent="sendNameFilter" v-model="employeeNameFilter" />
+            <DatePicker @date-selected="handleDateSelected" :reset-filters="resetFilters" />
+            <FilterExpenseStatus @status-selected="handleStatusSelected" :reset-filters="resetFilters" />
+            <FilterExpenseCategory v-if="Object.keys(categoriesMap).length" @category-selected="handleCategorySelected" :reset-filters="resetFilters" :categories="categoriesMap" />
+            <div v-else class="flex items-center border py-1 px-3 rounded-md border-dashed border-gray-400 hover:bg-gray-200 text-sm text-muted-foreground cursor-not-allowed">
+              Categoria
+            </div>
+            <div
+              class="flex items-center py-1 px-3 rounded-md hover:bg-gray-200"
+              v-if="this.filters.status != null || this.filters.category != '' || !this.filters.rangeDates || this.filters.rangeDates.end"
+            >
+              <button class="flex items-center" @click="handleReset">
+                <p>Reset</p>
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4">
+                  <path
+                    d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <!-- <button
+                v-on:click="pendingFilter"
+                className="w-36 border-[#DBDADF] border py-1 rounded-md  text-[#8D8B96]"
+                :style="{ backgroundColor: this.filters.pending ? '#DE848B' : '#ffffff', color: this.filters.pending ? '#ffffff' : '#8D8B96' }"
+              >
+                Pendientes
+              </button> -->
+          </div>
+
           <div class="flex gap-2">
             <Menu v-if="!selectPayments" as="div" class="relative inline-block text-left">
               <div>
@@ -40,62 +84,6 @@
               </button>
             </div>
           </div>
-          <div class="flex flex-col gap-1">
-            <div className="flex gap-4 items-center">
-              <FilterExpenseStatus @status-selected="handleStatusSelected" :reset-filters="resetFilters" />
-              <FilterExpenseCategory
-                v-if="Object.keys(categoriesMap).length"
-                @category-selected="handleCategorySelected"
-                :reset-filters="resetFilters"
-                :categories="categoriesMap"
-              />
-              <div v-else class="flex items-center border py-1 px-3 rounded-md border-dashed border-gray-400 hover:bg-gray-200 text-sm text-muted-foreground cursor-not-allowed">
-                Categoria
-              </div>
-              <div class="flex items-center py-1 px-3 rounded-md hover:bg-gray-200">
-                <button class="flex items-center" @click="handleReset">
-                  <p>Reset</p>
-                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4">
-                    <path
-                      d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z"
-                      fill="currentColor"
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-              <!-- <button
-                v-on:click="pendingFilter"
-                className="w-36 border-[#DBDADF] border py-1 rounded-md  text-[#8D8B96]"
-                :style="{ backgroundColor: this.filters.pending ? '#DE848B' : '#ffffff', color: this.filters.pending ? '#ffffff' : '#8D8B96' }"
-              >
-                Pendientes
-              </button> -->
-              <div class="w-72">
-                <vue-date-picker v-model="date" auto-apply range :format="format" :preset-dates="presetDates">
-                  <template #clear-icon="{ clear }">
-                    <!-- Svg for X close icon -->
-                    <svg v-on:click="clearDates" @click="clear" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                  </template>
-                </vue-date-picker>
-              </div>
-            </div>
-          </div>
-          <form>
-            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-            <div class="relative">
-              <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg aria-hidden="true" class="w-5 h-5 text-[#DE848B]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </div>
-              <input v-on:keypress.enter.prevent="sendNameFilter" v-model="employeeNameFilter" class="w-full p-2 pl-10 text-sm bg-[#F4F4F4]" placeholder="Buscar gasto" required />
-              <div className="w-full h-0.5 bg-[#DE848B]"></div>
-            </div>
-          </form>
         </div>
         <Suspense>
           <template #default>
@@ -123,7 +111,8 @@ import FilterExpenseStatus from './components/FilterExpenseStatus.vue'
 import FilterExpenseCategory from './components/FilterExpenseCategory.vue'
 import Button from './components/ui/button/Button.vue'
 import { ref } from 'vue'
-
+import DatePicker from './components/DatePicker.vue'
+import Input from './components/ui/input/Input.vue'
 export default {
   name: 'App',
   data() {
@@ -133,35 +122,16 @@ export default {
       category: 'Categoria',
       monthName: '',
       lastMonthName: '',
-      date: '',
       selectPayments: false,
       filters: {
         status: null,
         rangeDates: null,
         category: '',
-        userEmails: [],
       },
       resetFilters: ref(false),
     }
   },
-  computed: {
-    presetDates() {
-      return [
-        { label: 'Hoy', value: [new Date(), new Date()] },
-        {
-          label: 'Today (Slot)',
-          value: [new Date(), new Date()],
-          slot: 'preset-date-range-button',
-        },
-        { label: `${this.monthName}`, value: [startOfMonth(new Date()), endOfMonth(new Date())] },
-        {
-          label: `${this.lastMonthName}`,
-          value: [startOfMonth(subMonths(new Date(), 1)), endOfMonth(subMonths(new Date(), 1))],
-        },
-        { label: `Año ${Date(new Date().getFullYear()).split(' ')[3]}`, value: [startOfYear(new Date()), endOfYear(new Date())] },
-      ]
-    },
-  },
+
   methods: {
     handleCategorySelected(selectedCategory) {
       // Realiza la lógica que deseas con la categoría seleccionada
@@ -173,67 +143,34 @@ export default {
       this.status = selectedStatus.value
       this.filters.status = selectedStatus.value
     },
+    handleDateSelected(selectedDate) {
+      // Realiza la lógica que deseas con la categoría seleccionada
+      // this.date = selectedDate
+      this.filters.rangeDates = selectedDate
+    },
     async getCategories() {
       const response = await axios.get('/company/categories')
       this.categoriesMap = response.data
       this.categories = Object.keys(response.data) || []
     },
-    loadExpensesBasedOnQueryParams() {
-      const userEmails = this.$route.query.userEmails
-
-      if (userEmails) {
-        // Si userIds existe, conviértelo en un arreglo y úsalo para filtrar
-        const userEmailsArray = userEmails.split(',')
-        this.filterExpensesByUserEmails(userEmailsArray)
-      }
-    },
-    filterExpensesByUserEmails(userEmails) {
-      this.filters.userEmails = userEmails
-    },
-    pendingFilter() {
-      this.filters.pending = !this.filters.pending
-    },
-    clearDates() {
-      this.filters.rangeDates = null
-    },
-    getMonthName() {
-      const date = new Date()
-      const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Augosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-      return monthNames[date.getMonth()]
-    },
-    getLastMonthName() {
-      const date = new Date()
-      const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Augosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-      if (date.getMonth() === 0) return monthNames[11]
-      return monthNames[date.getMonth() - 1]
-    },
-    format([dateFrom, dateTo]) {
-      const dayFrom = dateFrom.getDate()
-      const monthFrom = dateFrom.getMonth()
-      const yearFrom = dateFrom.getFullYear()
-
-      const dayTo = dateTo.getDate()
-      const monthTo = dateTo.getMonth()
-      const yearTo = dateTo.getFullYear()
-
-      const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-      this.filters.rangeDates = [dateFrom, dateTo]
-
-      return `${dayFrom} ${monthNames[monthFrom]} ${yearFrom} - ${dayTo} ${monthNames[monthTo]} ${yearTo}`
-    },
     selectPaymentsToggle() {
       this.selectPayments = !this.selectPayments
+    },
+    handleReset() {
+      this.resetFilters = !this.resetFilters
+      this.category = ''
+      this.status = null
+      this.filters.status = null
+      this.filters.category = ''
     },
     convertToCSV(arr) {
       if (arr.length === 0) {
         return ''
       }
-
       // Extraer los encabezados de la primera fila (asumiendo que todas las filas tienen la misma estructura)
       const headers = Object.keys(arr[0])
         .filter((key) => key !== 'User')
         .concat(['User_full_name', 'User_email'])
-
       // Transformamos los objetos para aplanar las propiedades anidadas de 'User'
       const flattenedData = arr.map((item) => {
         let flattenedItem = { ...item }
@@ -242,7 +179,6 @@ export default {
         delete flattenedItem['User'] // Eliminar el objeto 'User' original para evitar [object Object]
         return flattenedItem
       })
-
       // Construir la cadena CSV
       const csvArray = [headers].concat(
         flattenedData.map((row) => {
@@ -263,10 +199,8 @@ export default {
             .join(',')
         })
       )
-
       return csvArray.join('\r\n')
     },
-
     exportPayments() {
       let payments_info = this.$refs.expenseMembersView.selectedExpenses
       if (payments_info.length === 0) {
@@ -287,23 +221,9 @@ export default {
       })
       this.$refs.expenseMembersView.selectedExpenses = []
     },
-    selectCategory(e) {
-      this.category = e
-      this.filters.category = e
-    },
-    handleReset() {
-      this.resetFilters = !this.resetFilters
-      this.category = ''
-      this.status = null
-      this.filters.status = null
-      this.filters.category = ''
-    },
   },
   async mounted() {
     await this.getCategories()
-    this.loadExpensesBasedOnQueryParams()
-    this.monthName = this.getMonthName()
-    this.lastMonthName = this.getLastMonthName()
   },
   components: {
     Sidebar,
@@ -316,6 +236,8 @@ export default {
     FilterExpenseStatus,
     FilterExpenseCategory,
     Button,
+    DatePicker,
+    Input,
   },
 }
 </script>

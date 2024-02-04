@@ -37,6 +37,11 @@ export default {
       editExpense: false,
     }
   },
+  watch: {
+    'filters.search': function (newSearch, oldSearch) {
+      this.chunk()
+    },
+  },
   computed: {
     chunkedAllExpenses() {
       return this.chunk()
@@ -56,7 +61,6 @@ export default {
       let response = []
       // Hacer una copia del arreglo original para evitar modificarlo directamente
       let filter = [...this.allExpenses.payments]
-
       // Ordenar los elementos según la fecha de creación
       filter.sort((a, b) => new Date(b.created) - new Date(a.created))
 
@@ -85,6 +89,11 @@ export default {
         // We are filtering via users, not if the expense corresponds to that team (We must change this)
         filter = filter.filter((expense) => {
           return this.filters.userEmails.includes(expense.User.email)
+        })
+      }
+      if (this.filters.search) {
+        filter = filter.filter((expense) => {
+          return expense.User.full_name.toLowerCase().includes(this.filters.search.toLowerCase()) || expense.shop_name.toLowerCase().includes(this.filters.search.toLowerCase())
         })
       }
 

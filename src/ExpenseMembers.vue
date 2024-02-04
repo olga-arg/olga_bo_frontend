@@ -6,7 +6,7 @@
       <div class="px-24">
         <div class="flex justify-between h-20 mb-4 items-center">
           <div className="flex gap-4 items-center">
-            <Input placeholder="Buscar gasto" class="w-72" v-on:keypress.enter.prevent="sendNameFilter" v-model="employeeNameFilter" />
+            <Input placeholder="Buscar gasto" class="w-72" v-on:keypress.enter.prevent="sendNameFilter" v-model="search" />
             <DatePicker @date-selected="handleDateSelected" :reset-filters="resetFilters" />
             <FilterExpenseStatus @status-selected="handleStatusSelected" :reset-filters="resetFilters" />
             <FilterExpenseCategory v-if="Object.keys(categoriesMap).length" @category-selected="handleCategorySelected" :reset-filters="resetFilters" :categories="categoriesMap" />
@@ -101,28 +101,35 @@ export default {
     return {
       categoriesMap: {},
       categories: [],
-      category: 'Categoria',
-      monthName: '',
-      lastMonthName: '',
       selectPayments: false,
+      search: '',
       filters: {
         status: null,
         rangeDates: null,
         category: '',
+        search: '',
       },
       resetFilters: ref(false),
     }
   },
-
+  // watch for when this.search becomes empty
+  watch: {
+    search: function (newSearch, oldSearch) {
+      if (newSearch === '') {
+        this.sendNameFilter()
+      }
+    },
+  },
   methods: {
+    sendNameFilter() {
+      this.filters.search = this.search
+    },
     handleCategorySelected(selectedCategory) {
       // Realiza la lógica que deseas con la categoría seleccionada
-      this.category = selectedCategory.value
       this.filters.category = selectedCategory.value
     },
     handleStatusSelected(selectedStatus) {
       // Realiza la lógica que deseas con la categoría seleccionada
-      this.status = selectedStatus.value
       this.filters.status = selectedStatus.value
     },
     handleDateSelected(selectedDate) {
@@ -140,8 +147,6 @@ export default {
     },
     handleReset() {
       this.resetFilters = !this.resetFilters
-      this.category = ''
-      this.status = null
       this.filters.status = null
       this.filters.category = ''
     },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, defineProps, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 // import { ArrowUpCircle, CheckCircle2, Circle, HelpCircle, XCircle } from 'lucide-vue-next'
 // import type { Icon } from 'lucide-vue-next'
 

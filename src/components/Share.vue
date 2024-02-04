@@ -50,7 +50,7 @@
 
             <!-- Termina -->
             <div class="py-2">Miembros</div>
-            <a v-if="!this.team.users" class="flex justify-center text-gray-400 text-sm">Sin miembros</a>
+            <a v-if="!this.team.users || this.team.users.length < 1" class="flex justify-center text-gray-400 text-sm">Sin miembros</a>
             <div v-for="user in team?.users" class="flex justify-between items-center pt-2">
               <div class="flex items-center">
                 <div class="h-8 w-8 bg-red-300 rounded-full mr-5"></div>

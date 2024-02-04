@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="flex w-full h-4 mb-4 rounded-full my-10 gap-1 items-center justify-between">
-      <div class="flex gap-0.5" v-if="team.users">
+      <div class="flex gap-0.5" v-if="team.users && team.users.length > 0">
         <div
           :style="{
             backgroundColor: [

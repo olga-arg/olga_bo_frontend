@@ -5,17 +5,6 @@
     <div class="p-4 sm:ml-64">
       <div class="px-24">
         <div class="flex justify-between h-20 mb-4 items-center">
-          <!-- <div class="w-72">
-            <vue-date-picker v-model="date" auto-apply range :format="format" :preset-dates="presetDates">
-              <template #clear-icon="{ clear }">
-                <svg v-on:click="clearDates" @click="clear" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </template>
-            </vue-date-picker>
-          </div> -->
-          <!--CDN DatePicker (Calendar)-->
-          <!--CDN DatePicker (Calendar)-->
           <div className="flex gap-4 items-center">
             <Input placeholder="Buscar gasto" class="w-72" v-on:keypress.enter.prevent="sendNameFilter" v-model="employeeNameFilter" />
             <DatePicker @date-selected="handleDateSelected" :reset-filters="resetFilters" />
@@ -40,13 +29,6 @@
                 </svg>
               </button>
             </div>
-            <!-- <button
-                v-on:click="pendingFilter"
-                className="w-36 border-[#DBDADF] border py-1 rounded-md  text-[#8D8B96]"
-                :style="{ backgroundColor: this.filters.pending ? '#DE848B' : '#ffffff', color: this.filters.pending ? '#ffffff' : '#8D8B96' }"
-              >
-                Pendientes
-              </button> -->
           </div>
 
           <div class="flex gap-2">

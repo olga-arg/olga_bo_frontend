@@ -1,10 +1,10 @@
 <template>
   <EditExpense @close="callback" v-if="editExpense" :expense="expenseSelected" :categories="Object.keys(this.categories)"></EditExpense>
   <div v-for="expenses in chunkedAllExpenses" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
-    <div v-for="expense in expenses" :key="expense.created" class="bg-white rounded-lg flex p-5 w-full">
+    <div v-for="expense in expenses" :key="expense.id" class="bg-white rounded-lg flex p-5 w-full">
       <CardExpensesMember
         :selectPayments="this.selectPayments"
-        :isSelected="selectedExpenses.includes(expense)"
+        :isSelected="this.selectedExpenses.some((selectedExpense) => selectedExpense.id == expense.id)"
         :expense="expense"
         :category="this.categories[expense.category]"
         v-on:click="addToSelection(expense)"
@@ -33,6 +33,7 @@ export default {
     return {
       allExpenses: [],
       selectedExpenses: [],
+      paymentsFiltered: [],
       expenseSelected: null,
       editExpense: false,
     }
@@ -85,18 +86,12 @@ export default {
         else if (this.filters.status === 'Exported') filter = filter.filter((expense) => expense.status === 4)
       }
 
-      if (this.filters.userEmails && this.filters.userEmails.length > 0) {
-        // We are filtering via users, not if the expense corresponds to that team (We must change this)
-        filter = filter.filter((expense) => {
-          return this.filters.userEmails.includes(expense.User.email)
-        })
-      }
       if (this.filters.search) {
         filter = filter.filter((expense) => {
           return expense.User.full_name.toLowerCase().includes(this.filters.search.toLowerCase()) || expense.shop_name.toLowerCase().includes(this.filters.search.toLowerCase())
         })
       }
-
+      this.paymentsFiltered = [...filter]
       // Agrupar los elementos en pares
       for (let i = 0; i < filter.length; i += 2) {
         response.push(filter.slice(i, i + 2))
@@ -106,16 +101,24 @@ export default {
     },
     addToSelection(expense) {
       this.callback(expense)
-      if (this.selectPayments && !this.selectedExpenses.includes(expense)) {
-        expense.isSelected = true
+      // verify if the expense.id == expenseSelected any id in selectedExpenses
+      if (this.selectedExpenses.some((selectedExpense) => selectedExpense.id == expense.id)) {
+        const expenseIndex = this.selectedExpenses.findIndex((selectedExpense) => selectedExpense.id === expense.id)
+        if (expenseIndex !== -1) {
+          this.selectedExpenses.splice(expenseIndex, 1)
+        }
+      } else {
         this.selectedExpenses.push(expense)
-      } else if (this.selectPayments && this.selectedExpenses.includes(expense)) {
-        expense.isSelected = false
-        this.selectedExpenses.splice(this.selectedExpenses.indexOf(expense), 1)
       }
     },
   },
+  watch: {
+    exportAll() {
+      this.selectedExpenses = [...this.paymentsFiltered]
+    },
+  },
   props: {
+    exportAll: Boolean,
     selectPayments: Boolean,
     filters: Object,
     categories: Object,

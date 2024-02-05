@@ -30,8 +30,8 @@
     >
       <p>{{ expense.shop_name[0].toUpperCase() + expense.shop_name[1].toUpperCase() }}</p>
     </div>
-    <div v-else-if="this.selectPayments && !expense.isSelected" class="flex rounded-full w-5 h-5 ring-1 mt-4 cursor-pointer"></div>
-    <div v-if="this.selectPayments && expense.isSelected" class="flex rounded-full w-5 h-5 ring-1 mt-4 cursor-pointer bg-blue-300"></div>
+    <div v-else-if="this.selectPayments && !this.isSelected" class="flex rounded-full w-5 h-5 ring-1 mt-4 cursor-pointer"></div>
+    <div v-if="this.selectPayments && this.isSelected" class="flex rounded-full w-5 h-5 ring-1 mt-4 cursor-pointer bg-blue-300"></div>
     <div className="flex flex-col w-full">
       <div className="flex justify-between">
         <div className="flex items-center">
@@ -106,6 +106,9 @@ import SvgIcon from '@jamescoyle/vue-icon'
 import * as MDIcon from '@mdi/js'
 export default {
   props: {
+    isSelected: {
+      type: Boolean,
+    },
     selectPayments: {
       type: Boolean,
     },

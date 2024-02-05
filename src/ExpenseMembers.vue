@@ -6,7 +6,7 @@
       <div class="px-24">
         <div class="flex justify-between h-20 mb-4 items-center">
           <div className="flex gap-4 items-center">
-            <Input placeholder="Buscar gasto" class="w-72" v-on:keypress.enter.prevent="sendNameFilter" v-model="search" />
+            <Input placeholder="Buscar gasto" class="w-46 text-sm" v-on:keypress.enter.prevent="sendNameFilter" v-model="search" />
             <DatePicker @date-selected="handleDateSelected" :reset-filters="resetFilters" />
             <FilterExpenseStatus @status-selected="handleStatusSelected" :reset-filters="resetFilters" />
             <FilterExpenseCategory v-if="Object.keys(categoriesMap).length" @category-selected="handleCategorySelected" :reset-filters="resetFilters" :categories="categoriesMap" />
@@ -31,8 +31,23 @@
             </div>
           </div>
 
-          <div class="flex gap-2">
-            <Menu v-if="!selectPayments" as="div" class="relative inline-block text-left">
+          <div v-if="!selectPayments" class="flex items-center border rounded-md border-dashed border-gray-400 hover:bg-gray-200">
+            <Button class="bg-gray-100 h-7 px-3 py-1 text-sm text-muted-foreground" v-on:click="selectPaymentsToggle">Seleccionar</Button>
+          </div>
+          <div v-else class="flex gap-4">
+            <div class="flex items-center border rounded-md border-blue-500 hover:bg-gray-200">
+              <Button class="bg-gray-100 h-7 px-3 py-1 text-sm text-muted-foreground text-blue-500" v-on:click="selectAllPayments">Seleccionar todos</Button>
+            </div>
+            <div class="flex items-center border rounded-md border-red-500 hover:bg-gray-200">
+              <Button class="bg-gray-100 h-7 px-3 py-1 text-sm text-muted-foreground text-red-500" v-on:click="selectPaymentsToggle">Cancelar</Button>
+            </div>
+            <div class="flex items-center border rounded-md border-green-500 hover:bg-gray-200">
+              <Button class="bg-gray-100 h-7 px-3 py-1 text-sm text-muted-foreground text-green-500" v-on:click="exportPayments">Exportar</Button>
+            </div>
+          </div>
+          <!-- <div class="flex gap-2"> -->
+          <!-- <Button>Exportar</Button> -->
+          <!-- <Menu v-if="!selectPayments" as="div" class="relative inline-block text-left">
               <div>
                 <MenuButton class="inline-flex justify-center rounded-md text-sm font-semibold text-gray-900">
                   <img class="h-8 w-8" src="@/assets/selectPayments.svg" alt="arrow" />
@@ -64,12 +79,18 @@
               >
                 Exportar
               </button>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
         </div>
         <Suspense>
           <template #default>
-            <ExpenseMembersView :filters="filters" :selectPayments="this.selectPayments" :categories="categoriesMap" ref="expenseMembersView"></ExpenseMembersView>
+            <ExpenseMembersView
+              :filters="filters"
+              :selectPayments="this.selectPayments"
+              :exportAll="this.selectAllPaymentsToExport"
+              :categories="categoriesMap"
+              ref="expenseMembersView"
+            ></ExpenseMembersView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -95,10 +116,12 @@ import Button from './components/ui/button/Button.vue'
 import { ref } from 'vue'
 import DatePicker from './components/DatePicker.vue'
 import Input from './components/ui/input/Input.vue'
+
 export default {
   name: 'App',
   data() {
     return {
+      selectAllPaymentsToExport: false,
       categoriesMap: {},
       categories: [],
       selectPayments: false,
@@ -121,6 +144,9 @@ export default {
     },
   },
   methods: {
+    selectAllPayments() {
+      this.selectAllPaymentsToExport = !this.selectAllPaymentsToExport
+    },
     sendNameFilter() {
       this.filters.search = this.search
     },
@@ -143,6 +169,12 @@ export default {
       this.categories = Object.keys(response.data) || []
     },
     selectPaymentsToggle() {
+      if (this.selectPayments) {
+        this.$refs.expenseMembersView.selectedExpenses.forEach((expense) => {
+          expense.isSelected = false
+        })
+        this.$refs.expenseMembersView.selectedExpenses = []
+      }
       this.selectPayments = !this.selectPayments
     },
     handleReset() {
@@ -150,62 +182,66 @@ export default {
       this.filters.status = null
       this.filters.category = ''
     },
-    convertToCSV(arr) {
-      if (arr.length === 0) {
-        return ''
-      }
-      // Extraer los encabezados de la primera fila (asumiendo que todas las filas tienen la misma estructura)
-      const headers = Object.keys(arr[0])
-        .filter((key) => key !== 'User')
-        .concat(['User_full_name', 'User_email'])
-      // Transformamos los objetos para aplanar las propiedades anidadas de 'User'
-      const flattenedData = arr.map((item) => {
-        let flattenedItem = { ...item }
-        flattenedItem['User_full_name'] = item.User.full_name // Aplanar propiedad 'full_name' de 'User'
-        flattenedItem['User_email'] = item.User.email // Aplanar propiedad 'email' de 'User'
-        delete flattenedItem['User'] // Eliminar el objeto 'User' original para evitar [object Object]
-        return flattenedItem
-      })
-      // Construir la cadena CSV
-      const csvArray = [headers].concat(
-        flattenedData.map((row) => {
-          return headers
-            .map((fieldName) => {
-              let field = row[fieldName]
-              if (field == null) {
-                // Verificar valores nulos o undefined
-                field = ''
-              } else if (typeof field === 'object') {
-                // Verificar y convertir objetos a cadena
-                field = JSON.stringify(field)
-              } else if (typeof field === 'string' && field.includes(',')) {
-                field = `"${field}"` // Encerrar campos con comas en comillas dobles
-              }
-              return field
-            })
-            .join(',')
-        })
-      )
-      return csvArray.join('\r\n')
-    },
-    exportPayments() {
+    // convertToCSV(arr) {
+    //   if (arr.length === 0) {
+    //     return ''
+    //   }
+    //   // Extraer los encabezados de la primera fila (asumiendo que todas las filas tienen la misma estructura)
+    //   const headers = Object.keys(arr[0])
+    //     .filter((key) => key !== 'User')
+    //     .concat(['User_full_name', 'User_email'])
+    //   // Transformamos los objetos para aplanar las propiedades anidadas de 'User'
+    //   const flattenedData = arr.map((item) => {
+    //     let flattenedItem = { ...item }
+    //     flattenedItem['User_full_name'] = item.User.full_name // Aplanar propiedad 'full_name' de 'User'
+    //     flattenedItem['User_email'] = item.User.email // Aplanar propiedad 'email' de 'User'
+    //     delete flattenedItem['User'] // Eliminar el objeto 'User' original para evitar [object Object]
+    //     return flattenedItem
+    //   })
+    //   // Construir la cadena CSV
+    //   const csvArray = [headers].concat(
+    //     flattenedData.map((row) => {
+    //       return headers
+    //         .map((fieldName) => {
+    //           let field = row[fieldName]
+    //           if (field == null) {
+    //             // Verificar valores nulos o undefined
+    //             field = ''
+    //           } else if (typeof field === 'object') {
+    //             // Verificar y convertir objetos a cadena
+    //             field = JSON.stringify(field)
+    //           } else if (typeof field === 'string' && field.includes(',')) {
+    //             field = `"${field}"` // Encerrar campos con comas en comillas dobles
+    //           }
+    //           return field
+    //         })
+    //         .join(',')
+    //     })
+    //   )
+    //   return csvArray.join('\r\n')
+    // },
+    async exportPayments() {
       let payments_info = this.$refs.expenseMembersView.selectedExpenses
       if (payments_info.length === 0) {
         return
       }
-      // Convertir a CSV
-      const csvData = this.convertToCSV(payments_info)
-      console.log(csvData)
+      // enviar un array con los ids de los gastos seleccionados
+      const response = await axios.post('payments/export', { payments: [...payments_info.map((payment) => payment.id)] })
+      console.log(response.data)
+      await axios.get(response.data)
+      // // Convertir a CSV
+      // const csvData = this.convertToCSV(payments_info)
+      // console.log(csvData)
 
-      const link = document.createElement('a')
-      const file = new Blob([csvData], { type: 'text/csv' })
-      link.href = URL.createObjectURL(file)
-      link.download = 'Gastos.csv'
-      link.click()
-      URL.revokeObjectURL(link.href)
-      this.$refs.expenseMembersView.selectedExpenses.forEach((expense) => {
-        expense.isSelected = false
-      })
+      // const link = document.createElement('a')
+      // const file = new Blob([csvData], { type: 'text/csv' })
+      // link.href = URL.createObjectURL(file)
+      // link.download = 'Gastos.csv'
+      // link.click()
+      // URL.revokeObjectURL(link.href)
+      // this.$refs.expenseMembersView.selectedExpenses.forEach((expense) => {
+      //   expense.isSelected = false
+      // })
       this.$refs.expenseMembersView.selectedExpenses = []
     },
   },

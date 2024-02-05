@@ -1,0 +1,21 @@
+{
+    "appName": "olgaAnalytics",
+    "roleName": "pinpointLambdaRole72359dbf",
+    "cloudformationPolicyName": "cloudformationPolicy72359dbf",
+    "cloudWatchPolicyName": "cloudWatchPolicy72359dbf",
+    "pinpointPolicyName": "pinpointPolicy72359dbf",
+    "authPolicyName": "pinpoint_amplify_72359dbf",
+    "unauthPolicyName": "pinpoint_amplify_72359dbf",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

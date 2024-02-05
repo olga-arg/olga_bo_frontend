@@ -11,9 +11,12 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const accessToken = VueCookies.get('accessToken')
-    if (accessToken) {
+
+    // Verificar si la solicitud se está haciendo a olga.lat
+    if (config.url.startsWith('/') && accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`
     }
+
     return config
   },
   (error) => {

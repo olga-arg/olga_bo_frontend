@@ -1,4 +1,11 @@
 export type AmplifyDependentResourcesAttributes = {
+  "analytics": {
+    "olgaAnalytics": {
+      "Id": "string",
+      "Region": "string",
+      "appName": "string"
+    }
+  },
   "auth": {
     "olgaAuthResource": {
       "AppClientID": "string",

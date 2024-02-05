@@ -26,15 +26,15 @@
                   type="email"
                   name="email"
                   id="email"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="pl-3 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
                   required=""
                 />
-                <OTPPad class="flex justify-between" v-else-if="userState === 'OTP'" :length="6" @entered="(v) => (optValue = v)" />
+                <OTPPad class="flex justify-between" v-else-if="userState === 'OTP' && this.loading === false" :length="6" @entered="(v) => (optValue = v)" />
                 <a v-if="this.error" class="text-red-400">{{ this.error }}</a>
               </div>
               <button
-                v-if="userState === 'unauthenticated'"
+                v-if="userState === 'unauthenticated' && this.loading === false"
                 type="submit"
                 v-on:click.prevent="login"
                 class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -42,10 +42,22 @@
                 Sign in
               </button>
               <button
-                v-if="userState === 'OTP'"
+                v-else-if="userState === 'unauthenticated'"
+                class="w-full cursor-not-allowed text-white bg-gray-400 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Sign in
+              </button>
+              <button
+                v-else-if="userState === 'OTP' && this.loading === false"
                 type="submit"
                 v-on:click.prevent="otp"
                 class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              >
+                Send Code
+              </button>
+              <button
+                v-else-if="userState === 'OTP'"
+                class="w-full cursor-not-allowed text-white bg-gray-300 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 Send Code
               </button>

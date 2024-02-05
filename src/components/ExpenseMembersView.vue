@@ -1,11 +1,12 @@
 <template>
-  <EditExpense @close="callback" v-if="editExpense" :expense="expenseSelected"></EditExpense>
+  <EditExpense @close="callback" v-if="editExpense" :expense="expenseSelected" :categories="Object.keys(this.categories)"></EditExpense>
   <div v-for="expenses in chunkedAllExpenses" className="grid grid-cols-2 grid-flow-col gap-6 my-8">
-    <div v-for="expense in expenses" :key="expense.created" class="bg-white rounded-lg flex p-5 w-full">
+    <div v-for="expense in expenses" :key="expense.id" class="bg-white rounded-lg flex p-5 w-full">
       <CardExpensesMember
         :selectPayments="this.selectPayments"
-        :isSelected="selectedExpenses.includes(expense)"
+        :isSelected="this.selectedExpenses.some((selectedExpense) => selectedExpense.id == expense.id)"
         :expense="expense"
+        :category="this.categories[expense.category]"
         v-on:click="addToSelection(expense)"
       ></CardExpensesMember>
     </div>
@@ -32,9 +33,15 @@ export default {
     return {
       allExpenses: [],
       selectedExpenses: [],
+      paymentsFiltered: [],
       expenseSelected: null,
       editExpense: false,
     }
+  },
+  watch: {
+    'filters.search': function (newSearch, oldSearch) {
+      this.chunk()
+    },
   },
   computed: {
     chunkedAllExpenses() {
@@ -55,7 +62,6 @@ export default {
       let response = []
       // Hacer una copia del arreglo original para evitar modificarlo directamente
       let filter = [...this.allExpenses.payments]
-
       // Ordenar los elementos según la fecha de creación
       filter.sort((a, b) => new Date(b.created) - new Date(a.created))
 
@@ -63,22 +69,29 @@ export default {
       if (this.filters.category && this.filters.category != 'Categoria') {
         filter = filter.filter((expense) => expense.category == this.filters.category)
       }
-      if (this.filters.rangeDates) {
+      if (this.filters.rangeDates.start && this.filters.rangeDates.end) {
         filter = filter.filter((expense) => {
-          return new Date(expense.created) >= new Date(this.filters.rangeDates[0]) && new Date(expense.created) <= new Date(this.filters.rangeDates[1])
+          const formattedDate = new Date(expense.date)
+          // Obtén las fechas sin tener en cuenta las horas
+          const expenseDate = new Date(formattedDate.getFullYear(), formattedDate.getMonth(), formattedDate.getDate())
+          const startDate = new Date(this.filters.rangeDates.start.getFullYear(), this.filters.rangeDates.start.getMonth(), this.filters.rangeDates.start.getDate())
+          const endDate = new Date(this.filters.rangeDates.end.getFullYear(), this.filters.rangeDates.end.getMonth(), this.filters.rangeDates.end.getDate())
+
+          return expenseDate >= startDate && expenseDate <= endDate
         })
       }
-      if (this.filters.pending) {
-        filter = filter.filter((expense) => expense.status === 0)
+      if (this.filters.status) {
+        if (this.filters.status === 'Pending') filter = filter.filter((expense) => expense.status === 0)
+        else if (this.filters.status === 'Approved') filter = filter.filter((expense) => expense.status === 1)
+        else if (this.filters.status === 'Exported') filter = filter.filter((expense) => expense.status === 4)
       }
 
-      if (this.filters.userEmails && this.filters.userEmails.length > 0) {
-        // We are filtering via users, not if the expense corresponds to that team (We must change this)
+      if (this.filters.search) {
         filter = filter.filter((expense) => {
-          return this.filters.userEmails.includes(expense.User.email)
+          return expense.User.full_name.toLowerCase().includes(this.filters.search.toLowerCase()) || expense.shop_name.toLowerCase().includes(this.filters.search.toLowerCase())
         })
       }
-
+      this.paymentsFiltered = [...filter]
       // Agrupar los elementos en pares
       for (let i = 0; i < filter.length; i += 2) {
         response.push(filter.slice(i, i + 2))
@@ -88,18 +101,27 @@ export default {
     },
     addToSelection(expense) {
       this.callback(expense)
-      if (this.selectPayments && !this.selectedExpenses.includes(expense)) {
-        expense.isSelected = true
+      // verify if the expense.id == expenseSelected any id in selectedExpenses
+      if (this.selectedExpenses.some((selectedExpense) => selectedExpense.id == expense.id)) {
+        const expenseIndex = this.selectedExpenses.findIndex((selectedExpense) => selectedExpense.id === expense.id)
+        if (expenseIndex !== -1) {
+          this.selectedExpenses.splice(expenseIndex, 1)
+        }
+      } else {
         this.selectedExpenses.push(expense)
-      } else if (this.selectPayments && this.selectedExpenses.includes(expense)) {
-        expense.isSelected = false
-        this.selectedExpenses.splice(this.selectedExpenses.indexOf(expense), 1)
       }
     },
   },
+  watch: {
+    exportAll() {
+      this.selectedExpenses = [...this.paymentsFiltered]
+    },
+  },
   props: {
+    exportAll: Boolean,
     selectPayments: Boolean,
     filters: Object,
+    categories: Object,
   },
 }
 </script>

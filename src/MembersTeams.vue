@@ -183,6 +183,9 @@ export default {
       this.showSendInvite = false
       this.name = ''
       this.annualBudget = ''
+      await new Promise((r) => setTimeout(r, 1500))
+      // to close the modal
+      this.addMember()
     },
   },
   components: {

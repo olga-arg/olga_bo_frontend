@@ -29,27 +29,13 @@
                   data-form-type=""
                   required
                 />
-                <!-- <input
-                  v-model="cuit"
-                  class="block w-full h-14 border focus:outline-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 sm:text-sm sm:leading-6"
-                  :class="{ 'border-yellow-300 border-2': cuit !== changedFields.cuit }"
-                  placeholder="Cuit"
-                  aria-label="Search components"
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-autocomplete="list"
-                  tabindex="0"
-                  data-form-type=""
-                  required
-                /> -->
 
-                <vue-date-picker
+                <DatePickerDate
+                  :expenseDate="expenseDate"
                   v-model="expenseDate"
-                  auto-apply
-                  :format="formatCalendar"
                   :class="{ 'border-yellow-300 border-2 rounded-md': expenseDate !== changedFields.expenseDate }"
+                  @date-selected="handleDateSelected"
                 />
-
                 <div class="flex">
                   <Menu as="div" class="relative inline-block text-left">
                     <div>
@@ -93,7 +79,7 @@
                 <Menu as="div" class="relative inline-block text-left">
                   <div>
                     <MenuButton
-                      class="inline-flex w-full h-14 py-4 pl-4 absolute pr-12 text-base rounded-md bg-white font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                      class="inline-flex w-full h-14 py-4 pl-4 pr-12 text-base rounded-md bg-white font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                       :class="{ 'border-yellow-300 border-2 rounded-md': category != changedFields.category }"
                     >
                       {{ category }}
@@ -119,23 +105,45 @@
                     </MenuItems>
                   </transition>
                 </Menu>
-
-                <button
-                  v-if="this.status == 1"
-                  v-on:click="changeStatus"
-                  class="ring-pink-300 inline-flex justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset hover:bg-gray-50"
-                >
-                  APROBADO
-                </button>
-                <button
-                  v-else
+                <Button
+                  v-if="this.status == 0"
                   v-on:click="changeStatus"
                   class="inline-flex justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 hover:bg-gray-50"
                 >
                   PENDIENTE
-                </button>
+                </Button>
+                <Button
+                  v-else-if="this.status == 1"
+                  v-on:click="changeStatus"
+                  class="blue- inline-flex justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset hover:bg-gray-50"
+                >
+                  APROBADO
+                </Button>
+                <Button
+                  v-else-if="this.status == 4"
+                  v-on:click="changeStatus"
+                  class="ring-pink-300 inline-flex justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset hover:bg-gray-50"
+                >
+                  EXPORTADO
+                </Button>
 
-                <div class="flex justify-center gap-10 pt-4">
+                <div v-if="expense.status == 4" class="flex justify-center gap-10 pt-4">
+                  <button
+                    v-on:click="$emit('close')"
+                    type="button"
+                    class="text-red-700 cursor-not-allowed hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    v-on:click="$emit('close')"
+                    type="button"
+                    class="text-green-700 cursor-not-allowed hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
+                  >
+                    Guardar
+                  </button>
+                </div>
+                <div v-else class="flex justify-center gap-10 pt-4">
                   <button
                     v-on:click="$emit('close')"
                     type="button"
@@ -151,6 +159,9 @@
                     Guardar
                   </button>
                 </div>
+                <Alert v-if="expense.status == 4" class="bg-yellow-100">
+                  <AlertDescription> No se puede editar un gasto <br />que ya ha sido exportado.</AlertDescription>
+                </Alert>
               </div>
               <Suspense>
                 <template #default>
@@ -171,10 +182,12 @@
 
 <script>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import DatePickerDate from './DatePickerDate.vue'
+import Button from './ui/button/Button.vue'
 import AsyncImage from './AsyncImage.vue'
 import moment from 'moment'
 import axios from '@/axios'
-
+import Alert from '@/components/ui/alert/Alert.vue'
 export default {
   name: 'Share',
   data() {
@@ -197,29 +210,6 @@ export default {
       expenseDate: '',
       status: 0,
       id: '',
-      categories: [
-        'Comidas y Bebidas',
-        'Comisiones y Cargos',
-        'Cuentas y Servicios',
-        'Donaciones',
-        'Educación',
-        'Electrónica',
-        'Entretenimiento',
-        'Hogar',
-        'Impuestos',
-        'Indumentaria',
-        'Inversiones',
-        'Mascotas',
-        'Otros',
-        'Préstamos y financiación',
-        'Salud y cuidado personal',
-        'Servicios profesionales',
-        'Shopping',
-        'Supermercado',
-        'Suscripciones',
-        'Transporte',
-        'Viajes',
-      ],
     }
   },
   mounted() {
@@ -231,8 +221,8 @@ export default {
     this.changedFields.total = this.expense.amount
     this.category = this.expense.category
     this.changedFields.category = this.expense.category
-    this.expenseDate = moment(this.expense.created).format('MM-DD-YYYY')
-    this.changedFields.expenseDate = moment(this.expense.created).format('MM-DD-YYYY')
+    this.expenseDate = this.expense.date
+    this.changedFields.expenseDate = this.expense.date
     this.changedFields.currency = this.currency
     this.status = this.expense.status
     this.id = this.expense.id
@@ -256,15 +246,20 @@ export default {
         this.$emit('close')
         return
       }
-      const data = {
-        shop_name: this.shopName,
-        amount: Number(this.total),
-        category: this.category,
-        date: this.expenseDate,
-        currency: this.currency,
-        status: this.status,
-      }
+      // only send the fields that have changed
+      let data = {}
+      if (this.shopName != this.changedFields.shopName) data.shop_name = this.shopName
+      // if (this.cuit != this.changedFields.cuit) data.cuit = this.cuit
+      // total is a string, should be a float
+      if (this.total != this.changedFields.total) data.amount = parseFloat(this.total)
+      if (this.category != this.changedFields.category) data.category = this.category
+      if (this.expenseDate != this.changedFields.expenseDate) data.date = this.changedFields.expenseDate
+      if (this.currency != this.changedFields.currency) data.currency = this.currency
+      // if status = 0 send Pending, if status = 1 send Approved
+      if (this.status != this.expense.status) data.status = this.status == 0 ? 'Pending' : 'Approved'
       let response = await axios.patch(`/payments/${this.id}`, data)
+      // if status was changed, modify data from Pending to 0 and Approved to 1
+      if (data.status) data.status = data.status == 'Pending' ? 0 : 1
       // update the expense that we receive via props with the new values
       if (response.status == 200) Object.assign(this.expense, data)
       this.$emit('updateExpense', this.expense)
@@ -273,18 +268,8 @@ export default {
     validateNumberInput(e) {
       this.total = this.total.replace(/[^0-9]/g, '')
     },
-    markAsChanged(field) {
-      this.changedFields[field] = true
-    },
-    formatCalendar(date) {
-      this.expenseDate = moment(this.expenseDate).format('MM-DD-YYYY')
-
-      const day = date.getDate()
-      const month = date.getMonth()
-      const year = date.getFullYear()
-
-      const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-      return `${day} ${monthNames[month]} ${year}`
+    handleDateSelected(selectedDate) {
+      this.changedFields.expenseDate = selectedDate
     },
     selectCategory(e) {
       this.category = e
@@ -305,9 +290,13 @@ export default {
     MenuButton,
     MenuItem,
     MenuItems,
+    Alert,
+    Button,
+    DatePickerDate,
   },
   props: {
     expense: Object,
+    categories: Array,
   },
 }
 </script>

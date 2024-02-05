@@ -55,15 +55,16 @@
     "categories": {
       "analytics": {
         "Pinpoint": {
-          "Id": "40d2711f58974b3796b02fded81701b9",
           "Name": "olgaAnalytics-dev",
+          "Id": "deda04fb7ed24cc3b12e7a7ad519f07b",
           "Region": "us-east-1"
-        }
+        },
+        "olgaAnalytics": {}
       },
       "notifications": {
         "Pinpoint": {
-          "Id": "40d2711f58974b3796b02fded81701b9",
           "Name": "olgaAnalytics-dev",
+          "Id": "deda04fb7ed24cc3b12e7a7ad519f07b",
           "Region": "us-east-1"
         }
       },
@@ -73,7 +74,7 @@
       "function": {
         "olgaAuthResourceCreateAuthChallenge": {
           "deploymentBucketName": "amplify-olga-dev-222643-deployment",
-          "s3Key": "amplify-builds/olgaAuthResourceCreateAuthChallenge-50546650476875697a47-build.zip"
+          "s3Key": "amplify-builds/olgaAuthResourceCreateAuthChallenge-4b654d746e4945717a45-build.zip"
         },
         "olgaAuthResourceDefineAuthChallenge": {
           "deploymentBucketName": "amplify-olga-dev-222643-deployment",

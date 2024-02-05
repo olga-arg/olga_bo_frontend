@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="flex w-full h-4 mb-4 rounded-full my-10 gap-1 items-center justify-between">
-      <div class="flex gap-0.5" v-if="team.users">
+      <div class="flex gap-0.5" v-if="team.users && team.users.length > 0">
         <div
           :style="{
             backgroundColor: [
@@ -78,10 +78,10 @@
               '#00BCD4', // Cian claro
               '#03A9F4', // Azul claro
               '#2196F3', // Azul
-            ][Math.floor(user.email.charCodeAt(2) % 10)],
+            ][Math.floor(user.id.charCodeAt(3) % 10)],
           }"
-          v-for="user in team.users.slice(0, 3)"
-          class="flex h-8 w-8 rounded-full justify-center items-center text-white"
+          v-for="user in team.users.slice(0, team.users.length > 3 ? 3 : team.users.length)"
+          class="flex h-8 w-8 rounded-full justify-center items-center text-black"
         >
           <p v-if="user.name && user.surname">{{ user.name[0].toUpperCase() }}{{ user.surname[0].toUpperCase() }}</p>
         </div>

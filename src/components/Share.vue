@@ -11,6 +11,7 @@
             </div>
             <div class="flex">
               <input
+                ref="dropdown"
                 v-on:keypress.enter.prevent="sendNameFilter"
                 v-on:click="toggleUsers"
                 v-model="employeeNameFilter"
@@ -29,14 +30,15 @@
             </div>
             <!-- Empieza -->
             <div
+              v-if="showUsers"
               class="relative z-10 w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="menu-button"
               tabindex="-1"
             >
-              <div v-if="showUsers" class="py-1" role="none">
-                <div v-for="user in usersNotInTeam.slice(0, 5)" class="flex justify-between items-center py-2 hover:bg-slate-50" v-on:click="addToTeam(team, user)">
+              <div class="py-1" role="none">
+                <div v-for="user in usersNotInTeam.slice(0, 5)" class="cursor-pointer flex justify-between items-center py-2 hover:bg-slate-50" v-on:click="addToTeam(team, user)">
                   <div class="flex items-center">
                     <div class="h-8 w-8 bg-red-300 rounded-full mx-4"></div>
                     <div class="flex-col">
@@ -50,7 +52,7 @@
 
             <!-- Termina -->
             <div class="py-2">Miembros</div>
-            <a v-if="!this.team.users" class="flex justify-center text-gray-400 text-sm">Sin miembros</a>
+            <a v-if="!this.team.users || this.team.users.length < 1" class="flex justify-center text-gray-400 text-sm">Sin miembros</a>
             <div v-for="user in team?.users" class="flex justify-between items-center pt-2">
               <div class="flex items-center">
                 <div class="h-8 w-8 bg-red-300 rounded-full mr-5"></div>
@@ -173,6 +175,18 @@ export default {
       // and add the user to the list of users inside the team
       team.users.splice(team.users.indexOf(user), 1)
     },
+    closeDropdownOnClickOutside(event) {
+      // Verificar si el clic no está dentro del área del desplegable
+      const dropdownElement = this.$refs.dropdown
+      if (dropdownElement != event.target && event.target.tagName != 'A' && !event.target.innerText.includes('@')) {
+        // Cerrar el desplegable
+        this.showUsers = false
+      }
+    },
+  },
+  mounted() {
+    // Agregar un manejador de eventos de clic al documento
+    document.addEventListener('click', this.closeDropdownOnClickOutside)
   },
   watch: {
     employeeNameFilter() {

@@ -28,7 +28,7 @@ onMounted(async () => {
     imageUrl.value = signedURL
     loading.value = false
   } catch (error) {
-    console.error('Error al obtener la URL firmada: ', error)
+    console.error('Error al obtener la URL: ', error)
     loading.value = false
   }
 })

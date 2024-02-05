@@ -1,5 +1,10 @@
 {
-  "analytics": {},
+  "analytics": {
+    "olgaAnalytics": {
+      "providerPlugin": "awscloudformation",
+      "service": "Pinpoint"
+    }
+  },
   "auth": {
     "olgaAuthResource": {
       "customAuth": true,
@@ -88,7 +93,14 @@
       "service": "Lambda"
     }
   },
-  "notifications": {},
+  "notifications": {
+    "olgaAnalytics": {
+      "channels": [
+        "FCM"
+      ],
+      "service": "Pinpoint"
+    }
+  },
   "parameters": {
     "AMPLIFY_function_olgaAuthResourceCreateAuthChallenge_deploymentBucketName": {
       "usedBy": [

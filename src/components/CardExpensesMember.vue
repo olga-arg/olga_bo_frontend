@@ -93,9 +93,7 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <p className="text-right">
-              {{ expense.amount.toString().includes('.') ? `${expense.amount.toLocaleString()}` : `${expense.amount.toLocaleString()}.00` }}
-            </p>
+            <p className="text-right">$ {{ expense.amount.toString().includes('.') ? `${expense.amount.toLocaleString()}` : `${expense.amount.toLocaleString()}.00` }}</p>
           </div>
         </div>
       </div>

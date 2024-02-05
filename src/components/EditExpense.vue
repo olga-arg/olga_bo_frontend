@@ -29,26 +29,7 @@
                   data-form-type=""
                   required
                 />
-                <!-- <input
-                  v-model="cuit"
-                  class="block w-full h-14 border focus:outline-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 sm:text-sm sm:leading-6"
-                  :class="{ 'border-yellow-300 border-2': cuit !== changedFields.cuit }"
-                  placeholder="Cuit"
-                  aria-label="Search components"
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-autocomplete="list"
-                  tabindex="0"
-                  data-form-type=""
-                  required
-                /> -->
 
-                <!-- <vue-date-picker
-                  v-model="expenseDate"
-                  auto-apply
-                  :format="formatCalendar"
-                  :class="{ 'border-yellow-300 border-2 rounded-md': expenseDate !== changedFields.expenseDate }"
-                /> -->
                 <DatePickerDate
                   :expenseDate="expenseDate"
                   v-model="expenseDate"

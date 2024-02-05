@@ -45,44 +45,8 @@
               <Button class="bg-gray-100 h-7 px-3 py-1 text-sm text-muted-foreground text-green-500" v-on:click="exportPayments">Exportar</Button>
             </div>
           </div>
-          <!-- <div class="flex gap-2"> -->
-          <!-- <Button>Exportar</Button> -->
-          <!-- <Menu v-if="!selectPayments" as="div" class="relative inline-block text-left">
-              <div>
-                <MenuButton class="inline-flex justify-center rounded-md text-sm font-semibold text-gray-900">
-                  <img class="h-8 w-8" src="@/assets/selectPayments.svg" alt="arrow" />
-                </MenuButton>
-              </div>
-
-              <transition
-                enter-active-class="transition ease-out duration-100"
-                enter-from-class="transform opacity-0 scale-95"
-                enter-to-class="transform opacity-100 scale-100"
-                leave-active-class="transition ease-in duration-75"
-                leave-from-class="transform opacity-100 scale-100"
-                leave-to-class="transform opacity-0 scale-95"
-              >
-                <MenuItems class="absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div class="py-1">
-                    <MenuItem v-slot="{ active }" v-on:click="selectPaymentsToggle">
-                      <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Seleccionar gastos</a>
-                    </MenuItem>
-                  </div>
-                </MenuItems>
-              </transition>
-            </Menu>
-            <div v-else v-on:click="selectPaymentsToggle" class="cursor-pointer">
-              <button
-                v-on:click="exportPayments"
-                type="button"
-                class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-              >
-                Exportar
-              </button>
-            </div> -->
-          <!-- </div> -->
         </div>
-        <Suspense>
+        <Suspense :key="updateKey">
           <template #default>
             <ExpenseMembersView
               :filters="filters"
@@ -133,6 +97,7 @@ export default {
         search: '',
       },
       resetFilters: ref(false),
+      updateKey: 0, // para actualizar el componente ExpenseMembersView cuando se exportan los gastos
     }
   },
   // watch for when this.search becomes empty
@@ -182,67 +147,35 @@ export default {
       this.filters.status = null
       this.filters.category = ''
     },
-    // convertToCSV(arr) {
-    //   if (arr.length === 0) {
-    //     return ''
-    //   }
-    //   // Extraer los encabezados de la primera fila (asumiendo que todas las filas tienen la misma estructura)
-    //   const headers = Object.keys(arr[0])
-    //     .filter((key) => key !== 'User')
-    //     .concat(['User_full_name', 'User_email'])
-    //   // Transformamos los objetos para aplanar las propiedades anidadas de 'User'
-    //   const flattenedData = arr.map((item) => {
-    //     let flattenedItem = { ...item }
-    //     flattenedItem['User_full_name'] = item.User.full_name // Aplanar propiedad 'full_name' de 'User'
-    //     flattenedItem['User_email'] = item.User.email // Aplanar propiedad 'email' de 'User'
-    //     delete flattenedItem['User'] // Eliminar el objeto 'User' original para evitar [object Object]
-    //     return flattenedItem
-    //   })
-    //   // Construir la cadena CSV
-    //   const csvArray = [headers].concat(
-    //     flattenedData.map((row) => {
-    //       return headers
-    //         .map((fieldName) => {
-    //           let field = row[fieldName]
-    //           if (field == null) {
-    //             // Verificar valores nulos o undefined
-    //             field = ''
-    //           } else if (typeof field === 'object') {
-    //             // Verificar y convertir objetos a cadena
-    //             field = JSON.stringify(field)
-    //           } else if (typeof field === 'string' && field.includes(',')) {
-    //             field = `"${field}"` // Encerrar campos con comas en comillas dobles
-    //           }
-    //           return field
-    //         })
-    //         .join(',')
-    //     })
-    //   )
-    //   return csvArray.join('\r\n')
-    // },
     async exportPayments() {
       let payments_info = this.$refs.expenseMembersView.selectedExpenses
       if (payments_info.length === 0) {
         return
       }
       // enviar un array con los ids de los gastos seleccionados
-      const response = await axios.post('payments/export', { payments: [...payments_info.map((payment) => payment.id)] })
-      console.log(response.data)
-      await axios.get(response.data)
-      // // Convertir a CSV
-      // const csvData = this.convertToCSV(payments_info)
-      // console.log(csvData)
+      const response = await axios.post('/payments/export', { payments: [...payments_info.map((payment) => payment.id)] })
+      const fileContent = await axios.get(response.data, { responseType: 'arraybuffer' })
 
-      // const link = document.createElement('a')
-      // const file = new Blob([csvData], { type: 'text/csv' })
-      // link.href = URL.createObjectURL(file)
-      // link.download = 'Gastos.csv'
-      // link.click()
-      // URL.revokeObjectURL(link.href)
-      // this.$refs.expenseMembersView.selectedExpenses.forEach((expense) => {
-      //   expense.isSelected = false
-      // })
+      // Crear un Blob con el contenido del archivo
+      const blob = new Blob([fileContent.data])
+
+      // Crear un enlace <a> para descargar el archivo
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'nombre_del_archivo.xlsx'
+
+      // Añadir el enlace al documento
+      document.body.appendChild(link)
+
+      // Hacer clic en el enlace para iniciar la descarga
+      link.click()
+
+      // Eliminar el enlace del documento
+      document.body.removeChild(link)
+
       this.$refs.expenseMembersView.selectedExpenses = []
+      this.selectPayments = false
+      this.updateKey += 1
     },
   },
   async mounted() {

@@ -51,6 +51,9 @@ export default {
     },
     chunk() {
       const chunked = []
+      if (!this.allTeams.teams) {
+        return chunked
+      }
       for (let i = 0; i < this.allTeams.teams.length; i += 2) {
         chunked.push(this.allTeams.teams.slice(i, i + 2))
       }

@@ -47,35 +47,30 @@ export default {
     chunk() {
       let response = []
       let filter = []
-      filter = this.allMembers.users
+      if (this.filters.team) {
+        filter = this.teams.filter((team) => {
+          return team.id === this.filters.team.id
+        })[0].users
+      } else {
+        filter = this.allMembers.users
+      }
       if (this.filters.isAdmin) {
         filter = filter.filter((member) => {
-          return member.isAdmin
+          return member.role === 2
         })
       }
-      if (this.filters.isConfirmed) {
+      if (this.filters.isNotConfirmed) {
         filter = filter.filter((member) => {
           return member.status === 0
         })
       } else {
         filter = filter.filter((member) => {
-          return member.status !== 0
+          return member.status === 5
         })
       }
       if (this.filters.name) {
         filter = filter.filter((member) => {
           return member.name.toLowerCase().includes(this.filters.name.toLowerCase())
-        })
-      }
-      if (this.filters.team) {
-        // One user can have multiple teams or null
-        filter = filter.filter((member) => {
-          if (!member.teams) {
-            return false
-          }
-          return member.teams.some((team) => {
-            return team.name.toLowerCase().includes(this.filters.team.toLowerCase())
-          })
         })
       }
       for (let i = 0; i < filter.length; i += 2) {
@@ -86,6 +81,7 @@ export default {
   },
   props: {
     filters: Object,
+    teams: Array,
   },
 }
 </script>

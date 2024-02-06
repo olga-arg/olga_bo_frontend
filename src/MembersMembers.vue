@@ -27,7 +27,7 @@
                 <MenuItems class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div class="py-1">
                     <MenuItem v-for="team in teams" v-slot="{ active }" v-on:click="selectTeam(team)">
-                      <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ team }}</a>
+                      <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ team.name }}</a>
                     </MenuItem>
                   </div>
                 </MenuItems>
@@ -35,7 +35,7 @@
             </Menu>
             <button v-if="this.sendFilters.isAdmin" v-on:click="sendAdminFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">Admin</button>
             <button v-else v-on:click="sendAdminFilter" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Admin</button>
-            <button v-if="this.sendFilters.isConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
+            <button v-if="this.sendFilters.isNotConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
               No Confirmado
             </button>
             <button v-else v-on:click="sendConfirmedFilter" className=" border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">No Confirmado</button>
@@ -98,7 +98,7 @@
                 <input v-model="name" type="name" name="name" id="name" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Nombre" required />
                 <input v-model="surname" type="surname" name="surname" id="surname" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Apellido" required />
                 <input v-model="email" type="email" name="email" id="email" className="w-full h-14 rounded-md p-4 text-sm bg-[#F4F4F4]" placeholder="Email" required />
-                <Menu as="div" class="relative inline-block text-left">
+                <!-- <Menu as="div" class="relative inline-block text-left">
                   <div>
                     <MenuButton
                       class="inline-flex w-full justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -127,7 +127,54 @@
                       </div>
                     </MenuItems>
                   </transition>
-                </Menu>
+                </Menu> -->
+                <Popover v-model:open="open">
+                  <PopoverTrigger as-child>
+                    <Button variant="outline" class="ml-auto w-full">
+                      {{ creationRole }}
+                      <ChevronDownIcon class="ml-2 h-4 w-4 text-muted-foreground" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent class="p-0" align="end">
+                    <!-- <Command v-model="sofiaRole"> -->
+                    <Command>
+                      <CommandInput placeholder="Select new role..." />
+                      <CommandList>
+                        <CommandEmpty>No roles found.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            v-on:click="changeRol('Empleado')"
+                            value="Empleado"
+                            class="teamaspace-y-1 flex flex-col items-start px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                          >
+                            <p>Empleado</p>
+                            <p class="text-sm text-muted-foreground">Can only access the mobile app.</p>
+                          </CommandItem>
+                          <CommandItem
+                            v-on:click="changeRol('Revisor')"
+                            value="Revisor"
+                            class="teamaspace-y-1 flex flex-col items-start px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                          >
+                            <p>Revisor</p>
+                            <p class="text-sm text-muted-foreground">Can view users, teams, and edit expenses.</p>
+                          </CommandItem>
+                          <CommandItem
+                            v-on:click="changeRol('Contador')"
+                            value="Contador"
+                            class="teamaspace-y-1 flex flex-col items-start px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                          >
+                            <p>Contador</p>
+                            <p class="text-sm text-muted-foreground">Can only export expenses.</p>
+                          </CommandItem>
+                          <CommandItem v-on:click="changeRol('Admin')" value="Admin" class="teamaspace-y-1 flex flex-col items-start px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                            <p>Admin</p>
+                            <p class="text-sm text-muted-foreground">Admin-level access to all resources.</p>
+                          </CommandItem>
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
             <button v-if="showSendInvite && !bulkUserCreation" v-on:click="sendInvite" className="w-full h-14 rounded-md text-md font-medium bg-[#62948F] text-white">
@@ -179,7 +226,7 @@
         </div>
         <Suspense>
           <template #default>
-            <MembersMembersView :key="forceReload" :filters="sendFilters"></MembersMembersView>
+            <MembersMembersView :key="forceReload" :filters="sendFilters" :teams="teams"></MembersMembersView>
           </template>
           <template #fallback>
             <div class="flex justify-center items-center h-96">
@@ -199,6 +246,9 @@ import Navbar from './components/Navbar.vue'
 import MembersMembersView from './components/MembersMembersView.vue'
 import axios from '@/axios'
 import { ref } from 'vue'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import Button from '@/components/ui/button/Button.vue'
 
 export default {
   name: 'App',
@@ -215,16 +265,17 @@ export default {
       forceReload: false,
       bulkUserCreation: false,
       employeeNameFilter: '',
-      employeeCreationRole: 'Empleado',
+      creationRole: 'Empleado',
+      open: ref(false),
       filters: {
         name: this.employeeNameFilter,
         isAdmin: false,
-        isConfirmed: false,
+        isNotConfirmed: false,
       },
       sendFilters: {
         name: '',
         isAdmin: false,
-        isConfirmed: false,
+        isNotConfirmed: false,
         team: '',
       }, // Could be done better
     }
@@ -237,6 +288,10 @@ export default {
     },
   },
   methods: {
+    changeRol(value) {
+      this.creationRole = value
+      this.open = false
+    },
     selectTeam(team) {
       if (team === 'Equipo') {
         this.sendFilters.team = ''
@@ -244,9 +299,6 @@ export default {
         return
       }
       this.sendFilters.team = team
-    },
-    roleNewMember(roleSelected) {
-      this.employeeCreationRole = roleSelected
     },
     onFileChange(e) {
       const xslx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -268,7 +320,7 @@ export default {
       this.sendFilters.isAdmin = !this.sendFilters.isAdmin
     },
     sendConfirmedFilter() {
-      this.sendFilters.isConfirmed = !this.sendFilters.isConfirmed
+      this.sendFilters.isNotConfirmed = !this.sendFilters.isNotConfirmed
     },
     addMember() {
       this.showAddMember = !this.showAddMember
@@ -284,11 +336,21 @@ export default {
       this.showSendInvite = false
       this.statusLoading = true
       this.showStatus400 = false
+      if (this.creationRole === 'Empleado') {
+        this.creationRole = 'Employee'
+      } else if (this.creationRole === 'Revisor') {
+        this.creationRole = 'Reviewer'
+      } else if (this.creationRole === 'Contador') {
+        this.creationRole = 'Accountant'
+      } else if (this.creationRole === 'Admin') {
+        this.creationRole = 'Admin'
+      }
       try {
         const response = await axios.post('/users', {
           name: this.name,
           surname: this.surname,
           email: this.email,
+          role: this.creationRole,
         })
       } catch (error) {
         this.statusLoading = false
@@ -304,6 +366,7 @@ export default {
       this.name = ''
       this.surname = ''
       this.email = ''
+      this.creationRole = 'Empleado'
 
       await new Promise((r) => setTimeout(r, 1500))
       // to close the modal
@@ -311,12 +374,9 @@ export default {
     },
   },
   async mounted() {
-    this.teams = await axios.get('/teams').then((response) => {
-      // this.teams must be an array of strings with the name of the teams
-      return response.data.teams.map((team) => {
-        return team.name
-      })
-    })
+    const response = await axios.get('/teams')
+    // this.teams must be an array of strings with the name of the teams
+    this.teams = response.data.teams
   },
   components: {
     Sidebar,
@@ -326,6 +386,16 @@ export default {
     MenuButton,
     MenuItem,
     MenuItems,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    Button,
   },
 }
 </script>

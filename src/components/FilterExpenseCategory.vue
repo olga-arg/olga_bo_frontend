@@ -112,7 +112,7 @@ const selectedStatus = ref<Status[]>([])
                   @select="
                     (value) => {
                       if (selectedStatus.includes(status)) {
-                        $emit('category-selected', '')
+                        $emit('category-deselected', status)
                         selectedStatus = selectedStatus.filter((s) => s !== status)
                       } else {
                         $emit('category-selected', status)

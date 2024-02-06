@@ -31,7 +31,50 @@
             </div>
             <div class="flex items-center justify-between pt-5">
               <div class="">Rol</div>
-              <button
+              <Popover v-model:open="open">
+                <PopoverTrigger as-child>
+                  <Button variant="outline" class="ml-auto w-48 h-6">
+                    {{ userRole }}
+                    <ChevronDownIcon class="ml-2 h-4 w-4 text-muted-foreground" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent class="p-0" align="end">
+                  <!-- <Command v-model="sofiaRole"> -->
+                  <Command>
+                    <CommandInput placeholder="Select new role..." />
+                    <CommandList>
+                      <CommandEmpty>No roles found.</CommandEmpty>
+                      <CommandGroup>
+                        <CommandItem
+                          v-on:click="changeRol('Empleado')"
+                          value="Empleado"
+                          class="teamaspace-y-1 flex flex-col items-start px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        >
+                          <p>Empleado</p>
+                          <p class="text-sm text-muted-foreground">Can only access the mobile app.</p>
+                        </CommandItem>
+                        <CommandItem v-on:click="changeRol('Revisor')" value="Revisor" class="teamaspace-y-1 flex flex-col items-start px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                          <p>Revisor</p>
+                          <p class="text-sm text-muted-foreground">Can view users, teams, and edit expenses.</p>
+                        </CommandItem>
+                        <CommandItem
+                          v-on:click="changeRol('Contador')"
+                          value="Contador"
+                          class="teamaspace-y-1 flex flex-col items-start px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        >
+                          <p>Contador</p>
+                          <p class="text-sm text-muted-foreground">Can only export expenses.</p>
+                        </CommandItem>
+                        <CommandItem v-on:click="changeRol('Admin')" value="Admin" class="teamaspace-y-1 flex flex-col items-start px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                          <p>Admin</p>
+                          <p class="text-sm text-muted-foreground">Admin-level access to all resources.</p>
+                        </CommandItem>
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <!-- <button
                 v-if="new_is_admin"
                 v-on:click="changeRol"
                 class="ring-pink-300 inline-flex w-24 justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset hover:bg-gray-50"
@@ -44,7 +87,7 @@
                 class="inline-flex w-24 justify-center rounded-md bg-white py-2 text-sm font-semibold text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 hover:bg-gray-50"
               >
                 Miembro
-              </button>
+              </button> -->
             </div>
             <div class="flex justify-center gap-10 pt-4">
               <button
@@ -72,14 +115,18 @@
 
 <script>
 import axios from '@/axios'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import Button from '@/components/ui/button/Button.vue'
 
 export default {
   name: 'EditMember',
   data() {
     return {
+      userRole: '',
       new_monthly_limit: this.formatNumberWithDots(this.user.monthly_limit.toString()),
       new_purchase_limit: this.formatNumberWithDots(this.user.purchase_limit.toString()),
-      new_is_admin: this.user.isAdmin,
+      new_role: this.user.role,
       originalRoute: this.$route.path,
       activeRoute: this.$route.path.split('/').slice(-1)[0],
       usersNotInTeam: this.users,
@@ -92,8 +139,17 @@ export default {
     }
   },
   methods: {
-    changeRol() {
-      this.new_is_admin = !this.new_is_admin
+    changeRol(newRole) {
+      this.userRole = newRole
+      if (newRole === 'Revisor') {
+        this.new_role = 1
+      } else if (newRole === 'Admin') {
+        this.new_role = 2
+      } else if (newRole === 'Contador') {
+        this.new_role = 3
+      } else {
+        this.new_role = 0
+      }
     },
     async updateUser(user) {
       let url = '/users/' + user.id
@@ -101,25 +157,27 @@ export default {
       if (
         this.new_monthly_limit == this.formatNumberWithDots(user.monthly_limit.toString()) &&
         this.new_purchase_limit == this.formatNumberWithDots(user.purchase_limit.toString()) &&
-        this.new_is_admin == user.isAdmin
+        this.new_role == user.role
       ) {
         this.$emit('close')
         return
       }
       try {
+        console.log('nR: ', this.userRole)
         const response = await axios.patch(url, {
           purchase_limit: Number(this.new_purchase_limit.replace(/[^\d]/g, '')),
           monthly_limit: Number(this.new_monthly_limit.replace(/[^\d]/g, '')),
-          is_admin: this.new_is_admin,
+          role: this.userRole == 'Revisor' ? 'Reviewer' : this.userRole == 'Admin' ? 'Admin' : this.userRole == 'Contador' ? 'Accountant' : 'Employee',
         })
       } catch (error) {
+        console.log('eee', error)
         this.error = error.response.data
         return
       }
 
       this.user.purchase_limit = Number(this.new_purchase_limit.replace(/[^\d]/g, ''))
       this.user.monthly_limit = Number(this.new_monthly_limit.replace(/[^\d]/g, ''))
-      this.user.isAdmin = this.new_is_admin
+      this.user.role = this.new_role
       this.$emit('close')
     },
 
@@ -150,6 +208,17 @@ export default {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
     },
   },
+  mounted() {
+    if (this.user.role === 1) {
+      this.userRole = 'Revisor'
+    } else if (this.user.role === 2) {
+      this.userRole = 'Admin'
+    } else if (this.user.role === 3) {
+      this.userRole = 'Contador'
+    } else {
+      this.userRole = 'Empleado'
+    }
+  },
   watch: {
     $route() {
       this.originalRoute = this.$route.path
@@ -158,6 +227,18 @@ export default {
   },
   props: {
     user: Object,
+  },
+  components: {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    Button,
   },
 }
 </script>

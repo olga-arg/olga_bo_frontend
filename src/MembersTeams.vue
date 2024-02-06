@@ -48,7 +48,7 @@
             </div>
             <div></div>
             <button v-if="showSendInvite" v-on:click="sendInvite" className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white">Crear Equipo</button>
-            <div v-if="showStatus200" v-on:click="addMember">
+            <div v-if="showStatus200">
               <button className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#62948F] text-white items-center justify-center flex">
                 <svg class="w-6 h-6 mr-2 text-white fill-current" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
@@ -57,12 +57,6 @@
               </button>
             </div>
             <div v-if="showStatus400" v-on:click="addMember" className="flex flex-col">
-              <!-- <button className="w-full h-14 rounded-md p-4 text-md font-medium bg-[#EA394C] text-white items-center justify-center flex">
-                <svg class="w-6 h-6 mr-2 text-white fill-current" viewBox="0 0 24 24">
-                  <path d="M0 0h24v24H0z" fill="none" />
-                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                </svg>
-              </button> -->
               <p className="w-full rounded-md p-1 mt-2 text-md font-medium bg-[#41313E] border border-[#EA394C] text-[#EA394C] items-center justify-center flex">{{ error }}</p>
             </div>
             <div v-if="statusLoading" className="w-full h-14 rounded-md p-4 text-md font-medium bg-gray-400 text-white flex items-center justify-center">

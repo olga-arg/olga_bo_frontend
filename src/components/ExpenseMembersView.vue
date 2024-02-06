@@ -56,6 +56,9 @@ export default {
     callback(expense) {
       this.expenseSelected = expense
       // only change the editExpense if not in selectPayments mode
+      console.log('selectPayments', this.selectPayments)
+      console.log('editExpense', this.editExpense)
+
       if (!this.selectPayments) this.editExpense = !this.editExpense
     },
     chunk() {
@@ -66,8 +69,8 @@ export default {
       filter.sort((a, b) => new Date(b.created) - new Date(a.created))
 
       // Aplicar los demás filtros
-      if (this.filters.category && this.filters.category != 'Categoria') {
-        filter = filter.filter((expense) => expense.category == this.filters.category)
+      if (this.filters.category && this.filters.category.length > 0) {
+        filter = filter.filter((expense) => this.filters.category.includes(expense.category))
       }
       if (this.filters.rangeDates.start && this.filters.rangeDates.end) {
         filter = filter.filter((expense) => {
@@ -102,13 +105,15 @@ export default {
     addToSelection(expense) {
       this.callback(expense)
       // verify if the expense.id == expenseSelected any id in selectedExpenses
-      if (this.selectedExpenses.some((selectedExpense) => selectedExpense.id == expense.id)) {
-        const expenseIndex = this.selectedExpenses.findIndex((selectedExpense) => selectedExpense.id === expense.id)
-        if (expenseIndex !== -1) {
-          this.selectedExpenses.splice(expenseIndex, 1)
+      if (this.selectPayments) {
+        if (this.selectedExpenses.some((selectedExpense) => selectedExpense.id == expense.id)) {
+          const expenseIndex = this.selectedExpenses.findIndex((selectedExpense) => selectedExpense.id === expense.id)
+          if (expenseIndex !== -1) {
+            this.selectedExpenses.splice(expenseIndex, 1)
+          }
+        } else {
+          this.selectedExpenses.push(expense)
         }
-      } else {
-        this.selectedExpenses.push(expense)
       }
     },
   },

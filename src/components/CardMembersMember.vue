@@ -50,17 +50,23 @@
           <p>5342</p>
         </div> -->
 
-        <div v-if="member.isAdmin" className="border-[#F8E6E8] border bg-[#F8E6E8] rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
+        <div v-if="member.role == 0" className="border-gray-300 border bg-gray-300 rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
+          <p>Empleado</p>
+        </div>
+        <div v-else-if="member.role == 1" className="border-blue-300 border bg-blue-300 rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
           <p>Revisor</p>
+        </div>
+        <div v-else-if="member.role == 2" className="border-[#F8E6E8] border bg-[#F8E6E8] rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
+          <p>Admin</p>
+        </div>
+        <div v-else-if="member.role == 3" className="border-yellow-300 border bg-yellow-300 rounded-full h-4 p-2.5 px-2 text-xs flex items-center justify-center">
+          <p>Contador</p>
         </div>
 
         <p>{{ Math.ceil((member.monthly_spending * 100) / (member.monthly_limit || 1)) }}%</p>
       </div>
     </div>
-
-    <div class="w-full h-4 mb-4 bg-[#D9D9D9] rounded-full my-5">
-      <div class="h-4 bg-[#62948F] rounded-full" :style="`width: ${(member.monthly_spending * 100) / (member.monthly_limit || 1)}%`"></div>
-    </div>
+    <Progress :model-value="(member.monthly_spending * 100) / (member.monthly_limit || 1)" class="mb-4 my-5" />
 
     <div className="flex justify-between">
       <div className="flex gap-6">
@@ -97,6 +103,7 @@
 </template>
 
 <script>
+import { Progress } from '@/components/ui/progress'
 export default {
   props: {
     member: Object,
@@ -107,5 +114,8 @@ export default {
     }
   },
   methods: {},
+  components: {
+    Progress,
+  },
 }
 </script>

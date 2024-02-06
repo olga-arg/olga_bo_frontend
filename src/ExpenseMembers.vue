@@ -9,13 +9,19 @@
             <Input placeholder="Buscar gasto" class="w-46 text-sm" v-on:keypress.enter.prevent="sendNameFilter" v-model="search" />
             <DatePicker @date-selected="handleDateSelected" :reset-filters="resetFilters" />
             <FilterExpenseStatus @status-selected="handleStatusSelected" :reset-filters="resetFilters" />
-            <FilterExpenseCategory v-if="Object.keys(categoriesMap).length" @category-selected="handleCategorySelected" :reset-filters="resetFilters" :categories="categoriesMap" />
+            <FilterExpenseCategory
+              v-if="Object.keys(categoriesMap).length"
+              @category-selected="handleCategorySelected"
+              @category-deselected="handleCategoryDeselected"
+              :reset-filters="resetFilters"
+              :categories="categoriesMap"
+            />
             <div v-else class="flex items-center border py-1 px-3 rounded-md border-dashed border-gray-400 hover:bg-gray-200 text-sm text-muted-foreground cursor-not-allowed">
               Categoria
             </div>
             <div
               class="flex items-center py-1 px-3 rounded-md hover:bg-gray-200"
-              v-if="this.filters.status != null || this.filters.category != '' || !this.filters.rangeDates || this.filters.rangeDates.end"
+              v-if="this.filters.status != null || this.filters.category.length > 0 || !this.filters.rangeDates || this.filters.rangeDates.end"
             >
               <button class="flex items-center" @click="handleReset">
                 <p>Reset</p>
@@ -93,7 +99,7 @@ export default {
       filters: {
         status: null,
         rangeDates: null,
-        category: '',
+        category: [],
         search: '',
       },
       resetFilters: ref(false),
@@ -116,8 +122,10 @@ export default {
       this.filters.search = this.search
     },
     handleCategorySelected(selectedCategory) {
-      // Realiza la lógica que deseas con la categoría seleccionada
-      this.filters.category = selectedCategory.value
+      this.filters.category.push(selectedCategory.value)
+    },
+    handleCategoryDeselected(selectedCategory) {
+      this.filters.category.splice(this.filters.category.indexOf(selectedCategory.value), 1)
     },
     handleStatusSelected(selectedStatus) {
       // Realiza la lógica que deseas con la categoría seleccionada

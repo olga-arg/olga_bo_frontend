@@ -24,10 +24,11 @@
           '#00BCD4', // Cian claro
           '#03A9F4', // Azul claro
           '#2196F3', // Azul
-        ][Math.floor(expense.User.email.charCodeAt(5) % 10)],
+        ][Math.floor(expense.User.name.charCodeAt(0) % 10)],
       }"
       className="flex rounded-full w-10 h-10 text-white text-md items-center justify-center"
     >
+      {{ expense.User.id }}
       <p>{{ expense.shop_name[0].toUpperCase() + expense.shop_name[1].toUpperCase() }}</p>
     </div>
     <div v-else-if="this.selectPayments && !this.isSelected" class="flex rounded-full w-5 h-5 ring-1 mt-4 cursor-pointer"></div>

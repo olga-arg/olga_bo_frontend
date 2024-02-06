@@ -79,7 +79,11 @@ export default {
       return response.data.teams
     },
     totalBalance() {
-      const balance = this.expenses.reduce((acc, expense) => acc + expense.monthly_spending, 0)
+      if (this.expenses && this.expenses.length > 0) {
+        const balance = this.expenses.reduce((acc, expense) => acc + expense.monthly_spending, 0)
+      } else {
+        return 0
+      }
       return balance
     },
   },

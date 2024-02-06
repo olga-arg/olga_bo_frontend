@@ -28,6 +28,7 @@ export default {
   methods: {
     chunk(allExpenses) {
       const chunked = []
+      if (!allExpenses || allExpenses.length == 0) return chunked
       for (let i = 0; i < allExpenses.length; i += 2) {
         chunked.push(allExpenses.slice(i, i + 2))
       }

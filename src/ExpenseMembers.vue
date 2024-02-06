@@ -153,7 +153,7 @@ export default {
     handleReset() {
       this.resetFilters = !this.resetFilters
       this.filters.status = null
-      this.filters.category = ''
+      this.filters.category = []
     },
     async exportPayments() {
       let payments_info = this.$refs.expenseMembersView.selectedExpenses

@@ -9,12 +9,12 @@
         </div>
       </div>
       <div className="flex w-full gap-2 justify-end flex-wrap">
-        <p>{{ Math.ceil((expense.monthly_spending * 100) / (expense.annual_budget || 1)) }}%</p>
+        <p>{{ Math.ceil((expense.monthly_spending * 100) / expense.annual_budget) || 0 }}%</p>
       </div>
     </div>
 
     <div class="w-full h-4 mb-4 bg-[#D9D9D9] rounded-full my-5">
-      <div class="h-4 bg-[#62948F] rounded-full" :style="`width: ${(expense.monthly_spending * 100) / (expense.annual_budget || 1)}%`"></div>
+      <div class="h-4 bg-[#62948F] rounded-full" :style="`width: ${((expense.monthly_spending * 100) / expense.annual_budget) || 0}%`"></div>
     </div>
 
     <div className="flex justify-between">

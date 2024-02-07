@@ -37,8 +37,6 @@
               {{ member.name.split(' ').length > 1 ? `${member.name.split(' ')[0]} ${member.name.split(' ')[1][0]}.` : member.name }} {{ member.surname }}
             </p>
           </div>
-          <p v-if="member.teams" class="text-[#8D8B96] font-medium text-lg pl-4">{{ member.teams[0].team_name }}</p>
-          <p v-else class="text-[#8D8B96] font-medium pl-4 text-sm">Sin Equipo</p>
         </div>
       </div>
       <div className="flex w-full gap-2 justify-end flex-wrap">

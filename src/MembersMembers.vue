@@ -9,30 +9,10 @@
           <div className="flex gap-4 items-center">
             <p className="text-gray-500">Filtrar:</p>
 
-            <Menu as="div" class="relative inline-block">
-              <div>
-                <MenuButton class="inline-flex w-full text-base py-1 bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">
-                  {{ teamSelected }}
-                </MenuButton>
-              </div>
-
-              <transition
-                enter-active-class="transition ease-out duration-100"
-                enter-from-class="transform opacity-0 scale-95"
-                enter-to-class="transform opacity-100 scale-100"
-                leave-active-class="transition ease-in duration-75"
-                leave-from-class="transform opacity-100 scale-100"
-                leave-to-class="transform opacity-0 scale-95"
-              >
-                <MenuItems class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div class="py-1">
-                    <MenuItem v-for="team in teams" v-slot="{ active }" v-on:click="selectTeam(team)">
-                      <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">{{ team.name }}</a>
-                    </MenuItem>
-                  </div>
-                </MenuItems>
-              </transition>
-            </Menu>
+            <FilterExpenseTeam v-if="teams.length" :teamsName="teams" :reset-filters="resetFilters" @team-selected="handleTeamSelected" @team-deselected="handleTeamDeselected" />
+            <div v-else class="flex items-center border py-1 px-3 rounded-md border-dashed border-gray-400 hover:bg-gray-200 text-sm text-muted-foreground cursor-not-allowed">
+              Equipos
+            </div>
             <button v-if="this.sendFilters.isAdmin" v-on:click="sendAdminFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">Admin</button>
             <button v-else v-on:click="sendAdminFilter" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Admin</button>
             <button v-if="this.sendFilters.isNotConfirmed" v-on:click="sendConfirmedFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">
@@ -249,6 +229,7 @@ import { ref } from 'vue'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import Button from '@/components/ui/button/Button.vue'
+import FilterExpenseTeam from './components/FilterExpenseTeam.vue'
 
 export default {
   name: 'App',
@@ -276,7 +257,7 @@ export default {
         name: '',
         isAdmin: false,
         isNotConfirmed: false,
-        team: '',
+        team: [],
       }, // Could be done better
     }
   },
@@ -288,17 +269,15 @@ export default {
     },
   },
   methods: {
+    handleTeamSelected(value) {
+      this.sendFilters.team.push(value.value)
+    },
+    handleTeamDeselected(value) {
+      this.sendFilters.team.splice(this.sendFilters.team.indexOf(value.value), 1)
+    },
     changeRol(value) {
       this.creationRole = value
       this.open = false
-    },
-    selectTeam(team) {
-      if (team === 'Equipo') {
-        this.sendFilters.team = ''
-        this.teamSelected = 'Equipo'
-        return
-      }
-      this.sendFilters.team = team
     },
     onFileChange(e) {
       const xslx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -396,6 +375,7 @@ export default {
     CommandItem,
     CommandList,
     Button,
+    FilterExpenseTeam,
   },
 }
 </script>

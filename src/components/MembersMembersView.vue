@@ -47,10 +47,18 @@ export default {
     chunk() {
       let response = []
       let filter = []
-      if (this.filters.team) {
-        filter = this.teams.filter((team) => {
-          return team.id === this.filters.team.id
-        })[0].users
+
+      if (this.filters.team && this.filters.team.length > 0) {
+        this.teams.forEach((team) => {
+          if (this.filters.team.includes(team.name)) {
+            team.users.forEach((teamUser) => {
+              const matchingUser = this.allMembers.users.find((member) => member.id === teamUser.id)
+              if (matchingUser) {
+                filter.push(matchingUser)
+              }
+            })
+          }
+        })
       } else {
         filter = this.allMembers.users
       }

@@ -9,13 +9,6 @@
             <p class="font-semibold text-2xl">Balance</p>
             <p className="text-lg">Gastos Totales $ {{ totalBalance() }}</p>
           </div>
-          <!-- <div class="flex flex-col gap-1">
-            <p className="text-gray-500">Filtrar:</p>
-            <div className="flex gap-4 items-center">
-              <button v-if="this.sendFilters.isAdmin" v-on:click="sendAdminFilter" className="bg-red-300 border-red-300 border p-1 rounded-md px-6 text-white">Excedidos</button>
-              <button v-else v-on:click="sendAdminFilter" className="bg-[rgb(248,247,250)] border-[#DBDADF] border p-1 rounded-md px-6 text-[#8D8B96]">Excedidos</button>
-            </div>
-          </div> -->
           <form>
             <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
             <div class="relative">
@@ -80,11 +73,11 @@ export default {
     },
     totalBalance() {
       if (this.expenses && this.expenses.length > 0) {
-        const balance = this.expenses.reduce((acc, expense) => acc + expense.monthly_spending, 0)
+        return this.expenses.reduce((acc, expense) => acc + expense.monthly_spending, 0)
       } else {
         return 0
       }
-      return balance
+      // return balance
     },
   },
   async mounted() {

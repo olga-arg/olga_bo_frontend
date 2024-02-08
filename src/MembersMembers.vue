@@ -9,7 +9,7 @@
           <div className="flex gap-4 items-center">
             <p className="text-gray-500">Filtrar:</p>
 
-            <FilterExpenseTeam v-if="teams.length" :teamsName="teams" :reset-filters="resetFilters" @team-selected="handleTeamSelected" @team-deselected="handleTeamDeselected" />
+            <FilterExpenseTeam v-if="teams" :teamsName="teams" :reset-filters="resetFilters" @team-selected="handleTeamSelected" @team-deselected="handleTeamDeselected" />
             <div v-else class="flex items-center border py-1 px-3 rounded-md border-dashed border-gray-400 hover:bg-gray-200 text-sm text-muted-foreground cursor-not-allowed">
               Equipos
             </div>

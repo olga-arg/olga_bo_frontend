@@ -5,6 +5,9 @@
       <CardMembersTeam v-on:click="shareToggle(team)" :team="team"></CardMembersTeam>
     </div>
   </div>
+  <div v-if="chunkedAllTeams.length == 0" class="flex items-center justify-center">
+    <a class="text-muted-foreground">Sin equipos.</a>
+  </div>
 </template>
 
 <script>

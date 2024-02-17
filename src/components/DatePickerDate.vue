@@ -10,14 +10,14 @@ import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 const props = defineProps({
-  expenseDate: String,
+  expenseDate: Date,
 })
-const date = ref<Date | null>(props.expenseDate ? parseISO(props.expenseDate) : null)
+const date = ref<Date | null>(props.expenseDate ? props.expenseDate : null)
 
 watch(
   () => props.expenseDate,
   () => {
-    date.value = props.expenseDate ? parseISO(props.expenseDate) : null
+    date.value = props.expenseDate ? props.expenseDate : null
   }
 )
 const esLocale = es

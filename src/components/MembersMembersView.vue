@@ -5,6 +5,9 @@
       <CardMembersMember v-on:click="callback(member)" :member="member"></CardMembersMember>
     </div>
   </div>
+  <div v-if="chunkedAllMembers.length == 0" class="flex items-center justify-center">
+    <a class="text-muted-foreground">Sin miembros.</a>
+  </div>
 </template>
 
 <script>

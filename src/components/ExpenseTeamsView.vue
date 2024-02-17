@@ -4,6 +4,9 @@
       <CardExpensesTeam :expense="expense"></CardExpensesTeam>
     </div>
   </div>
+  <div v-if="chunkedAllExpenses.length == 0" class="flex items-center justify-center">
+    <a class="text-muted-foreground">Sin gastos.</a>
+  </div>
 </template>
 
 <script>

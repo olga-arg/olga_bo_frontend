@@ -16,26 +16,19 @@
             </div>
             <div class="flex gap-5">
               <div class="flex flex-col gap-3">
-                <input
-                  v-model="shopName"
-                  class="block w-full h-14 border focus:outline-none rounded-md bg-transparent py-4 pl-4 pr-12 text-base text-slate-900 placeholder:text-slate-600 sm:text-sm sm:leading-6"
-                  :class="{ 'border-yellow-300 border-2': shopName !== changedFields.shopName }"
-                  placeholder="Negocio"
-                  aria-label="Search components"
-                  role="combobox"
-                  aria-expanded="false"
-                  aria-autocomplete="list"
-                  tabindex="0"
-                  data-form-type=""
-                  required
-                />
-
-                <DatePickerDate
-                  :expenseDate="expenseDate"
-                  v-model="expenseDate"
-                  :class="{ 'border-yellow-300 border-2 rounded-md': expenseDate !== changedFields.expenseDate }"
-                  @date-selected="handleDateSelected"
-                />
+                <Input v-model="shopName" class="focus-visible:ring-transparent" :class="{ 'border-yellow-300 border-2': shopName !== changedFields.shopName }"></Input>
+                <Input v-model="cuit" class="focus-visible:ring-transparent" :class="{ 'border-yellow-300 border-2': cuit !== changedFields.cuit }"></Input>
+                <div
+                  :class="{
+                    'border-2 w-fit border-yellow-300  rounded-lg':
+                      expenseDate &&
+                      (expenseDate.getDate() !== changedFields.expenseDate.getDate() ||
+                        expenseDate.getMonth() !== changedFields.expenseDate.getMonth() ||
+                        expenseDate.getFullYear() !== changedFields.expenseDate.getFullYear()),
+                  }"
+                >
+                  <DatePickerDate :expenseDate="expenseDate" class="border border-green-700" @date-selected="handleDateSelected" />
+                </div>
                 <div class="flex">
                   <Menu as="div" class="relative inline-block text-left">
                     <div>
@@ -184,6 +177,9 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import DatePickerDate from './DatePickerDate.vue'
 import Button from './ui/button/Button.vue'
+import Input from './ui/input/Input.vue'
+import { format, parseISO } from 'date-fns'
+
 import AsyncImage from './AsyncImage.vue'
 import moment from 'moment'
 import axios from '@/axios'
@@ -194,20 +190,20 @@ export default {
     return {
       changedFields: {
         shopName: '',
-        // cuit: '',
+        cuit: '',
         total: '',
         category: '',
-        expenseDate: '',
+        expenseDate: null,
         currency: '',
       },
       imageUrl: '',
       loading: true,
       shopName: '',
-      // cuit: '',
+      cuit: '',
       total: '',
       currency: 'ARS $',
       category: '',
-      expenseDate: '',
+      expenseDate: null,
       status: 0,
       id: '',
     }
@@ -215,14 +211,14 @@ export default {
   mounted() {
     this.shopName = this.expense.shop_name
     this.changedFields.shopName = this.expense.shop_name
-    // this.cuit = this.expense.cuit
-    // this.changedFields.cuit = this.expense.cuit
-    this.total = this.expense.amount
-    this.changedFields.total = this.expense.amount
+    this.cuit = this.expense.cuit
+    this.changedFields.cuit = this.expense.cuit
+    this.total = this.expense.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    this.changedFields.total = this.expense.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     this.category = this.expense.category
     this.changedFields.category = this.expense.category
-    this.expenseDate = this.expense.date
-    this.changedFields.expenseDate = this.expense.date
+    this.expenseDate = parseISO(this.expense.date)
+    this.changedFields.expenseDate = parseISO(this.expense.date)
     this.changedFields.currency = this.currency
     this.status = this.expense.status
     this.id = this.expense.id
@@ -236,7 +232,7 @@ export default {
       // make a request if the fields are different from the changedFields
       if (
         this.shopName == this.changedFields.shopName &&
-        // this.cuit == this.changedFields.cuit &&
+        this.cuit == this.changedFields.cuit &&
         this.total == this.changedFields.total &&
         this.category == this.changedFields.category &&
         this.expenseDate == this.changedFields.expenseDate &&
@@ -249,9 +245,9 @@ export default {
       // only send the fields that have changed
       let data = {}
       if (this.shopName != this.changedFields.shopName) data.shop_name = this.shopName
-      // if (this.cuit != this.changedFields.cuit) data.cuit = this.cuit
+      if (this.cuit != this.changedFields.cuit) data.cuit = this.cuit
       // total is a string, should be a float
-      if (this.total != this.changedFields.total) data.amount = parseFloat(this.total)
+      if (this.total != this.changedFields.total) data.amount = parseFloat(this.total.replace(/[^0-9]/g, ''))
       if (this.category != this.changedFields.category) data.category = this.category
       if (this.expenseDate != this.changedFields.expenseDate) data.date = this.changedFields.expenseDate
       if (this.currency != this.changedFields.currency) data.currency = this.currency
@@ -283,6 +279,9 @@ export default {
       this.originalRoute = this.$route.path
       this.activeRoute = this.$route.path.split('/').slice(-1)[0]
     },
+    total() {
+      this.total = this.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    },
   },
   components: {
     AsyncImage,
@@ -293,6 +292,7 @@ export default {
     Alert,
     Button,
     DatePickerDate,
+    Input,
   },
   props: {
     expense: Object,

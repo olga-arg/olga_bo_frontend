@@ -119,7 +119,6 @@ const selectedStatus = ref<Status[]>([])
                         selectedStatus.push(status)
                       }
                       // selectedStatus.push(status)
-                      open = false
                     }
                   "
                   class="hover:bg-gray-100"

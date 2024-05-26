@@ -118,7 +118,6 @@ const selectedStatus = ref<Status[]>([])
                         $emit('category-selected', status)
                         selectedStatus.push(status)
                       }
-                      // selectedStatus.push(status)
                     }
                   "
                   class="hover:bg-gray-100"

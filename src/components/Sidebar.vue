@@ -19,7 +19,7 @@
   <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
     <div class="h-full px-3 py-4 overflow-y-auto bg-[#1C2E3D] flex flex-col">
       <a href="/" class="flex items-center pl-2.5 self-center my-5">
-        <img src="@/assets/logo.svg" class="h-6 mr-3 sm:h-14" alt="Olga Logo" />
+        <img src="@/assets/rendilo_i.png" class="h-4 mr-3 sm:h-10" alt="Olga Logo" />
       </a>
       <div class="flex flex-col justify-between h-full">
         <ul class="space-y-2 mt-10 mx-4">
@@ -44,7 +44,7 @@
           <li>
             <router-link to="/logout" class="flex items-center p-2 px-4 text-base font-normal text-[#8D8B96] rounded-lg hover:bg-[#091825]">
               <img src="@/assets/logout.svg" alt="logout" />
-              <span class="ml-3">Log Out</span>
+              <span class="ml-3">Cerrar Sesión</span>
             </router-link>
           </li>
         </ul>

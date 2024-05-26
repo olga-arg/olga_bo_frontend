@@ -33,7 +33,7 @@
     "lucide-vue-next": "^0.321.0",
     "materialdesign-js": "^1.0.0",
     "moment": "^2.29.4",
-    "radix-vue": "^1.4.0",
+    "radix-vue": "^1.4.8",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3",

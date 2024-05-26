@@ -19,7 +19,7 @@
       "function": {
         "olgaAuthResourceCreateAuthChallenge": {
           "deploymentBucketName": "amplify-olga-prod-155150-deployment",
-          "s3Key": "amplify-builds/olgaAuthResourceCreateAuthChallenge-384e3847634b3655306d-build.zip"
+          "s3Key": "amplify-builds/olgaAuthResourceCreateAuthChallenge-4c686d586e3554615334-build.zip"
         },
         "olgaAuthResourceDefineAuthChallenge": {
           "deploymentBucketName": "amplify-olga-prod-155150-deployment",
@@ -36,21 +36,36 @@
       },
       "storage": {
         "olgaStorage": {}
+      },
+      "analytics": {
+        "olgaAnalytics": {},
+        "Pinpoint": {
+          "Name": "olgaAnalytics-prod",
+          "Id": "d9b8e666a1e7439eae43ed5f3a86e371",
+          "Region": "us-east-1"
+        }
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Name": "olgaAnalytics-prod",
+          "Id": "d9b8e666a1e7439eae43ed5f3a86e371",
+          "Region": "us-east-1"
+        }
       }
     }
   },
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-olga-dev-222643-authRole",
-      "UnauthRoleArn": "arn:aws:iam::588257415519:role/amplify-olga-dev-222643-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::588257415519:role/amplify-olga-dev-222643-authRole",
+      "AuthRoleName": "amplify-olga-prod-155150-authRole",
+      "UnauthRoleArn": "arn:aws:iam::588257415519:role/amplify-olga-prod-155150-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::588257415519:role/amplify-olga-prod-155150-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-olga-dev-222643-deployment",
-      "UnauthRoleName": "amplify-olga-dev-222643-unauthRole",
-      "StackName": "amplify-olga-dev-222643",
-      "StackId": "arn:aws:cloudformation:us-east-1:588257415519:stack/amplify-olga-dev-222643/cff86d50-b669-11ee-b379-0a5e7d5e485d",
+      "DeploymentBucketName": "amplify-olga-prod-155150-deployment",
+      "UnauthRoleName": "amplify-olga-prod-155150-unauthRole",
+      "StackName": "amplify-olga-prod-155150",
+      "StackId": "arn:aws:cloudformation:us-east-1:588257415519:stack/amplify-olga-prod-155150/783ec610-bed7-11ee-91c7-12ff838bb83f",
       "AmplifyAppId": "d3mq1agoa2zosw",
-      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-olga-dev-222643-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-olga-prod-155150-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "analytics": {

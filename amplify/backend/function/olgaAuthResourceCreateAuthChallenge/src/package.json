@@ -5,12 +5,8 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@aws-sdk/client-ses": "^3.499.0",
-    "@aws-sdk/signature-v4-crt": "^3.499.0",
-    "crypto-secure-random-digit": "^1.0.9"
-  },
-  "dependencies": {
-    "aws-sdk": "^2.1539.0",
+    "@aws-sdk/client-ses": "^3.496.0",
+    "@aws-sdk/signature-v4-crt": "^3.496.0",
     "crypto-secure-random-digit": "^1.0.9"
   },
   "dependencies": {

@@ -113,7 +113,7 @@ function sendChallengeCode(emailAddress, secretCode) {
             <body>
               <div class="mail">
               <div>
-                <img class="logo" src="https://prod-olga-backend-public-assets.s3.sa-east-1.amazonaws.com/olga.png" alt="Olga Logo" />
+                <img class="logo" src="https://github.com/olga-arg/olga_bo_frontend/blob/main/src/assets/rendilo_i.png?raw=true" alt="Rendilo logo" />
                 <h1>Your verification code is: <span class="code">${secretCode}</span></h1>
               </div>
                 <br />
@@ -125,7 +125,7 @@ function sendChallengeCode(emailAddress, secretCode) {
                   <br />
                   <br />
                   Gracias!<br />
-                  El equipo de Olga
+                  El equipo de Rendilo
                 </p>
                 <br />
                 <br />
@@ -138,9 +138,9 @@ function sendChallengeCode(emailAddress, secretCode) {
           `,
         },
       },
-      Subject: { Data: 'Olga código de confirmación' },
+      Subject: { Data: 'Rendilo código de confirmación' },
     },
-    Source: 'admin@olga.lat', // This is you SES Identity Email
+    Source: 'hola@rendilo.com', // This is you SES Identity Email
   }
 
   return ses.sendEmail(params)

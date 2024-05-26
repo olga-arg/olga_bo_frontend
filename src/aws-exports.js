@@ -3,6 +3,14 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
+    "aws_mobile_analytics_app_id": "d9b8e666a1e7439eae43ed5f3a86e371",
+    "aws_mobile_analytics_app_region": "us-east-1",
+    "Analytics": {
+        "AWSPinpoint": {
+            "appId": "d9b8e666a1e7439eae43ed5f3a86e371",
+            "region": "us-east-1"
+        }
+    },
     "aws_cognito_identity_pool_id": "us-east-1:63bf9fcd-05cc-4eaa-ab02-0e79cb612c13",
     "aws_cognito_region": "us-east-1",
     "aws_user_pools_id": "us-east-1_XL73TDAKs",

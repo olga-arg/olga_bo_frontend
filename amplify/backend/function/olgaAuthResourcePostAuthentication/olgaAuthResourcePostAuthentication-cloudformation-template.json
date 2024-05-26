@@ -215,12 +215,8 @@
                 "lambda:InvokeFunction"
               ],
               "Resource": [
-<<<<<<< HEAD
                 "arn:aws:lambda:sa-east-1:588257415519:function:olga-backend-dev-go-lambda-post-confirmation",
                 "arn:aws:lambda:sa-east-1:588257415519:function:olga-backend-prod-go-lambda-post-confirmation"
-=======
-                "arn:aws:lambda:sa-east-1:588257415519:function:olga-backend-dev-go-lambda-post-confirmation"
->>>>>>> dev
               ]
             }
           ]
